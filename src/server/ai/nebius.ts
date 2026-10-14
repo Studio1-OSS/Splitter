@@ -1,7 +1,7 @@
 // Nebius Token Factory adapter. Every model-specific option lives in this file, so swapping the model
 // (NEBIUS_MODEL) or moving to another OpenAI-compatible provider means editing only here.
 import OpenAI from "openai";
-import type { z } from "zod";
+import { z } from "zod";
 import { RECEIPT_SYSTEM_PROMPT, receiptJsonSchema, receiptSchema, type ExtractedReceipt } from "./receipt";
 
 export type NebiusConfig = {
@@ -15,7 +15,7 @@ export type NebiusConfig = {
 export class ExtractionError extends Error {
   constructor(
     message: string,
-    readonly kind: "provider" | "invalid_output" | "truncated" | "refused",
+    readonly kind: "provider" | "invalid_output" | "truncated" | "refused" | "multiple_bills",
   ) {
     super(message);
     this.name = "ExtractionError";
@@ -154,18 +154,31 @@ export async function chatText(
 }
 
 /** Reads one bill. Pass several images when they are pages of the same bill. */
+// Several images: the model also says how many different bills it sees, so unrelated bills aren't merged.
+const multiPageSchema = receiptSchema.extend({
+  billsShown: z
+    .number()
+    .int()
+    .describe("How many DIFFERENT bills these images show: 1 if they are pages of the same bill (same merchant and document), 2+ if they are unrelated bills"),
+});
+const { $schema: _mp, ...multiPageJsonSchema } = z.toJSONSchema(multiPageSchema, { target: "draft-7" });
+
 export async function extractReceiptWithNebius(config: NebiusConfig, images: string | string[]): Promise<ExtractedReceipt> {
   const pages = Array.isArray(images) ? images : [images];
+  const multi = pages.length > 1;
+  let result: ExtractedReceipt & { billsShown?: number };
   try {
-    return await chatJSON(config, {
+    result = await chatJSON(config, {
       system: RECEIPT_SYSTEM_PROMPT,
       name: "receipt",
-      schema: receiptSchema,
-      jsonSchema: receiptJsonSchema as Record<string, unknown>,
+      schema: multi ? multiPageSchema : receiptSchema,
+      jsonSchema: (multi ? multiPageJsonSchema : receiptJsonSchema) as Record<string, unknown>,
       content: [
         {
           type: "text",
-          text: pages.length > 1 ? `These ${pages.length} images are pages of ONE bill, in order. Extract it once.` : "Extract this bill.",
+          text: multi
+            ? `These ${pages.length} images should be pages of ONE bill, in order. First check: do they all belong to the same document? Set billsShown to how many different bills you see. If it is 1, extract the bill once across all pages.`
+            : "Extract this bill.",
         },
         ...imageParts(pages),
       ],
@@ -175,6 +188,14 @@ export async function extractReceiptWithNebius(config: NebiusConfig, images: str
       throw new ExtractionError("The bill could not be read. Try a sharper, well-lit photo.", "invalid_output");
     throw e;
   }
+  if (multi && (result.billsShown ?? 1) > 1) {
+    throw new ExtractionError(
+      `These look like ${result.billsShown} different bills, not pages of one. Scan them one at a time, or use Settle with AI in a group to split several bills together.`,
+      "multiple_bills",
+    );
+  }
+  const { billsShown: _b, ...receipt } = result;
+  return receipt;
 }
 
 export { imageParts };

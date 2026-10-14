@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     const check = createTools({ currency: receipt.currency ?? "USD", memberRefs: [], bills: [{ no: 1, receipt }] }).run("check_receipt", { bill: 1 }, "app");
     return Response.json({ receipt, issues: reconcileReceipt(receipt), checks: [check], creditsLeft: guard.creditsLeft });
   } catch (e) {
-    if (e instanceof ExtractionError) return apiError(e.kind === "provider" ? 502 : 422, e.message);
+    if (e instanceof ExtractionError) return apiError(e.kind === "provider" ? 502 : 422, e.message, { code: e.kind });
     console.error("Unexpected extraction failure", e);
     return apiError(500, "Something went wrong reading the bill");
   }

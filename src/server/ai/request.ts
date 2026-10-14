@@ -11,7 +11,8 @@ export { sniffImageType };
 const MAX_BYTES = 4 * 1024 * 1024; // Vercel's request body limit is 4.5 MB.
 const TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 
-export const apiError = (status: number, message: string) => Response.json({ error: message }, { status });
+export const apiError = (status: number, message: string, extra?: Record<string, unknown>) =>
+  Response.json({ error: message, ...extra }, { status });
 
 export const aiConfig = (): NebiusConfig => ({
   apiKey: env.NEBIUS_API_KEY!,

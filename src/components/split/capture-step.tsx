@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import type { ExtractedReceipt, ReceiptIssue } from "@/server/ai/receipt";
 import type { ToolCall } from "@/server/ai/tools";
 import { applyReceipt, draftTotal, usableItems, type Draft } from "./draft";
+import { mergeReceipts } from "./merge-receipts";
 
 const SCAN_MESSAGES = ["Reading the receipt…", "Finding every line…", "Checking tax and fees…", "Adding it all up…"];
 
@@ -65,42 +66,40 @@ export function CaptureStep({
     return () => clearInterval(t);
   }, [scanning]);
 
-  /** One bill: a single photo, several photos (pages), or a PDF (first pages rendered in the browser). */
-  async function scan(files: File[]) {
+  /** Photos and PDF pages for one bill, resized in the browser (max 4 pages). */
+  async function prepare(files: File[]) {
+    const sources: Blob[] = [];
+    let total = 0;
+    for (const f of files.slice(0, 4)) {
+      if (isPdf(f)) {
+        const pdf = await pdfToImages(f);
+        sources.push(...pdf.pages);
+        total += pdf.totalPages;
+      } else {
+        sources.push(f);
+        total += 1;
+      }
+    }
+    if (files.length > 4 || total > 4) toast.info("Only the first 4 pages are read.");
+    return Promise.all(sources.slice(0, 4).map((b) => compressImage(b)));
+  }
+
+  type ExtractBody = { receipt?: ExtractedReceipt; issues?: ReceiptIssue[]; checks?: ToolCall[]; error?: string; code?: string; creditsLeft?: number };
+  async function read(blobs: Blob[]): Promise<ExtractBody & { ok: boolean; status: number }> {
+    const form = new FormData();
+    blobs.forEach((b, i) => form.append("image", b, `page-${i + 1}.jpg`));
+    const res = await fetch("/api/extract", { method: "POST", body: form, signal: abort.current?.signal });
+    const body = (await res.json().catch(() => ({}))) as ExtractBody;
+    if (typeof body.creditsLeft === "number") setCredits((c) => (c ? { ...c, left: body.creditsLeft! } : c));
+    return { ...body, ok: res.ok, status: res.status };
+  }
+
+  async function run(work: () => Promise<void>) {
     setScanning(true);
     setMessage(0);
     abort.current = new AbortController();
     try {
-      const sources: Blob[] = [];
-      let total = 0;
-      for (const f of files.slice(0, 4)) {
-        if (isPdf(f)) {
-          const pdf = await pdfToImages(f);
-          sources.push(...pdf.pages);
-          total += pdf.totalPages;
-        } else {
-          sources.push(f);
-          total += 1;
-        }
-      }
-      if (files.length > 4 || total > 4) toast.info("Only the first 4 pages are read.");
-      const blobs = await Promise.all(sources.slice(0, 4).map((b) => compressImage(b)));
-      setImage(blobs.map((b) => URL.createObjectURL(b)));
-      const form = new FormData();
-      blobs.forEach((b, i) => form.append("image", b, `page-${i + 1}.jpg`));
-      const res = await fetch("/api/extract", { method: "POST", body: form, signal: abort.current.signal });
-      const body = (await res.json().catch(() => ({}))) as {
-        receipt?: ExtractedReceipt;
-        issues?: ReceiptIssue[];
-        checks?: ToolCall[];
-        error?: string;
-        creditsLeft?: number;
-      };
-      if (typeof body.creditsLeft === "number") setCredits((c) => (c ? { ...c, left: body.creditsLeft! } : c));
-      if (!res.ok || !body.receipt) throw new Error(body.error ?? `Could not read the bill (error ${res.status})`);
-      update((d) => ({ ...applyReceipt(d, body.receipt!, body.issues ?? [], { lockCurrency }), checks: body.checks ?? [] }));
-      toast.success(`Found ${body.receipt.items.length} lines`, { description: "Check them over before splitting." });
-      onItemized();
+      await work();
     } catch (e) {
       setImage([]);
       if (e instanceof DOMException && e.name === "AbortError") return;
@@ -113,8 +112,42 @@ export function CaptureStep({
     }
   }
 
+  /** One bill: a single photo, several photos (pages), or a PDF (first pages rendered in the browser). */
+  const scan = (files: File[]) =>
+    run(async () => {
+      const blobs = await prepare(files);
+      setImage(blobs.map((b) => URL.createObjectURL(b)));
+      const body = await read(blobs);
+      if (body.code === "multiple_bills") {
+        // The AI saw separate bills: ask whether they belong to the same occasion instead of failing.
+        setImage([]);
+        setUnrelated(files);
+        return;
+      }
+      if (!body.ok || !body.receipt) throw new Error(body.error ?? `Could not read the bill (error ${body.status})`);
+      update((d) => ({ ...applyReceipt(d, body.receipt!, body.issues ?? [], { lockCurrency }), checks: body.checks ?? [] }));
+      toast.success(`Found ${body.receipt.items.length} lines`, { description: "Check them over before splitting." });
+      onItemized();
+    });
+
+  /** Same occasion, separate bills: read each one, then combine them into one expense. */
+  const combine = (files: File[]) =>
+    run(async () => {
+      const prepared = await Promise.all(files.map((f) => prepare([f])));
+      setImage(prepared.flat().map((b) => URL.createObjectURL(b)));
+      const bodies = await Promise.all(prepared.map(read));
+      const failed = bodies.find((b) => !b.ok || !b.receipt);
+      if (failed) throw new Error(failed.error ?? "One of the bills couldn't be read");
+      const merged = mergeReceipts(bodies.map((b) => ({ receipt: b.receipt!, issues: b.issues ?? [] })));
+      if ("error" in merged) throw new Error(merged.error);
+      update((d) => ({ ...applyReceipt(d, merged.receipt, merged.issues, { lockCurrency }), checks: bodies.flatMap((b) => b.checks ?? []) }));
+      toast.success(`Combined ${files.length} bills · ${merged.receipt.items.length} lines`, { description: "Each line is labelled with its bill." });
+      onItemized();
+    });
+
   // Several files picked at once could be pages of one bill or separate bills: ask instead of guessing.
   const [choice, setChoice] = React.useState<File[] | null>(null);
+  const [unrelated, setUnrelated] = React.useState<File[] | null>(null);
   const onFiles = (files: FileList | null) => {
     if (!files?.length) return;
     const list = [...files];
@@ -122,6 +155,43 @@ export function CaptureStep({
     if (list.length > 1) setChoice(list);
     else void scan(list);
   };
+
+  if (unrelated) {
+    const n = unrelated.length;
+    return (
+      <div className="mx-auto grid max-w-md gap-6 py-4">
+        <div>
+          <h1 className="text-3xl leading-tight sm:text-4xl">These look like {n} different bills</h1>
+          <p className="mt-3 text-muted-foreground">
+            Are they for the same occasion, like dinner and the taxi home? Splitter can read each one and combine them into one expense, with every line
+            labelled by its bill.
+          </p>
+        </div>
+        <div className="grid gap-3">
+          <Button
+            size="lg"
+            onClick={() => {
+              setUnrelated(null);
+              void combine(unrelated);
+            }}
+          >
+            <Files /> Yes, combine into one expense
+          </Button>
+          {batchHref && (
+            <Button size="lg" variant="outline" asChild>
+              <Link href={batchHref}>
+                <Layers /> Split them separately with Settle with AI
+              </Link>
+            </Button>
+          )}
+          <Button variant="link" onClick={() => setUnrelated(null)}>
+            Start over
+          </Button>
+        </div>
+        <p className="text-sm text-muted-foreground">Reading each bill uses 1 AI credit.</p>
+      </div>
+    );
+  }
 
   if (choice) {
     const n = choice.length;
@@ -141,15 +211,25 @@ export function CaptureStep({
           >
             <Files /> Pages of one bill
           </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={() => {
+              setChoice(null);
+              void combine(choice);
+            }}
+          >
+            <Layers /> {n} bills, same occasion: combine into one expense
+          </Button>
           {batchHref ? (
             <Button size="lg" variant="outline" asChild>
               <Link href={batchHref}>
-                <Layers /> {n} separate bills: use Settle with AI
+                {n} bills to split separately: use Settle with AI
               </Link>
             </Button>
           ) : (
             <Button size="lg" variant="outline" onClick={() => setChoice(null)}>
-              <Layers /> Separate bills: pick one at a time
+              Separate expenses: pick one bill at a time
             </Button>
           )}
           <Button variant="link" onClick={() => setChoice(null)}>

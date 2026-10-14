@@ -1,6 +1,7 @@
 import { and, asc, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { z } from "zod";
+import { BANNER_ART_KEYS, BANNER_COLOR_KEYS } from "@/config/banners";
 import { GROUP_KIND_KEYS } from "@/config/categories";
 import { computeBalances, isValidCurrency, simplifyDebts } from "@/lib/money";
 import type { DB } from "../db";
@@ -14,6 +15,7 @@ export const createGroupInput = z.object({
   name,
   emoji: z.string().trim().min(1).max(8).default("👥"),
   kind: z.enum(GROUP_KIND_KEYS).default("other"),
+  banner: z.object({ color: z.enum(BANNER_COLOR_KEYS), art: z.enum(BANNER_ART_KEYS) }).optional(),
   currency: z.string().refine(isValidCurrency, "Unknown currency"),
   friends: z.array(name).max(50).default([]),
 });
@@ -33,6 +35,8 @@ export async function createGroup(
       name: data.name,
       emoji: data.emoji,
       kind: data.kind,
+      bannerColor: data.banner?.color ?? null,
+      bannerArt: data.banner?.art ?? null,
       currency: data.currency,
       inviteToken: nanoid(24),
       createdBy: user.id,

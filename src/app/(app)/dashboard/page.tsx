@@ -2,9 +2,12 @@ import { ChevronRight, Users, Zap } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CreateGroupDialog } from "@/components/group/create-group-dialog";
+import { GroupBanner } from "@/components/group/group-banner";
+import { ProfilePhoto } from "@/components/profile/profile-photo";
 import { Button } from "@/components/ui/button";
 import { Amount } from "@/components/ui/money";
 import { AvatarStack, EmptyState, Eyebrow } from "@/components/ui/primitives";
+import { isBannerArt, isBannerColor } from "@/config/banners";
 import { GROUP_KINDS, isGroupKind } from "@/config/categories";
 import { requireUser } from "@/server/auth";
 import { db } from "@/server/db";
@@ -29,8 +32,11 @@ export default async function DashboardPage() {
     <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <Eyebrow>Hi {user.name.split(" ")[0]}</Eyebrow>
-          <h1 className="mt-2 text-5xl leading-none">Your groups</h1>
+          <div className="flex items-center gap-2.5">
+            <ProfilePhoto name={user.name} image={user.image} />
+            <Eyebrow>Hi {user.name.split(" ")[0]}</Eyebrow>
+          </div>
+          <h1 className="mt-3 text-5xl leading-none">Your groups</h1>
         </div>
         {groups.length > 0 && <CreateGroupDialog />}
       </div>
@@ -74,7 +80,11 @@ export default async function DashboardPage() {
           {groups.map((g) => (
             <li key={g.id}>
               <Link href={`/groups/${g.id}`} className="group flex min-h-20 items-center gap-4 py-4">
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-sm bg-stone text-2xl">{g.emoji}</span>
+                {isBannerColor(g.bannerColor) && isBannerArt(g.bannerArt) ? (
+                  <GroupBanner color={g.bannerColor} art={g.bannerArt} className="h-12 w-20 shrink-0 rounded-sm" />
+                ) : (
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-sm bg-stone text-2xl">{g.emoji}</span>
+                )}
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-lg group-hover:underline group-hover:underline-offset-4">{g.name}</p>
                   <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">

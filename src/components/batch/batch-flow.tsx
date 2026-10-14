@@ -1,12 +1,13 @@
 "use client";
 
-import { ArrowLeft, Check, Hash, Loader2, Sparkles } from "lucide-react";
+import { ArrowLeft, Check, Hash, Loader2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { AiSparkIcon } from "@/components/ui/icons";
 import { Eyebrow, Field, Input } from "@/components/ui/primitives";
 import { GROUP_KINDS, isGroupKind, type CategoryKey } from "@/config/categories";
 import { todayISO } from "@/lib/utils";
@@ -202,7 +203,7 @@ export function BatchFlow({
           </Link>
         )}
         <Eyebrow className="flex items-center gap-2">
-          <Sparkles className="size-3.5 text-accent-ink" /> Settle with AI · {group.name}
+          <AiSparkIcon className="size-3.5 text-accent-ink" /> Settle with AI · {group.name}
         </Eyebrow>
       </div>
 
@@ -274,7 +275,7 @@ export function BatchFlow({
                 )}
               </div>
               <Button size="lg" disabled={!canPlan} onClick={() => runPlan(false)}>
-                <Sparkles /> Work it out
+                <AiSparkIcon /> Work it out
               </Button>
             </StepBar>
           </motion.div>

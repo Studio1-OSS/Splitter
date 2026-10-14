@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import * as React from "react";
@@ -118,11 +118,11 @@ export function SplitWizard({
     <div className="mx-auto w-full max-w-5xl px-4 pb-10 pt-2 sm:px-6 sm:pt-4">
       <div className="mb-8 flex items-center gap-3">
         {index === 0 ? (
-          <Link href={backHref} className="flex size-11 items-center justify-center rounded-full hover:bg-muted" aria-label="Back">
+          <Link href={backHref} className="flex size-11 shrink-0 items-center justify-center rounded-full border border-glass-border bg-glass-fill shadow-[inset_0_1px_0_var(--glass-shine)] backdrop-blur-md transition-colors hover:bg-muted" aria-label="Back">
             <ArrowLeft className="size-5" />
           </Link>
         ) : (
-          <button onClick={back} className="flex size-11 items-center justify-center rounded-full hover:bg-muted" aria-label="Back">
+          <button onClick={back} className="flex size-11 shrink-0 items-center justify-center rounded-full border border-glass-border bg-glass-fill shadow-[inset_0_1px_0_var(--glass-shine)] backdrop-blur-md transition-colors hover:bg-muted" aria-label="Back">
             <ArrowLeft className="size-5" />
           </button>
         )}
@@ -130,13 +130,35 @@ export function SplitWizard({
           <p className="eyebrow truncate text-muted-foreground">
             {mode.kind === "group" ? `New expense · ${mode.groupName}` : "Quick split"}
           </p>
-          <ol className="mt-2 flex gap-1.5" aria-label="Progress">
-            {flow.map((s, i) => (
-              <li key={s.id} className="flex-1" aria-current={i === index ? "step" : undefined}>
-                <div className={cn("h-1 rounded-full transition-colors", i <= index ? "bg-foreground" : "bg-hairline")} />
-                <span className={cn("mt-1.5 hidden text-xs sm:block", i === index ? "text-foreground" : "text-subtle")}>{s.label}</span>
-              </li>
-            ))}
+          <ol className="mt-2 flex items-center gap-1 rounded-pill border border-glass-border bg-glass-fill p-1 shadow-[inset_0_1px_0_var(--glass-shine),0_10px_30px_-14px_rgb(0_0_0/0.6)] backdrop-blur-xl" aria-label="Progress">
+            {flow.map((s, i) => {
+              const done = i < index;
+              const current = i === index;
+              return (
+                <li
+                  key={s.id}
+                  aria-current={current ? "step" : undefined}
+                  className={cn(
+                    "flex h-9 min-w-0 items-center justify-center gap-2 rounded-pill px-2.5 text-sm transition-all duration-300",
+                    current
+                      ? "flex-[2] border border-white/50 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--foreground)_97%,white),color-mix(in_srgb,var(--foreground)_80%,transparent))] font-medium text-background shadow-[inset_0_1px_0_rgb(255_255_255/0.8),0_6px_20px_-6px_color-mix(in_srgb,var(--foreground)_35%,transparent)] sm:flex-1"
+                      : "flex-1",
+                    done && "text-foreground",
+                    !done && !current && "text-subtle",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "flex size-5 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold tabular",
+                      current ? "bg-background text-foreground" : done ? "bg-foreground text-background" : "border border-hairline",
+                    )}
+                  >
+                    {done ? <Check className="size-3" strokeWidth={3} /> : i + 1}
+                  </span>
+                  <span className={cn("truncate", !current && "max-sm:hidden")}>{s.label}</span>
+                </li>
+              );
+            })}
           </ol>
         </div>
       </div>

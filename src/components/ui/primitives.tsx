@@ -107,8 +107,23 @@ export function CategoryIcon({ category, className }: { category: string; classN
   );
 }
 
-export function Avatar({ name, className, size = "md" }: { name: string; className?: string; size?: "sm" | "md" | "lg" }) {
+export function Avatar({
+  name,
+  src,
+  className,
+  size = "md",
+}: {
+  name: string;
+  /** Profile photo URL; falls back to initials. */
+  src?: string | null;
+  className?: string;
+  size?: "sm" | "md" | "lg";
+}) {
   const sizes = { sm: "size-6 text-[10px]", md: "size-8 text-xs", lg: "size-11 text-sm" };
+  if (src) {
+    // Plain <img>: the photo route is private and auth-gated, so next/image optimisation doesn't apply.
+    return <img src={src} alt="" aria-hidden className={cn("shrink-0 rounded-full object-cover", sizes[size], className)} />;
+  }
   return (
     <span
       aria-hidden

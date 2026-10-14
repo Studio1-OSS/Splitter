@@ -31,13 +31,13 @@ export const auth = betterAuth({
   plugins: [nextCookies()],
 });
 
-export type SessionUser = { id: string; name: string; email: string };
+export type SessionUser = { id: string; name: string; email: string; image: string | null };
 
 export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) return null;
-  const { id, name, email } = session.user;
-  return { id, name, email };
+  const { id, name, email, image } = session.user;
+  return { id, name, email, image: image ?? null };
 });
 
 export async function requireUser(next?: string): Promise<SessionUser> {

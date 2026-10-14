@@ -1,11 +1,14 @@
-import { ArrowLeft, ArrowRight, CheckCircle2, ChevronRight, HandCoins, Plus, Receipt, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronRight, HandCoins, Plus, Receipt } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AskSplitter } from "@/components/group/ask-splitter";
 import { AddMemberDialog, InviteLink, SettleUpDialog, SettlementActions } from "@/components/group/group-actions";
+import { GroupBanner } from "@/components/group/group-banner";
 import { Button } from "@/components/ui/button";
+import { AiSparkIcon } from "@/components/ui/icons";
 import { Amount } from "@/components/ui/money";
 import { Avatar, Badge, CategoryIcon, EmptyState, Eyebrow } from "@/components/ui/primitives";
+import { isBannerArt, isBannerColor } from "@/config/banners";
 import { categoryOf, GROUP_KINDS, isGroupKind } from "@/config/categories";
 import { features } from "@/env";
 import { formatMoney } from "@/lib/money";
@@ -35,14 +38,20 @@ export default async function GroupPage({ params }: Props) {
     .sort((a, b) => b.total - a.total);
   const spent = byCategory.reduce((a, b) => a + b.total, 0);
 
+  const banner =
+    isBannerColor(group.bannerColor) && isBannerArt(group.bannerArt) ? { color: group.bannerColor, art: group.bannerArt } : null;
+
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] gap-10">
       <div>
         <Link href="/dashboard" className="inline-flex h-11 items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="size-4" /> All groups
         </Link>
-        <div className="mt-2 flex flex-wrap items-center gap-4">
-          <span className="flex size-14 items-center justify-center rounded-sm bg-stone text-3xl">{group.emoji}</span>
+        {banner && <GroupBanner wide color={banner.color} art={banner.art} className="mt-2 h-28 rounded-lg sm:h-40" />}
+        <div className="mt-4 flex flex-wrap items-center gap-4">
+          {!banner && (
+            <span className="flex size-14 items-center justify-center rounded-sm bg-stone text-3xl">{group.emoji}</span>
+          )}
           <div className="min-w-0 flex-1">
             <h1 title={group.name} className="truncate text-4xl leading-tight sm:text-5xl">{group.name}</h1>
             <p className="eyebrow mt-1 text-muted-foreground">
@@ -75,7 +84,7 @@ export default async function GroupPage({ params }: Props) {
           <div className="flex flex-wrap gap-3">
             <Button variant="inverse" size="lg" asChild>
               <Link href={`/groups/${group.id}/batch`}>
-                <Sparkles /> Settle with AI
+                <AiSparkIcon /> Settle with AI
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="border-white/30 text-white hover:bg-white/10">
@@ -154,7 +163,7 @@ export default async function GroupPage({ params }: Props) {
               <li key={b.id}>
                 <Link href={`/groups/${group.id}/batches/${b.id}`} className="group flex min-h-16 items-center gap-3 py-3">
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-sm bg-band text-white">
-                    <Sparkles className="size-4" />
+                    <AiSparkIcon className="size-4" />
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate group-hover:underline group-hover:underline-offset-4">{b.title}</span>
@@ -209,7 +218,7 @@ export default async function GroupPage({ params }: Props) {
                 <div className="mt-2 flex flex-col items-center gap-3 sm:flex-row">
                   <Button asChild>
                     <Link href={`/groups/${group.id}/batch`}>
-                      <Sparkles /> Settle with AI
+                      <AiSparkIcon /> Settle with AI
                     </Link>
                   </Button>
                   <Button variant="link" asChild>

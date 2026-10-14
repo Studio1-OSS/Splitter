@@ -2,6 +2,7 @@
 
 import { Inbox } from "@novu/nextjs";
 import { useRouter } from "next/navigation";
+import { BellIcon } from "@/components/ui/icons";
 
 /** Novu in-app inbox. Only rendered when NOVU keys are configured. */
 export function NotificationBell({ userId, appId, subscriberHash }: { userId: string; appId: string; subscriberHash: string }) {
@@ -21,6 +22,17 @@ export function NotificationBell({ userId, appId, subscriberHash }: { userId: st
             router.push(path);
           }
         }}
+        renderBell={({ total }) => (
+          <span className="relative inline-flex size-9 items-center justify-center rounded-pill text-foreground transition-colors hover:bg-muted max-md:size-11">
+            <BellIcon className="size-[19px]" />
+            {total > 0 && (
+              <span className="absolute right-1 top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-pill bg-accent px-1 text-[10px] leading-none text-white tabular ring-2 ring-background max-md:right-2 max-md:top-2">
+                {total > 9 ? "9+" : total}
+              </span>
+            )}
+            <span className="sr-only">{total > 0 ? `${total} unread notifications` : "Notifications"}</span>
+          </span>
+        )}
         appearance={{
           variables: {
             colorPrimary: "var(--primary)",

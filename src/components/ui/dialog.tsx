@@ -9,21 +9,33 @@ export const Dialog = DialogPrimitive.Root;
 export const DialogTrigger = DialogPrimitive.Trigger;
 export const DialogClose = DialogPrimitive.Close;
 
-/** Bottom sheet on phones, centred 8px-radius panel on larger screens. */
+/**
+ * Bottom sheet on phones, centred 8px-radius panel on larger screens.
+ * `glass` swaps the flat card for a frosted panel over a blurred page.
+ */
 export function DialogContent({
   className,
   children,
   title,
   description,
+  glass,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content> & { title: string; description?: string }) {
+}: React.ComponentProps<typeof DialogPrimitive.Content> & { title: string; description?: string; glass?: boolean }) {
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
+      <DialogPrimitive.Overlay
+        className={cn(
+          "fixed inset-0 z-50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0",
+          glass ? "bg-black/25 backdrop-blur-[6px]" : "bg-black/50",
+        )}
+      />
       <DialogPrimitive.Content
         className={cn(
-          "fixed inset-x-0 bottom-0 z-50 grid max-h-[92dvh] gap-5 overflow-y-auto rounded-t-lg border-t bg-card p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom-8 data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
-          "sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:w-full sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-sm sm:border sm:pb-6 sm:data-[state=open]:slide-in-from-bottom-2",
+          "no-scrollbar fixed inset-x-0 bottom-0 z-50 grid max-h-[92dvh] gap-5 overflow-y-auto overscroll-contain rounded-t-lg p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom-8 data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
+          "sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:w-full sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:pb-6 sm:data-[state=open]:slide-in-from-bottom-2",
+          glass
+            ? "glass isolate sm:rounded-lg sm:data-[state=open]:zoom-in-95"
+            : "border-t bg-card sm:rounded-sm sm:border",
           className,
         )}
         {...props}

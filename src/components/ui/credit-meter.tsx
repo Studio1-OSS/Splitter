@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react";
+import { RingGauge } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 
 /** "18 of 30 AI credits left today". Turns amber when nearly out. */
@@ -9,9 +9,20 @@ export function CreditMeter({ left, limit, compact, className }: { left: number;
     return (
       <span
         title={`${left} of ${limit} AI credits left today. Resets at midnight UTC.`}
-        className={cn("inline-flex h-8 items-center gap-1.5 rounded-full border px-2.5 text-xs tabular", low ? "border-warning/50 text-warning" : "border-hairline text-muted-foreground", className)}
+        className={cn(
+          "inline-flex h-9 items-center gap-2 rounded-pill border pl-2 pr-3 text-xs tabular",
+          low ? "border-warning/40 bg-warning-soft text-warning" : "border-hairline text-foreground",
+          className,
+        )}
       >
-        <Sparkles className="size-3.5" /> {left}/{limit}
+        <RingGauge value={left / limit} className={cn("size-[18px]", !low && "text-accent")} />
+        <span aria-hidden="true">
+          <span>{left}</span>
+          <span className={low ? "opacity-70" : "text-muted-foreground"}>/{limit}</span>
+        </span>
+        <span className="sr-only">
+          {left} of {limit} AI credits left today
+        </span>
       </span>
     );
   }

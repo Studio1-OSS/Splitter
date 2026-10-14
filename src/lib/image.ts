@@ -10,6 +10,8 @@ export const FOR_STORAGE: Variant = { maxEdge: 1100, targetBytes: 160 * 1024, qu
 /** Small preview in lists. */
 export const FOR_THUMB: Variant = { maxEdge: 192, targetBytes: 40 * 1024, qualities: [0.7, 0.55, 0.4] };
 
+/** Profile photos: shown at most ~112px, so 512px covers 3x screens. */
+export const FOR_AVATAR: Variant = { maxEdge: 512, targetBytes: 90 * 1024, qualities: [0.82, 0.7, 0.55, 0.4] };
 export const MAX_RAW_BYTES = 20 * 1024 * 1024;
 
 const isHeic = (source: Blob) =>

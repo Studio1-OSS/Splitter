@@ -22,6 +22,16 @@ export const user = sqliteTable("user", {
   ...timestamps,
 });
 
+/** Profile photo (~60 KB, compressed in the browser). `user.image` points at /api/avatar/<userId>. */
+export const userAvatars = sqliteTable("user_avatars", {
+  userId: text("user_id")
+    .primaryKey()
+    .references(() => user.id, { onDelete: "cascade" }),
+  mime: text("mime").notNull(),
+  bytes: blob("bytes", { mode: "buffer" }).notNull(),
+  ...timestamps,
+});
+
 export const session = sqliteTable(
   "session",
   {
@@ -74,6 +84,9 @@ export const groups = sqliteTable("groups", {
   name: text("name").notNull(),
   emoji: text("emoji").notNull().default("🍽️"),
   kind: text("kind").notNull().default("other"),
+  /** Banner colour and artwork keys from config/banners.ts; null shows the emoji instead. */
+  bannerColor: text("banner_color"),
+  bannerArt: text("banner_art"),
   currency: text("currency").notNull(),
   inviteToken: text("invite_token").notNull().unique(),
   createdBy: text("created_by")

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/logo";
+import { cn } from "@/lib/utils";
 import { site } from "@/config/site";
 import { getSessionUser } from "@/server/auth";
 import { GitHubIcon } from "./github-icon";
@@ -13,11 +14,14 @@ export const NAV = [
   { href: "/#faq", label: "FAQ" },
 ];
 
-/** Three-zone nav from the design system: logo left, links centred, actions right; compact menu on phones. */
-export async function SiteHeader() {
+/**
+ * Three-zone nav from the design system: logo left, links centred, actions right; compact menu on phones.
+ * `overlay` makes it translucent glass, for pages that start with a full-bleed photo.
+ */
+export async function SiteHeader({ overlay }: { overlay?: boolean } = {}) {
   const user = await getSessionUser();
   return (
-    <header className="sticky top-0 z-40 bg-background/90 pt-[env(safe-area-inset-top)] backdrop-blur">
+    <header className={cn("sticky top-0 z-40 pt-[env(safe-area-inset-top)]", overlay ? "bg-background/30 backdrop-blur-xl" : "bg-background/90 backdrop-blur")}>
       <div className="mx-auto grid h-16 max-w-6xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-6 px-4 sm:px-6">
         <Logo />
         <nav className="hidden justify-center gap-7 text-sm md:flex">
@@ -34,7 +38,7 @@ export async function SiteHeader() {
             </a>
           </Button>
           {user ? (
-            <Button asChild size="sm">
+            <Button asChild size="sm" variant={overlay ? "glass" : "default"}>
               <Link href="/dashboard">Open app</Link>
             </Button>
           ) : (
@@ -42,7 +46,7 @@ export async function SiteHeader() {
               <Link href="/sign-in" className="text-sm max-md:hidden">
                 Sign in
               </Link>
-              <Button asChild size="sm" className="max-md:hidden">
+              <Button asChild size="sm" variant={overlay ? "glass" : "default"} className="max-md:hidden">
                 <Link href="/split">Start splitting</Link>
               </Button>
             </>

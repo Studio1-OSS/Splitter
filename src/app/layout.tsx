@@ -1,14 +1,13 @@
 import { env } from "@/env";
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import { site } from "@/config/site";
 import "./globals.css";
 
-// Typefaces from the design system: a display face, a UI face and a mono face for labels.
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const display = Space_Grotesk({ subsets: ["latin"], variable: "--font-display", weight: ["400", "500"] });
-const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", weight: ["400"] });
+// Self-hosted, SIL Open Font License (see src/fonts/*-OFL.txt): Geist for headings and text, Fragment Mono for labels.
+const geist = localFont({ src: "../fonts/Geist-Variable.ttf", variable: "--font-geist", weight: "100 900", display: "swap" });
+const mono = localFont({ src: "../fonts/FragmentMono-Regular.ttf", variable: "--font-mono", weight: "400", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.BETTER_AUTH_URL ?? "http://localhost:3000"),
@@ -30,10 +29,21 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${display.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${geist.variable} ${mono.variable}`} suppressHydrationWarning>
       <body className="min-h-dvh font-sans">
         {children}
-        <Toaster position="top-center" closeButton toastOptions={{ classNames: { toast: "!rounded-sm !shadow-none !border-hairline" } }} />
+        <Toaster
+          position="top-center"
+          theme="system"
+          closeButton
+          toastOptions={{
+            classNames: {
+              toast: "!rounded-lg !border-border !bg-card !text-foreground !shadow-[0_16px_40px_-12px_rgb(0_0_0/0.45)]",
+              description: "!text-muted-foreground",
+              closeButton: "!border-border !bg-card !text-foreground",
+            },
+          }}
+        />
       </body>
     </html>
   );

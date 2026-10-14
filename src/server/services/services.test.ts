@@ -8,6 +8,7 @@ import { createGroup, getGroupDetail, getInvite, joinGroup, listGroupsForUser } 
 import { createExpense, deleteExpense, getExpense, getSharedExpense } from "./expenses";
 import { confirmSettlement, deleteSettlement, recordSettlement } from "./settlements";
 import { AppError } from "./errors";
+import { getAvatar, removeAvatar, setAvatar } from "./avatars";
 
 let db: DB;
 const alice = { id: "u_alice", name: "Alice" };
@@ -41,6 +42,15 @@ describe("groups", () => {
     expect(detail.members.map((m) => m.displayName)).toEqual(["Alice", "Bob", "Chris"]);
     expect(detail.members.find((m) => m.displayName === "Bob")!.userId).toBe(bob.id);
     expect(detail.members.find((m) => m.displayName === "Chris")!.userId).toBeNull();
+  });
+
+  it("stores a valid banner and rejects unknown keys", async () => {
+    const groupId = await createGroup(db, alice, { name: "Goa", currency: "INR", banner: { color: "ocean", art: "beach" } });
+    const group = (await getGroupDetail(db, alice.id, groupId)).group;
+    expect([group.bannerColor, group.bannerArt]).toEqual(["ocean", "beach"]);
+    await expect(
+      createGroup(db, alice, { name: "Bad", currency: "INR", banner: { color: "neon" as "ocean", art: "beach" } }),
+    ).rejects.toThrow();
   });
 
   it("hides groups from non-members", async () => {
@@ -245,5 +255,28 @@ describe("settlements", () => {
     await expect(
       recordSettlement(db, alice.id, { groupId, fromMemberId: members.Alice, toMemberId: members.Alice, amount: 1 }),
     ).rejects.toThrow(/different/);
+  });
+});
+
+describe("profile photos", () => {
+  // Smallest valid JPEG header is enough for the type sniff.
+  const jpeg = Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0, 0x10, 0x4a, 0x46, 0x49, 0x46, 0]);
+
+  it("is visible to the owner and group-mates, not strangers", async () => {
+    await setupGroup();
+    const url = await setAvatar(db, bob.id, { mime: "image/jpeg", bytes: jpeg });
+    expect(url).toMatch(/^\/api\/avatar\/u_bob\?v=\d+$/);
+    expect((await db.query.user.findFirst({ where: (u, { eq }) => eq(u.id, bob.id) }))!.image).toBe(url);
+    expect((await getAvatar(db, bob.id, bob.id)).mime).toBe("image/jpeg");
+    expect((await getAvatar(db, alice.id, bob.id)).data.equals(jpeg)).toBe(true);
+    await expect(getAvatar(db, mallory.id, bob.id)).rejects.toThrow(AppError);
+  });
+
+  it("rejects files that aren't images and clears on remove", async () => {
+    await expect(setAvatar(db, alice.id, { mime: "image/png", bytes: jpeg })).rejects.toThrow(/real image/);
+    await setAvatar(db, alice.id, { mime: "image/jpeg", bytes: jpeg });
+    await removeAvatar(db, alice.id);
+    await expect(getAvatar(db, alice.id, alice.id)).rejects.toThrow(AppError);
+    expect((await db.query.user.findFirst({ where: (u, { eq }) => eq(u.id, alice.id) }))!.image).toBeNull();
   });
 });

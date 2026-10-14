@@ -310,15 +310,19 @@ export function CaptureStep({
             if (scanEnabled && !signInRequired) onFiles(e.dataTransfer.files);
           }}
           className={cn(
-            "flex flex-col gap-6 rounded-lg bg-stone p-6 transition sm:p-8",
+            "flex flex-col gap-6 rounded-lg border border-glass-border bg-stone/70 p-6 shadow-[inset_0_1px_0_var(--glass-shine),0_24px_60px_-24px_rgb(0_0_0/0.35)] backdrop-blur-2xl transition sm:p-8",
             dragging && "outline-2 outline-dashed outline-offset-[-8px] outline-foreground/40",
           )}
         >
           <div className="flex items-center justify-between">
-            <span className="flex size-12 items-center justify-center rounded-full bg-card">
+            <span className="flex size-12 items-center justify-center rounded-full border border-glass-border bg-card/70 shadow-[inset_0_1px_0_var(--glass-shine)] backdrop-blur-md">
               <Camera className="size-5" />
             </span>
-            {scanEnabled && <span className="eyebrow text-muted-foreground">AI · {site.model}</span>}
+            {scanEnabled && (
+              <span className="eyebrow rounded-pill border border-glass-border bg-card/50 px-3 py-1.5 text-muted-foreground backdrop-blur-md">
+                AI · {site.model}
+              </span>
+            )}
           </div>
           <div>
             <h2 className="text-2xl sm:text-3xl">Itemized receipt</h2>

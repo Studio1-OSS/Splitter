@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, Home, LogOut, Plus, Sparkles, UserRound, Zap } from "lucide-react";
+import { ChevronRight, Home, LogOut, Plus, UserRound, Zap } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CreditMeter } from "@/components/ui/credit-meter";
 import { Avatar } from "@/components/ui/primitives";
+import { AiSparkIcon } from "@/components/ui/icons";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 
@@ -19,7 +20,7 @@ export function MobileNav({
   groups,
   credits,
 }: {
-  user: { name: string; email: string };
+  user: { name: string; email: string; image: string | null };
   groups: GroupLink[];
   credits: { left: number; limit: number } | null;
 }) {
@@ -65,7 +66,7 @@ export function MobileNav({
           {groupId && (
             <div className="grid gap-2">
               <Link href={`/groups/${groupId}/batch`} onClick={close} className="flex min-h-16 items-center gap-3 rounded-sm bg-band px-4 text-white">
-                <Sparkles className="size-5 text-[#ffad9b]" />
+                <AiSparkIcon className="size-5 text-[#ffad9b]" />
                 <span className="flex-1">
                   <span className="block">Settle with AI</span>
                   <span className="text-xs text-white/70">Many bills + who paid what</span>
@@ -106,7 +107,7 @@ export function MobileNav({
       <Dialog open={sheet === "account"} onOpenChange={(o) => !o && close()}>
         <DialogContent title="Account">
           <div className="flex items-center gap-3">
-            <Avatar name={user.name} size="lg" />
+            <Avatar name={user.name} src={user.image} size="lg" />
             <div className="min-w-0">
               <p className="truncate">{user.name}</p>
               <p className="truncate text-sm text-muted-foreground">{user.email}</p>

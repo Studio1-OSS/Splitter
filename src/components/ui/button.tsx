@@ -11,10 +11,18 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "rounded-pill bg-primary text-primary-foreground hover:bg-primary/85",
-        outline: "rounded-pill border border-hairline bg-transparent hover:border-foreground/40 hover:bg-muted",
-        secondary: "rounded-pill bg-stone text-foreground hover:bg-stone/70",
+        // Primary: the frosted pill (same colour as before, top highlight, inner depth, soft glow).
+        default:
+          "rounded-pill border border-white/40 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--primary)_96%,white),color-mix(in_srgb,var(--primary)_82%,transparent))] text-primary-foreground backdrop-blur-xl shadow-[inset_0_1px_0_rgb(255_255_255/0.75),inset_0_-10px_18px_-10px_rgb(0_0_0/0.2),0_10px_28px_-10px_color-mix(in_srgb,var(--primary)_40%,transparent)] hover:brightness-105",
+        // Clear glass for light controls.
+        outline:
+          "rounded-pill border border-glass-border bg-glass-fill shadow-[inset_0_1px_0_var(--glass-shine),0_6px_18px_-10px_rgb(0_0_0/0.4)] backdrop-blur-md hover:border-foreground/30 hover:bg-muted",
+        secondary:
+          "rounded-pill border border-glass-border bg-stone text-foreground shadow-[inset_0_1px_0_var(--glass-shine)] backdrop-blur-md hover:bg-muted",
         ghost: "rounded-pill hover:bg-muted",
+        // The primary pill as glass: same colour, a bright top edge, inner depth and a soft glow.
+        glass:
+          "rounded-pill border border-white/60 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--primary)_97%,white),color-mix(in_srgb,var(--primary)_80%,transparent))] text-primary-foreground backdrop-blur-xl shadow-[inset_0_1px_0_rgb(255_255_255/0.9),inset_0_-10px_18px_-10px_rgb(0_0_0/0.22),0_10px_30px_-8px_color-mix(in_srgb,var(--primary)_35%,transparent)] hover:brightness-105 hover:shadow-[inset_0_1px_0_rgb(255_255_255/0.9),inset_0_-10px_18px_-10px_rgb(0_0_0/0.22),0_12px_36px_-6px_color-mix(in_srgb,var(--primary)_45%,transparent)]",
         inverse: "rounded-pill bg-white text-[#17171c] hover:bg-white/85",
         destructive: "rounded-pill bg-negative text-white hover:bg-negative/90",
         link: "rounded-xs px-0 underline underline-offset-4 decoration-1 hover:decoration-2",

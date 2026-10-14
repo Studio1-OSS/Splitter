@@ -23,7 +23,8 @@ export function ReviewStep({
 }: {
   draft: Draft;
   update: (patch: Partial<Draft> | ((d: Draft) => Draft)) => void;
-  image: string | null;
+  /** Photos of the bill, one per page (empty when typed in). */
+  image: string[];
   lockCurrency: boolean;
   onNext: () => void;
   scanEnabled: boolean;
@@ -49,16 +50,23 @@ export function ReviewStep({
   const currencies = COMMON_CURRENCIES.includes(c as (typeof COMMON_CURRENCIES)[number]) ? COMMON_CURRENCIES : [c, ...COMMON_CURRENCIES];
 
   return (
-    <div className={cn("grid gap-8", image && "lg:grid-cols-[minmax(0,360px)_1fr]")}>
-      {image && (
+    <div className={cn("grid gap-8", image.length > 0 && "lg:grid-cols-[minmax(0,360px)_1fr]")}>
+      {image.length > 0 && (
         <div className="lg:sticky lg:top-24 lg:self-start">
           <details className="group rounded-md border border-border lg:border-0" open>
             <summary className="flex h-12 cursor-pointer list-none items-center px-4 text-sm lg:hidden">
-              <span className="group-open:hidden">Show receipt photo</span>
-              <span className="hidden group-open:inline">Hide receipt photo</span>
+              <span className="group-open:hidden">Show receipt {image.length > 1 ? `(${image.length} pages)` : "photo"}</span>
+              <span className="hidden group-open:inline">Hide receipt</span>
             </summary>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={image} alt="Receipt" className="max-h-[60dvh] w-full rounded-b-md object-contain lg:max-h-[75dvh] lg:rounded-lg" />
+            <div className="grid max-h-[60dvh] gap-3 overflow-y-auto lg:max-h-[75dvh]">
+              {image.map((src, i) => (
+                <figure key={src} className="grid gap-1">
+                  {image.length > 1 && <figcaption className="eyebrow px-1 text-muted-foreground">Page {i + 1} of {image.length}</figcaption>}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt={`Receipt page ${i + 1}`} className="w-full rounded-md object-contain lg:rounded-lg" />
+                </figure>
+              ))}
+            </div>
           </details>
           <div className="mt-2 flex flex-wrap gap-2">
             <Button variant="outline" size="sm" onClick={onReplace}>
@@ -75,7 +83,7 @@ export function ReviewStep({
         <div>
           <h1 className="text-4xl leading-none sm:text-5xl">Check the details</h1>
           <p className="mt-3 text-muted-foreground">Fix anything that looks off. Totals update as you type.</p>
-          {!image && scanEnabled && (
+          {image.length === 0 && scanEnabled && (
             <Button variant="link" size="sm" className="mt-2" onClick={onReplace}>
               <RefreshCw /> Scan a bill instead
             </Button>

@@ -22,6 +22,7 @@ type Member = { id: string; displayName: string };
 
 export function InviteLink({ groupId, inviteToken }: { groupId: string; inviteToken: string }) {
   const [copied, setCopied] = React.useState(false);
+  const [confirming, setConfirming] = React.useState(false);
   const [pending, startTransition] = React.useTransition();
   const router = useRouter();
 
@@ -46,23 +47,39 @@ export function InviteLink({ groupId, inviteToken }: { groupId: string; inviteTo
       <Button variant="outline" size="sm" onClick={copy}>
         {copied ? <Check /> : <Link2 />} Invite link
       </Button>
-      <Button
-        variant="ghost"
-        size="icon-sm"
-        aria-label="Reset invite link"
-        title="Reset invite link (old links stop working)"
-        loading={pending}
-        onClick={() =>
-          startTransition(async () => {
-            const res = await resetInviteAction(groupId);
-            if (!res.ok) return void toast.error(res.error);
-            toast.success("New invite link created. Old links no longer work.");
-            router.refresh();
-          })
-        }
-      >
-        {!pending && <RefreshCw />}
-      </Button>
+      {confirming ? (
+        <>
+          <Button
+            variant="destructive"
+            size="sm"
+            loading={pending}
+            onClick={() =>
+              startTransition(async () => {
+                const res = await resetInviteAction(groupId);
+                setConfirming(false);
+                if (!res.ok) return void toast.error(res.error);
+                toast.success("New invite link created. Old links no longer work.");
+                router.refresh();
+              })
+            }
+          >
+            Reset link
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => setConfirming(false)} disabled={pending}>
+            Keep
+          </Button>
+        </>
+      ) : (
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          aria-label="Reset invite link"
+          title="Reset invite link (old links stop working)"
+          onClick={() => setConfirming(true)}
+        >
+          <RefreshCw />
+        </Button>
+      )}
     </div>
   );
 }

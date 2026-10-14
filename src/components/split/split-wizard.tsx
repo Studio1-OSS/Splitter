@@ -64,7 +64,7 @@ export function SplitWizard({
   );
   const [draft, setDraft] = React.useState<Draft>(initial);
   const [step, setStep] = React.useState<StepId>("start");
-  const [image, setImage] = React.useState<string | null>(null);
+  const [image, setImage] = React.useState<string[]>([]);
   const [restored, setRestored] = React.useState(false);
 
   // Guest drafts survive a refresh; group drafts start fresh.
@@ -98,7 +98,7 @@ export function SplitWizard({
 
   const reset = () => {
     setDraft(initial());
-    setImage(null);
+    setImage([]);
     setStep("start");
   };
 
@@ -159,6 +159,7 @@ export function SplitWizard({
               signInRequired={!signedIn}
               image={image}
               setImage={setImage}
+              batchHref={mode.kind === "group" ? `/groups/${mode.groupId}/batch` : null}
               onItemized={() => {
                 update({ kind: "itemized" });
                 go("review");
@@ -179,10 +180,10 @@ export function SplitWizard({
               lockCurrency={mode.kind === "group"}
               onNext={() => go("assign")}
               scanEnabled={scanEnabled}
-              onRemoveImage={() => setImage(null)}
+              onRemoveImage={() => setImage([])}
               onReplace={() => {
                 // Wrong bill: start over with a new one, keeping who's splitting and the currency.
-                setImage(null);
+                setImage([]);
                 update((d) => ({ ...emptyDraft(d.currency, { people: d.people, paidBy: d.paidBy, category: d.category }) }));
                 go("start");
               }}

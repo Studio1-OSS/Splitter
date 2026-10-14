@@ -6,15 +6,38 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/primitives";
 import { getSessionUser } from "@/server/auth";
 import { db } from "@/server/db";
-import { loadOr404 } from "@/server/load";
 import { getInvite } from "@/server/services/groups";
+import { AppError } from "@/server/services/errors";
 
 export const metadata: Metadata = { title: "Join group" };
 
 export default async function JoinPage({ params }: { params: Promise<{ inviteToken: string }> }) {
   const { inviteToken } = await params;
-  const [invite, user] = await Promise.all([loadOr404(() => getInvite(db, inviteToken)), getSessionUser()]);
+  const [invite, user] = await Promise.all([
+    getInvite(db, inviteToken).catch((e) => {
+      if (e instanceof AppError && e.status === 404) return null;
+      throw e;
+    }),
+    getSessionUser(),
+  ]);
   const next = encodeURIComponent(`/join/${inviteToken}`);
+
+  if (!invite) {
+    return (
+      <div className="mx-auto grid max-w-md gap-6 py-6">
+        {!user && <Logo className="justify-self-center" />}
+        <Card tone="stone" className="rounded-lg p-6 text-center sm:p-10">
+          <h1 className="text-3xl">This invite link no longer works</h1>
+          <p className="mt-3 text-muted-foreground">
+            It may have been reset by someone in the group. Ask them to open the group, tap “Invite link” and send you the new one.
+          </p>
+          <Button size="lg" asChild className="mt-8">
+            <Link href={user ? "/dashboard" : "/"}>{user ? "Go to your groups" : "Go to Splitter"}</Link>
+          </Button>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto grid max-w-md gap-6 py-6">

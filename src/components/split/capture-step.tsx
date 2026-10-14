@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Camera, Hash, ImageUp, ListPlus, LogIn, Sparkles } from "lucide-react";
+import { ArrowRight, Camera, Files, Hash, ImageUp, Layers, ListPlus, LogIn, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { site } from "@/config/site";
 import * as React from "react";
@@ -27,6 +27,7 @@ export function CaptureStep({
   signInRequired = false,
   image,
   setImage,
+  batchHref = null,
   onItemized,
   onAmount,
   onContinue,
@@ -40,8 +41,10 @@ export function CaptureStep({
   imageOnly?: boolean;
   /** Signed-out visitors see a sign-in prompt instead of the upload buttons. */
   signInRequired?: boolean;
-  image: string | null;
-  setImage: (url: string | null) => void;
+  image: string[];
+  setImage: (urls: string[]) => void;
+  /** In a group: where several separate bills should go instead (Settle with AI). */
+  batchHref?: string | null;
   onItemized: () => void;
   onAmount: () => void;
   onContinue: () => void;
@@ -82,7 +85,7 @@ export function CaptureStep({
       }
       if (files.length > 4 || total > 4) toast.info("Only the first 4 pages are read.");
       const blobs = await Promise.all(sources.slice(0, 4).map((b) => compressImage(b)));
-      setImage(URL.createObjectURL(blobs[0]));
+      setImage(blobs.map((b) => URL.createObjectURL(b)));
       const form = new FormData();
       blobs.forEach((b, i) => form.append("image", b, `page-${i + 1}.jpg`));
       const res = await fetch("/api/extract", { method: "POST", body: form, signal: abort.current.signal });
@@ -99,7 +102,7 @@ export function CaptureStep({
       toast.success(`Found ${body.receipt.items.length} lines`, { description: "Check them over before splitting." });
       onItemized();
     } catch (e) {
-      setImage(null);
+      setImage([]);
       if (e instanceof DOMException && e.name === "AbortError") return;
       toast.error(
         e instanceof Error ? e.message : "Could not read the bill",
@@ -110,17 +113,65 @@ export function CaptureStep({
     }
   }
 
+  // Several files picked at once could be pages of one bill or separate bills: ask instead of guessing.
+  const [choice, setChoice] = React.useState<File[] | null>(null);
   const onFiles = (files: FileList | null) => {
-    if (files?.length) void scan([...files]);
+    if (!files?.length) return;
+    const list = [...files];
+    if (fileInput.current) fileInput.current.value = "";
+    if (list.length > 1) setChoice(list);
+    else void scan(list);
   };
+
+  if (choice) {
+    const n = choice.length;
+    return (
+      <div className="mx-auto grid max-w-md gap-6 py-4">
+        <div>
+          <h1 className="text-3xl leading-tight sm:text-4xl">You picked {n} files</h1>
+          <p className="mt-3 text-muted-foreground">Are they pages of one long bill, or {n} different bills?</p>
+        </div>
+        <div className="grid gap-3">
+          <Button
+            size="lg"
+            onClick={() => {
+              setChoice(null);
+              void scan(choice);
+            }}
+          >
+            <Files /> Pages of one bill
+          </Button>
+          {batchHref ? (
+            <Button size="lg" variant="outline" asChild>
+              <Link href={batchHref}>
+                <Layers /> {n} separate bills: use Settle with AI
+              </Link>
+            </Button>
+          ) : (
+            <Button size="lg" variant="outline" onClick={() => setChoice(null)}>
+              <Layers /> Separate bills: pick one at a time
+            </Button>
+          )}
+          <Button variant="link" onClick={() => setChoice(null)}>
+            Cancel
+          </Button>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          {batchHref
+            ? "Settle with AI reads many bills at once and works out the whole split."
+            : "Quick split handles one bill. For a trip or party with several bills, create a group and use Settle with AI."}
+        </p>
+      </div>
+    );
+  }
 
   if (scanning) {
     return (
       <div className="mx-auto flex max-w-sm flex-col items-center gap-6 py-4 text-center">
         <div className="relative w-full overflow-hidden rounded-lg bg-stone">
-          {image ? (
+          {image[0] ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={image} alt="Your receipt" className="max-h-[55dvh] w-full object-cover object-top opacity-85" />
+            <img src={image[0]} alt="Your receipt" className="max-h-[55dvh] w-full object-cover object-top opacity-85" />
           ) : (
             <div className="h-80" />
           )}

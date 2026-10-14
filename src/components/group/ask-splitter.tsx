@@ -8,7 +8,7 @@ import { RichText } from "@/components/ui/rich-text";
 
 type Turn = { q: string; a?: string; error?: string };
 
-/** Members ask questions about their group's money; Qwen answers from that group's ledger only. */
+/** Members ask questions about their group's money; the AI answers from that group's ledger only. */
 export function AskSplitter({ groupId, suggestions, enabled }: { groupId: string; suggestions: string[]; enabled: boolean }) {
   const [question, setQuestion] = React.useState("");
   const [turns, setTurns] = React.useState<Turn[]>([]);

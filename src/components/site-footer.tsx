@@ -2,7 +2,7 @@ import Link from "next/link";
 import { site } from "@/config/site";
 import { GitHubIcon } from "./github-icon";
 
-/** Dark footer (DESIGN.md footer band). Fixed colours so it stays dark in both themes. */
+/** Dark footer (the design system footer band). Fixed colours so it stays dark in both themes. */
 export function SiteFooter() {
   return (
     <footer className="bg-[#17171c] text-white">

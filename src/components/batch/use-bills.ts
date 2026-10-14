@@ -49,7 +49,7 @@ async function uploadCopy(groupId: string, page: BillPage, pageNo: number) {
   return body.id;
 }
 
-/** Bill tray state: preparing images (and PDFs), duplicate checks, reading with Qwen and storing copies. */
+/** Bill tray state: preparing images (and PDFs), duplicate checks, reading with the AI model and storing copies. */
 export function useBills(groupId: string, onCredits?: (left: number) => void) {
   const [bills, setBills] = React.useState<Bill[]>([]);
   const nextNo = React.useRef(1);

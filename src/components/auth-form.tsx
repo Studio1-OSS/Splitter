@@ -78,9 +78,9 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
         </Link>
       </p>
       <p className="mt-3 text-center text-sm text-muted-foreground">
-        Just splitting once?{" "}
+        Just splitting once? After signing in, try a{" "}
         <Link href="/split" className="text-foreground underline underline-offset-4">
-          Continue without an account
+          quick split
         </Link>
       </p>
     </div>

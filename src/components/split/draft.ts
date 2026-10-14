@@ -3,6 +3,7 @@ import { isCategory, type CategoryKey } from "@/config/categories";
 import { currencyExponent, isValidCurrency, toMinor, type Minor, type SplitInput } from "@/lib/money";
 import { isRealDate, todayISO } from "@/lib/utils";
 import type { ExtractedReceipt, ReceiptIssue } from "@/server/ai/receipt";
+import type { ToolCall } from "@/server/ai/tools";
 
 export type DraftItem = { id: string; name: string; quantity: number; amount: Minor };
 export type Person = { id: string; name: string };
@@ -25,6 +26,8 @@ export type Draft = {
   suggestedTips: Minor[];
   printedTotal: Minor | null;
   issues: ReceiptIssue[];
+  /** Tool checks run when the receipt was read (shown as "How this was checked"). */
+  checks?: ToolCall[];
   /** itemId -> personIds sharing it equally */
   assignments: Record<string, string[]>;
   // amount

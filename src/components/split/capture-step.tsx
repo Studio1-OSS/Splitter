@@ -1,6 +1,8 @@
 "use client";
 
-import { ArrowRight, Camera, Hash, ImageUp, ListPlus, Sparkles } from "lucide-react";
+import { ArrowRight, Camera, Hash, ImageUp, ListPlus, LogIn, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { site } from "@/config/site";
 import * as React from "react";
 import { toast } from "sonner";
 import { CameraScanner } from "@/components/camera/camera-scanner";
@@ -11,6 +13,7 @@ import { isPdf, pdfToImages } from "@/lib/pdf";
 import { formatMoney } from "@/lib/money";
 import { cn } from "@/lib/utils";
 import type { ExtractedReceipt, ReceiptIssue } from "@/server/ai/receipt";
+import type { ToolCall } from "@/server/ai/tools";
 import { applyReceipt, draftTotal, usableItems, type Draft } from "./draft";
 
 const SCAN_MESSAGES = ["Reading the receipt…", "Finding every line…", "Checking tax and fees…", "Adding it all up…"];
@@ -20,6 +23,8 @@ export function CaptureStep({
   update,
   scanEnabled,
   lockCurrency,
+  imageOnly = false,
+  signInRequired = false,
   image,
   setImage,
   onItemized,
@@ -31,6 +36,10 @@ export function CaptureStep({
   update: (fn: (d: Draft) => Draft) => void;
   scanEnabled: boolean;
   lockCurrency: boolean;
+  /** Quick split: only the scanned-receipt path (no single amount, no typing). */
+  imageOnly?: boolean;
+  /** Signed-out visitors see a sign-in prompt instead of the upload buttons. */
+  signInRequired?: boolean;
   image: string | null;
   setImage: (url: string | null) => void;
   onItemized: () => void;
@@ -77,18 +86,25 @@ export function CaptureStep({
       const form = new FormData();
       blobs.forEach((b, i) => form.append("image", b, `page-${i + 1}.jpg`));
       const res = await fetch("/api/extract", { method: "POST", body: form, signal: abort.current.signal });
-      const body = (await res.json().catch(() => ({}))) as { receipt?: ExtractedReceipt; issues?: ReceiptIssue[]; error?: string; creditsLeft?: number };
+      const body = (await res.json().catch(() => ({}))) as {
+        receipt?: ExtractedReceipt;
+        issues?: ReceiptIssue[];
+        checks?: ToolCall[];
+        error?: string;
+        creditsLeft?: number;
+      };
       if (typeof body.creditsLeft === "number") setCredits((c) => (c ? { ...c, left: body.creditsLeft! } : c));
       if (!res.ok || !body.receipt) throw new Error(body.error ?? `Could not read the bill (error ${res.status})`);
-      update((d) => applyReceipt(d, body.receipt!, body.issues ?? [], { lockCurrency }));
+      update((d) => ({ ...applyReceipt(d, body.receipt!, body.issues ?? [], { lockCurrency }), checks: body.checks ?? [] }));
       toast.success(`Found ${body.receipt.items.length} lines`, { description: "Check them over before splitting." });
       onItemized();
     } catch (e) {
       setImage(null);
       if (e instanceof DOMException && e.name === "AbortError") return;
-      toast.error(e instanceof Error ? e.message : "Could not read the bill", {
-        action: { label: "Type it in", onClick: onItemized },
-      });
+      toast.error(
+        e instanceof Error ? e.message : "Could not read the bill",
+        imageOnly ? undefined : { action: { label: "Type it in", onClick: onItemized } },
+      );
     } finally {
       setScanning(false);
     }
@@ -127,7 +143,9 @@ export function CaptureStep({
     <div className="grid gap-8">
       <div className="max-w-2xl">
         <h1 className="text-4xl leading-none sm:text-6xl">What are we splitting?</h1>
-        <p className="mt-4 text-lg text-muted-foreground">A dinner bill, a hotel, festival tickets, a taxi, groceries for the party — anything.</p>
+        <p className="mt-4 text-lg text-muted-foreground">
+          A dinner bill, a hotel, festival tickets, a taxi, groceries for the party — anything.
+        </p>
       </div>
 
       {hasDraft && (
@@ -147,18 +165,18 @@ export function CaptureStep({
         </button>
       )}
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className={cn("grid gap-4", !imageOnly && "md:grid-cols-2")}>
         {/* Receipt */}
         <div
           onDragOver={(e) => {
             e.preventDefault();
-            if (scanEnabled) setDragging(true);
+            if (scanEnabled && !signInRequired) setDragging(true);
           }}
           onDragLeave={() => setDragging(false)}
           onDrop={(e) => {
             e.preventDefault();
             setDragging(false);
-            if (scanEnabled) onFiles(e.dataTransfer.files);
+            if (scanEnabled && !signInRequired) onFiles(e.dataTransfer.files);
           }}
           className={cn(
             "flex flex-col gap-6 rounded-lg bg-stone p-6 transition sm:p-8",
@@ -169,18 +187,32 @@ export function CaptureStep({
             <span className="flex size-12 items-center justify-center rounded-full bg-card">
               <Camera className="size-5" />
             </span>
-            {scanEnabled && <span className="eyebrow text-muted-foreground">AI · Qwen3.8</span>}
+            {scanEnabled && <span className="eyebrow text-muted-foreground">AI · {site.model}</span>}
           </div>
           <div>
             <h2 className="text-2xl sm:text-3xl">Itemized receipt</h2>
             <p className="mt-2 text-muted-foreground">
-              {scanEnabled
-                ? "Snap it (or pick a PDF, or several photos of a long bill) and AI reads every line, tax and fee. Then tap who had what."
-                : "Type each line, then tap who had what. (Scanning isn't configured on this server.)"}
+              {signInRequired
+                ? "Sign in (it's free) and AI reads every line, tax and fee from a photo or PDF, checks the maths, then you tap who had what."
+                : scanEnabled
+                  ? "Snap it (or pick a PDF, or several photos of a long bill) and AI reads every line, tax and fee. Then tap who had what."
+                  : "Type each line, then tap who had what. (Scanning isn't configured on this server.)"}
             </p>
           </div>
           <div className="mt-auto flex flex-col gap-3 sm:flex-row sm:items-center">
-            {scanEnabled && (
+            {signInRequired && (
+              <>
+                <Button size="lg" asChild>
+                  <Link href="/sign-in?next=/split">
+                    <LogIn /> Sign in to scan
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" asChild>
+                  <Link href="/sign-up?next=/split">Create a free account</Link>
+                </Button>
+              </>
+            )}
+            {scanEnabled && !signInRequired && (
               <>
                 <Button size="lg" onClick={() => setScanner(true)} className="sm:hidden">
                   <Camera /> Scan with camera
@@ -193,28 +225,44 @@ export function CaptureStep({
                 </Button>
               </>
             )}
-            <Button variant={scanEnabled ? "link" : "default"} size={scanEnabled ? "default" : "lg"} onClick={onItemized} className={cn(scanEnabled && "self-center sm:self-auto")}>
-              <ListPlus className={cn(scanEnabled && "hidden")} /> Type items instead
-            </Button>
+            {!imageOnly && (
+              <Button
+                variant={scanEnabled ? "link" : "default"}
+                size={scanEnabled ? "default" : "lg"}
+                onClick={onItemized}
+                className={cn(scanEnabled && "self-center sm:self-auto")}
+              >
+                <ListPlus className={cn(scanEnabled && "hidden")} /> Type items instead
+              </Button>
+            )}
           </div>
-          <input ref={fileInput} type="file" accept="image/*,application/pdf,.pdf" multiple hidden onChange={(e) => onFiles(e.target.files)} />
+          <input
+            ref={fileInput}
+            type="file"
+            accept="image/*,application/pdf,.pdf"
+            multiple
+            hidden
+            onChange={(e) => onFiles(e.target.files)}
+          />
         </div>
 
         {/* Single amount */}
-        <div className="flex flex-col gap-6 rounded-lg bg-band p-6 text-band-foreground sm:p-8">
-          <span className="flex size-12 items-center justify-center rounded-full bg-white/10">
-            <Hash className="size-5" />
-          </span>
-          <div>
-            <h2 className="text-2xl sm:text-3xl">Just an amount</h2>
-            <p className="mt-2 opacity-75">
-              Hotel, Airbnb, fuel, tickets, a gift. Enter the total and split it equally, by shares, or exact amounts.
-            </p>
+        {!imageOnly && (
+          <div className="flex flex-col gap-6 rounded-lg bg-band p-6 text-band-foreground sm:p-8">
+            <span className="flex size-12 items-center justify-center rounded-full bg-white/10">
+              <Hash className="size-5" />
+            </span>
+            <div>
+              <h2 className="text-2xl sm:text-3xl">Just an amount</h2>
+              <p className="mt-2 opacity-75">
+                Hotel, Airbnb, fuel, tickets, a gift. Enter the total and split it equally, by shares, or exact amounts.
+              </p>
+            </div>
+            <Button size="lg" variant="inverse" onClick={onAmount} className="mt-auto self-start max-sm:w-full">
+              Enter an amount <ArrowRight />
+            </Button>
           </div>
-          <Button size="lg" variant="inverse" onClick={onAmount} className="mt-auto self-start max-sm:w-full">
-            Enter an amount <ArrowRight />
-          </Button>
-        </div>
+        )}
       </div>
       <CameraScanner
         open={scanner}
@@ -227,7 +275,11 @@ export function CaptureStep({
       />
       <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
         <p>Quick-split photos are read once and never stored.</p>
-        {scanEnabled && credits && <p className="tabular">{credits.left} of {credits.limit} AI scans left today</p>}
+        {scanEnabled && !signInRequired && credits && (
+          <p className="tabular">
+            {credits.left} of {credits.limit} AI scans left today
+          </p>
+        )}
       </div>
     </div>
   );

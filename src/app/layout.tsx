@@ -4,7 +4,7 @@ import { Toaster } from "sonner";
 import { site } from "@/config/site";
 import "./globals.css";
 
-// Typefaces from DESIGN.md: a display face, a UI face and a mono face for labels.
+// Typefaces from the design system: a display face, a UI face and a mono face for labels.
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const display = Space_Grotesk({ subsets: ["latin"], variable: "--font-display", weight: ["400", "500"] });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", weight: ["400"] });

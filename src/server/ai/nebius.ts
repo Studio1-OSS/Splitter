@@ -1,10 +1,16 @@
-// Nebius Token Factory adapter. Every Nebius/Qwen-specific option lives in this file,
-// so swapping to another OpenAI-compatible provider means editing only here.
+// Nebius Token Factory adapter. Every model-specific option lives in this file, so swapping the model
+// (NEBIUS_MODEL) or moving to another OpenAI-compatible provider means editing only here.
 import OpenAI from "openai";
 import type { z } from "zod";
 import { RECEIPT_SYSTEM_PROMPT, receiptJsonSchema, receiptSchema, type ExtractedReceipt } from "./receipt";
 
-export type NebiusConfig = { apiKey: string; baseURL: string; model: string };
+export type NebiusConfig = {
+  apiKey: string;
+  baseURL: string;
+  model: string;
+  /** Optional token meter (used by evals to report cost). */
+  onUsage?: (usage: OpenAI.Completions.CompletionUsage) => void;
+};
 
 export class ExtractionError extends Error {
   constructor(
@@ -38,12 +44,21 @@ export function cleanModelJson(raw: string): string {
 
 type Content = OpenAI.Chat.Completions.ChatCompletionContentPart[];
 
+/**
+ * Request fields that switch the model's reasoning on or off. Qwen3-style chat templates on vLLM take
+ * `chat_template_kwargs.enable_thinking`; set AI_REASONING_PARAM=none for models that don't accept it.
+ */
+export function reasoningOptions(thinking: boolean | undefined): Record<string, unknown> {
+  if (process.env.AI_REASONING_PARAM === "none") return {};
+  return { chat_template_kwargs: { enable_thinking: Boolean(thinking) } };
+}
+
 const imageParts = (images: string[]): Content =>
   images.map((url) => ({ type: "image_url", image_url: { url } }));
 
 /**
  * One structured call: tries strict JSON-schema output, falls back to JSON mode (schema in the prompt)
- * and validates with zod either way. `thinking` toggles Qwen3.8's reasoning via the vLLM chat template.
+ * and validates with zod either way. `thinking` toggles the model's reasoning (see reasoningOptions).
  */
 export async function chatJSON<T>(
   config: NebiusConfig,
@@ -78,8 +93,7 @@ export async function chatJSON<T>(
           { role: "system", content: opts.system },
           { role: "user", content: opts.content },
         ],
-        // @ts-expect-error provider-specific extension, passed through to the vLLM chat template
-        chat_template_kwargs: { enable_thinking: Boolean(opts.thinking) },
+        ...reasoningOptions(opts.thinking),
       });
     } catch (error) {
       lastError = error;
@@ -93,6 +107,7 @@ export async function chatJSON<T>(
       );
     }
 
+    if (completion.usage) config.onUsage?.(completion.usage);
     const choice = completion.choices[0];
     const message = choice?.message as { content?: string | null; refusal?: string | null } | undefined;
     if (message?.refusal) throw new ExtractionError(message.refusal, "refused");
@@ -123,9 +138,9 @@ export async function chatText(
         { role: "system", content: opts.system },
         { role: "user", content: opts.user },
       ],
-      // @ts-expect-error provider-specific extension
-      chat_template_kwargs: { enable_thinking: Boolean(opts.thinking) },
+      ...reasoningOptions(opts.thinking),
     });
+    if (completion.usage) config.onUsage?.(completion.usage);
     const choice = completion.choices[0];
     // A cut-off answer is worse than none: the caller retries without thinking.
     if (choice?.finish_reason === "length") return "";
@@ -163,3 +178,80 @@ export async function extractReceiptWithNebius(config: NebiusConfig, images: str
 }
 
 export { imageParts };
+
+/** Thrown when the route rejects the `tools` parameter, so the caller can run the tools itself. */
+export class ToolsUnsupportedError extends Error {}
+
+/**
+ * Agent loop with native function calling: the model calls tools (run locally by `runTool`) until it
+ * returns its final answer as JSON, which is validated with `schema`. After `maxCalls` tool calls the
+ * model is asked to answer without more tools.
+ */
+export async function chatWithTools<T>(
+  config: NebiusConfig,
+  opts: {
+    system: string;
+    user: string;
+    schema: z.ZodType<T>;
+    tools: OpenAI.Chat.Completions.ChatCompletionTool[];
+    runTool: (name: string, args: string) => unknown;
+    thinking?: boolean;
+    maxTokens?: number;
+    maxCalls?: number;
+    truncatedMessage?: string;
+  },
+): Promise<T> {
+  const client = getClient(config);
+  const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+    { role: "system", content: opts.system },
+    { role: "user", content: opts.user },
+  ];
+  const maxCalls = opts.maxCalls ?? 8;
+  let calls = 0;
+
+  for (let turn = 0; turn < maxCalls + 2; turn++) {
+    const toolsAllowed = calls < maxCalls;
+    let completion;
+    try {
+      completion = await client.chat.completions.create({
+        model: config.model,
+        temperature: opts.thinking ? 0.6 : 0,
+        max_tokens: opts.maxTokens ?? 8000,
+        messages,
+        tools: opts.tools,
+        tool_choice: toolsAllowed ? "auto" : "none",
+        ...reasoningOptions(opts.thinking),
+      });
+    } catch (error) {
+      if (turn === 0 && error instanceof OpenAI.APIError && error.status === 400) throw new ToolsUnsupportedError(error.message);
+      throw new ExtractionError(
+        error instanceof OpenAI.APIError ? `The AI service returned ${error.status ?? "an error"}: ${error.message}` : "Could not reach the AI service",
+        "provider",
+      );
+    }
+    if (completion.usage) config.onUsage?.(completion.usage);
+    const choice = completion.choices[0];
+    if (choice?.finish_reason === "length") {
+      throw new ExtractionError(opts.truncatedMessage ?? "That was too much to work out in one go.", "truncated");
+    }
+    const message = choice?.message;
+    const toolCalls = (message?.tool_calls ?? []).filter((c) => c.type === "function");
+    if (toolCalls.length && toolsAllowed) {
+      messages.push({ role: "assistant", content: message?.content ?? null, tool_calls: toolCalls });
+      for (const call of toolCalls) {
+        calls++;
+        const result = opts.runTool(call.function.name, call.function.arguments);
+        messages.push({ role: "tool", tool_call_id: call.id, content: JSON.stringify(result) });
+      }
+      if (calls >= maxCalls) messages.push({ role: "user", content: "That's enough checking. Return the final JSON now." });
+      continue;
+    }
+    try {
+      return opts.schema.parse(JSON.parse(cleanModelJson(message?.content ?? "")));
+    } catch (error) {
+      console.error("Tool-using call produced invalid output", error);
+      throw new ExtractionError("The AI response couldn't be understood. Please try again.", "invalid_output");
+    }
+  }
+  throw new ExtractionError("The AI kept calling tools without answering.", "invalid_output");
+}

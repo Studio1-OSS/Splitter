@@ -35,8 +35,3 @@ export async function creditsLeft(key: string, limit: number): Promise<number> {
   const row = await db.query.scanUsage.findFirst({ where: and(eq(schema.scanUsage.key, key), eq(schema.scanUsage.day, today())) });
   return Math.max(0, limit - (row?.count ?? 0));
 }
-
-export async function hashKey(value: string): Promise<string> {
-  const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
-  return Buffer.from(bytes).toString("hex").slice(0, 32);
-}

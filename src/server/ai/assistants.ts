@@ -1,4 +1,4 @@
-// Small Qwen helpers beyond receipt reading: payment screenshots and "Ask Splitter".
+// Small AI helpers beyond receipt reading: payment screenshots and "Ask Splitter".
 import { z } from "zod";
 import { chatJSON, chatText, imageParts, type NebiusConfig } from "./nebius";
 

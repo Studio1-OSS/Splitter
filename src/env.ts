@@ -13,6 +13,8 @@ const schema = z.object({
     .url()
     .default("https://api.tokenfactory.nebius.com/v1/"),
   NEBIUS_MODEL: z.string().default("Qwen/Qwen3.8-27B"),
+  /** "chat_template_kwargs" (Qwen-style vLLM thinking toggle) or "none" for models that reject it. Read in ai/nebius.ts. */
+  AI_REASONING_PARAM: z.enum(["chat_template_kwargs", "none"]).default("chat_template_kwargs"),
   DATABASE_URL: z.string().default("file:local.db"),
   DATABASE_AUTH_TOKEN: optional,
   BETTER_AUTH_SECRET: optional,
@@ -22,8 +24,6 @@ const schema = z.object({
   NOVU_WORKFLOW_ID: z.string().default("splitter-activity"),
   /** Daily AI credits per signed-in account (a bill read or a question = 1, a "Settle with AI" plan = 3). */
   AI_CREDITS_PER_USER_PER_DAY: z.coerce.number().int().min(0).default(30),
-  /** Daily AI credits per guest (by IP), for quick-split scans. 0 turns guest scanning off. */
-  AI_CREDITS_PER_GUEST_PER_DAY: z.coerce.number().int().min(0).default(3),
 });
 
 export const env = schema.parse(process.env);

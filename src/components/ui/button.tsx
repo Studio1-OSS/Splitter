@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-// DESIGN.md: near-black pill for the one primary action, outline pill for light controls,
+// the design system: near-black pill for the one primary action, outline pill for light controls,
 // underlined text link for the companion action. No shadows.
 const buttonVariants = cva(
   "inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors active:opacity-80 disabled:pointer-events-none disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",

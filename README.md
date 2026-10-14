@@ -76,10 +76,10 @@ Every batch keeps its bills, the group's original notes and a one-line explanati
 
 ### Everyday splitting
 
-- **One bill:** scan it (PDFs and multi-page bills work), tap who had each line, and tax and tip are shared by what each person ordered.
-- **Just an amount:** split equally, by shares (a couple counts as 2) or by exact amounts.
+- **One bill:** scan it (PDFs and multi-page bills work), tap who had each line, and tax and tip are shared by what each person ordered. "How this was checked" shows the calculator tool calls behind the result.
+- **Just an amount (in a group):** split equally, by shares (a couple counts as 2) or by exact amounts.
 - **Groups and balances:** add friends by name; they claim their spot with an invite link. Splitter suggests the fewest payments to settle up and can fill a payment from a screenshot.
-- **Quick split:** no account needed for a one-off.
+- **Quick split:** scan one receipt and share the result, without making a group (free account required, since AI credits are per account).
 
 <div align="center">
 
@@ -97,27 +97,32 @@ _Built for phones: bottom tab bar, bottom sheets, a camera scanner and safe-area
 
 ![Splitter architecture: the browser prepares images and PDFs; the Next.js server validates, enforces membership and AI credits, and calls Qwen3.8-27B on Nebius Token Factory for bill reading, settlement planning and Ask Splitter; data lives in Turso/SQLite; Novu sends in-app notifications](docs/architecture.svg)
 
-**Two AI stages, one money engine.**
+**Two AI stages, calculator tools, one money engine.**
 
 1. **Read each bill (vision).** The browser resizes photos and renders PDF pages, then each bill (up to 4 pages) is sent to `Qwen/Qwen3.8-27B` with a JSON schema and thinking off. It returns lines, tax, tip, fees, totals, a category, the document type and any "paid by" hint. Anything that isn't a bill is rejected.
-2. **Plan the settlement (reasoning).** The extracted bills, your notes, the members and recent expenses go to the same model with thinking on. It returns a draft plan: expenses with payer and split rule, payments already made, duplicates and questions.
+2. **Plan the settlement (reasoning + tool calls).** The extracted bills, your notes, the members and recent expenses go to the same model with thinking on and four calculator tools ([`src/server/ai/tools.ts`](src/server/ai/tools.ts)):
+   - `check_receipt`: do the lines, tax, tip, fees and discount add up to the printed total?
+   - `allocate_tax_tip`: who had which line, with charges spread proportionally;
+   - `calculate_split`: equal, shares or exact amounts;
+   - `validate_total`: do the shares add up to the total?
+
+   The model decides who shares what and calls the tools for every number, then returns a draft plan: expenses with payer and split rule, payments already made, duplicates and questions. Every call is shown on the review screen under "How this was checked". If a model route doesn't support function calling, the app runs the same tools itself and says so.
 
 The model never decides anything on its own. `normalizePlan()` checks every member, amount and exact split. Then the server recomputes every share with integer minor units and largest-remainder rounding, so balances always add up to the cent. Every group read and write goes through a membership check.
 
-All provider-specific code lives in [`src/server/ai/nebius.ts`](src/server/ai/nebius.ts), behind an OpenAI-compatible client. To use another model or provider, change `NEBIUS_MODEL` / `NEBIUS_BASE_URL` and that one file.
+All provider-specific code lives in [`src/server/ai/nebius.ts`](src/server/ai/nebius.ts), behind an OpenAI-compatible client. To switch models, set `NEBIUS_MODEL` (and `NEXT_PUBLIC_AI_MODEL_LABEL` for the name shown in the UI), then run `pnpm smoke:nebius` to see whether the model supports image input, strict JSON, tool calls and the reasoning toggle. Set `AI_REASONING_PARAM=none` if it rejects the Qwen-style thinking switch.
 
 ```
 src/
   app/                   Routes: landing, /split, /dashboard, /groups/[id] (+ /new, /batch, /batches/[id]), /s (share pages), /api
   components/batch/      Settle with AI: bill tray, review board, editor, normalizePlan()
   components/camera/     Multi-shot camera scanner
-  components/split/      Single expense flow: receipt or amount → split → summary
+  components/split/      Single expense flow: receipt (or amount, in groups) → split → summary
   lib/money/             Money engine (pure, unit-tested)
-  server/ai/             Nebius adapter, receipt schema, planner, Ask Splitter, credits
+  server/ai/             Nebius adapter, receipt schema, calculator tools, planner, Ask Splitter, credits
   server/services/       Groups, expenses, batches, bill images, settlements, access checks
   server/db/schema.ts    Drizzle schema
 evals/                   Live accuracy evals with generated sample bills
-DESIGN.md                Design system the UI follows
 ```
 
 ## Get started
@@ -138,14 +143,15 @@ Open **http://localhost:3000**. Generate the auth secret with `openssl rand -bas
 | Variable | What it does |
 | --- | --- |
 | `NEBIUS_API_KEY` | **Required.** Bill reading, Settle with AI and Ask Splitter, via [Nebius Token Factory](https://tokenfactory.nebius.com). |
-| `NEBIUS_MODEL` | Default `Qwen/Qwen3.8-27B`. |
+| `NEBIUS_MODEL` | Default `Qwen/Qwen3.8-27B`. Any vision model on Token Factory works; check it with `pnpm smoke:nebius --model <id>`. |
+| `NEXT_PUBLIC_AI_MODEL_LABEL` | Model name shown in the UI (default `Qwen3.8`). |
+| `AI_REASONING_PARAM` | `chat_template_kwargs` (default, Qwen-style thinking toggle) or `none`. |
 | `NEBIUS_BASE_URL` | Default `https://api.tokenfactory.nebius.com/v1/`. |
 | `DATABASE_URL` | `file:local.db` locally, or `libsql://…` on [Turso](https://turso.tech). |
 | `DATABASE_AUTH_TOKEN` | Turso only. |
 | `BETTER_AUTH_SECRET` | Signs sessions ([Better Auth](https://www.better-auth.com)). Required. |
 | `BETTER_AUTH_URL` | The app's URL, e.g. `http://localhost:3000`. |
 | `AI_CREDITS_PER_USER_PER_DAY` | Daily AI allowance per account (default 30). |
-| `AI_CREDITS_PER_GUEST_PER_DAY` | Daily allowance per guest IP for quick-split scans (default 3; `0` turns guest scanning off). |
 | `NOVU_SECRET_KEY`, `NEXT_PUBLIC_NOVU_APP_ID` | **Required.** In-app and email notifications via [Novu](https://novu.co). Production won't start without them. |
 | `NOVU_WORKFLOW_ID` | The Novu workflow to trigger (default `splitter-activity`). |
 
@@ -220,9 +226,9 @@ Splitter sends no telemetry of its own. Public share links show display names an
 | Groups | Trip, party, event, home, dinners; invite links that let friends claim their name; spending by category |
 | Settle up | Fewest-payments suggestions, payments recorded and confirmed, fill from a payment screenshot |
 | Context | Batch pages with bills and notes, public share links, Ask Splitter |
-| Limits | Daily AI credits per account and per guest |
+| Limits | Daily AI credits per account (AI features need a free account) |
 | Notifications | Novu in-app inbox plus an instant email: expenses and batches with each member's share, payments recorded and confirmed, new members |
-| Design | Phone-first, dark mode, [DESIGN.md](DESIGN.md) design system |
+| Design | Phone-first, dark mode, one token-based design system (`src/app/globals.css`) |
 
 **What's been verified.** On October 14, 2026, these were tested locally against Nebius Token Factory with `Qwen/Qwen3.8-27B`:
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import { categoryOf } from "@/config/categories";
 import { avatarColor, cn, initials } from "@/lib/utils";
 
-/** Flat surface. `tone="stone"` is DESIGN.md's product-card; default is a bordered white card. */
+/** Flat surface. `tone="stone"` is the design system's product-card; default is a bordered white card. */
 export function Card({ className, tone = "plain", ...props }: React.ComponentProps<"div"> & { tone?: "plain" | "stone" }) {
   return (
     <div
@@ -73,7 +73,7 @@ export function Badge({
   );
 }
 
-/** Coral taxonomy chip (DESIGN.md blog-filter-chip, scaled down). */
+/** Coral taxonomy chip (the design system blog-filter-chip, scaled down). */
 export function CategoryChip({
   category,
   active,

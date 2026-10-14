@@ -9,7 +9,7 @@ export const maxDuration = 60;
 export async function POST(request: Request) {
   const images = await readImages(request, 1);
   if (!images.ok) return images.response;
-  const guard = await aiGuard("readPayment", { requireUser: true });
+  const guard = await aiGuard("readPayment");
   if (!guard.ok) return guard.response;
   try {
     return Response.json({ payment: await extractPayment(aiConfig(), images.dataUrls[0]) });

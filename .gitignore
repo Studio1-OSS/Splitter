@@ -69,3 +69,6 @@ yarn-error.log*
 # Local QA artifacts
 test.md
 test-evidence/
+
+# Cookbook (published in its own repo)
+cookbook/

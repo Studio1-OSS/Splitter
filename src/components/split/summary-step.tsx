@@ -10,24 +10,16 @@ import { Button } from "@/components/ui/button";
 import { Avatar, Eyebrow } from "@/components/ui/primitives";
 import { categoryOf } from "@/config/categories";
 import { site } from "@/config/site";
-import { allocate, computeSplit, formatMoney, SplitError, type MemberShare } from "@/lib/money";
+import { allocate, computeSplit, formatMoney, fromMinor, SplitError, type MemberShare } from "@/lib/money";
+import { CheckTrace } from "@/components/batch/check-trace";
+import { createTools, type ToolCall } from "@/server/ai/tools";
 import { formatDate } from "@/lib/utils";
 import { createExpenseAction } from "@/server/actions";
 import { expenseLines, toSplitInput, type Draft } from "./draft";
 import { StepBar } from "./people";
 import type { WizardMode } from "./split-wizard";
 
-export function SummaryStep({
-  draft,
-  mode,
-  onEdit,
-  onReset,
-}: {
-  draft: Draft;
-  mode: WizardMode;
-  onEdit: () => void;
-  onReset: () => void;
-}) {
+export function SummaryStep({ draft, mode, onEdit, onReset }: { draft: Draft; mode: WizardMode; onEdit: () => void; onReset: () => void }) {
   const router = useRouter();
   const [saving, setSaving] = React.useState(false);
   const c = draft.currency;
@@ -41,12 +33,57 @@ export function SummaryStep({
     }
   }, [draft]);
 
+  // "How this was checked": the receipt check from scanning, then the same calculator tools run on the
+  // final assignment (split by line with tax and tip, then a check that the shares add up).
+  const checks = React.useMemo((): ToolCall[] => {
+    if (draft.kind !== "itemized" || !draft.checks?.length || "error" in result) return [];
+    const major = (n: number) => fromMinor(n, draft.currency);
+    const name = (id: string) => draft.people.find((p) => p.id === id)?.name ?? id;
+    const tools = createTools({
+      currency: draft.currency,
+      memberRefs: draft.people.map((p) => p.name),
+      bills: [
+        {
+          no: 1,
+          receipt: {
+            kind: "receipt",
+            merchant: draft.merchant,
+            category: null,
+            date: null,
+            currency: draft.currency,
+            items: draft.items.map((i) => ({ name: i.name, quantity: i.quantity, totalPrice: major(i.amount) })),
+            subtotal: null,
+            tax: major(draft.tax),
+            tip: major(draft.tip),
+            suggestedTips: [],
+            serviceCharge: major(draft.serviceCharge),
+            discount: major(draft.discount),
+            total: null,
+            paidByHint: null,
+          },
+        },
+      ],
+    });
+    const lines = draft.items.map((it, i) => ({ line: i + 1, members: (draft.assignments[it.id] ?? []).map(name) }));
+    const allocation = tools.run("allocate_tax_tip", { bill: 1, lines }, "app");
+    const shares = allocation.ok ? (allocation.result as { shares: Record<string, number> }).shares : {};
+    const validation = tools.run(
+      "validate_total",
+      { total: major(result.split.total), shares: Object.entries(shares).map(([member, amount]) => ({ member, amount })) },
+      "app",
+    );
+    return [...draft.checks, allocation, validation];
+  }, [draft, result]);
+
   // Per-person line breakdown, using the same weighted allocation as the totals.
   const breakdown = React.useMemo(() => {
     const map = new Map<string, { name: string; amount: number }[]>();
     for (const line of expenseLines(draft)) {
       if (!line.assignees.length) continue;
-      const parts = allocate(line.amount, line.assignees.map((a) => a.weight));
+      const parts = allocate(
+        line.amount,
+        line.assignees.map((a) => a.weight),
+      );
       const totalWeight = line.assignees.reduce((a, b) => a + b.weight, 0);
       line.assignees.forEach((a, i) => {
         const list = map.get(a.memberId) ?? [];
@@ -135,7 +172,11 @@ export function SummaryStep({
 
   return (
     <div className="mx-auto grid max-w-2xl gap-6">
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="rounded-lg bg-band px-6 py-8 text-center text-band-foreground sm:py-10">
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-lg bg-band px-6 py-8 text-center text-band-foreground sm:py-10"
+      >
         <p className="eyebrow inline-flex items-center gap-2 opacity-75">
           <category.icon className="size-3.5" /> {category.label} · {formatDate(draft.date)}
         </p>
@@ -162,6 +203,14 @@ export function SummaryStep({
         </ul>
       </div>
 
+      {checks.length > 0 && (
+        <CheckTrace
+          trace={checks}
+          toolMode="app"
+          note="The AI read the receipt; these calculator tools checked its arithmetic and worked out each share from who had what."
+        />
+      )}
+
       {mode.kind === "group" ? (
         <StepBar>
           <p className="min-w-0 flex-1 text-sm text-muted-foreground">Adds this to {mode.groupName}&apos;s balances.</p>
@@ -187,7 +236,9 @@ export function SummaryStep({
           <div className="flex flex-col gap-4 rounded-md bg-stone p-5 sm:flex-row sm:items-center">
             <div className="flex-1">
               <p className="text-lg">Sharing more than one cost?</p>
-              <p className="text-sm text-muted-foreground">Make a group for the trip, party or flat to keep running balances and settle up once.</p>
+              <p className="text-sm text-muted-foreground">
+                Make a group for the trip, party or flat to keep running balances and settle up once.
+              </p>
             </div>
             <Button variant="outline" asChild className="bg-card">
               <Link href="/sign-up?next=/dashboard">

@@ -46,10 +46,13 @@ const GUEST_KEY = "splitter:guest-split";
 export function SplitWizard({
   mode,
   scanEnabled,
+  signedIn = true,
   credits,
 }: {
   mode: WizardMode;
   scanEnabled: boolean;
+  /** Quick split needs an account: signed-out visitors are asked to sign in before scanning. */
+  signedIn?: boolean;
   credits?: { left: number; limit: number } | null;
 }) {
   const initial = React.useCallback(
@@ -100,7 +103,10 @@ export function SplitWizard({
   };
 
   const flow = FLOWS[draft.kind];
-  const index = Math.max(0, flow.findIndex((s) => s.id === step));
+  const index = Math.max(
+    0,
+    flow.findIndex((s) => s.id === step),
+  );
   const go = (id: StepId) => {
     setStep(id);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -149,6 +155,8 @@ export function SplitWizard({
               update={update}
               scanEnabled={scanEnabled}
               lockCurrency={mode.kind === "group"}
+              imageOnly={mode.kind === "guest"}
+              signInRequired={!signedIn}
               image={image}
               setImage={setImage}
               onItemized={() => {

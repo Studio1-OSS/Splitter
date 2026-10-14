@@ -9,4 +9,6 @@ export const site = {
   /** Nebius Token Factory (and its builder program). */
   nebiusUrl: "https://dub.sh/aistudio",
   defaultCurrency: "USD",
+  /** Display name of the AI model (the model id itself is NEBIUS_MODEL on the server). */
+  model: process.env.NEXT_PUBLIC_AI_MODEL_LABEL || "Qwen3.8",
 } as const;

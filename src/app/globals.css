@@ -3,7 +3,7 @@
 
 @custom-variant dark (@media (prefers-color-scheme: dark));
 
-/* Design tokens from DESIGN.md: white editorial canvas, near-black pill CTAs,
+/* Design tokens from the design system: white editorial canvas, near-black pill CTAs,
    deep-green feature bands, soft-stone cards, coral reserved for category chips. Flat, no shadows. */
 :root {
   --background: #ffffff;
@@ -135,7 +135,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Uppercase mono system label ("mono-label" in DESIGN.md). */
+/* Uppercase mono system label ("mono-label" in the design system). */
 @utility eyebrow {
   font-family: var(--font-mono);
   font-size: 12px;

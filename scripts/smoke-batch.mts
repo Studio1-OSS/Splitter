@@ -45,7 +45,7 @@ const scenarios = [
 for (const s of scenarios) {
   console.log(`\nStage 2 · planning "${s.groupName}" (${s.groupKind})\n  notes: ${s.notes}`);
   const t = Date.now();
-  const plan = await planSettlement(config, {
+  const { plan, trace, toolMode } = await planSettlement(config, {
     ...s,
     currency: "INR",
     members,
@@ -55,7 +55,8 @@ for (const s of scenarios) {
     today: new Date().toISOString().slice(0, 10),
   });
   const name = (ref: string | null) => members.find((m) => m.ref === ref)?.name ?? "?";
-  console.log(`  planned in ${Date.now() - t}ms · ${plan.summary}`);
+  console.log(`  planned in ${Date.now() - t}ms · ${trace.length} tool calls (${toolMode}) · ${plan.summary}`);
+  for (const c of trace) console.log(`  ⚙ ${c.by}:${c.tool} ${JSON.stringify(c.args)} → ${JSON.stringify(c.result)}`);
   for (const e of plan.expenses) {
     const who = e.split.participants.map((p) => `${name(p.member)}${p.shares ? `×${p.shares}` : ""}${p.amount != null ? ` ${p.amount}` : ""}`).join(", ");
     console.log(`  - ${e.description}: ${e.amount} paid by ${name(e.paidBy)} · ${e.split.mode} [${who || `${e.split.lines.length} lines`}] bills ${JSON.stringify(e.billRefs)}`);

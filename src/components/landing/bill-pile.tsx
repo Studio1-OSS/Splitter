@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowRight, Sparkles } from "lucide-react";
+import { site } from "@/config/site";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import * as React from "react";
 import { formatMoney } from "@/lib/money";
@@ -8,7 +9,7 @@ import { avatarColor, cn } from "@/lib/utils";
 import { MiniDoc } from "./mini-doc";
 import { computeScene, CURRENCY, SCENES } from "./scenes";
 
-const PHASE_MS = [1300, 2200, 1400]; // bills drop → notes type → Qwen reads → result
+const PHASE_MS = [1300, 2200, 1400]; // bills drop → notes type → AI reads → result
 const HOLD_MS = 6500;
 
 /** Hero demo: a pile of bills + one sentence of context becomes one settlement. All numbers are computed. */
@@ -99,7 +100,7 @@ export function BillPile() {
             )}
           >
             <Sparkles className={cn("size-3", phase === 2 && "animate-pulse")} />
-            {phase < 2 ? "Waiting for bills" : phase === 2 ? `Qwen3.8 reading ${scene.bills.length} bills` : "Settled"}
+            {phase < 2 ? "Waiting for bills" : phase === 2 ? `${site.model} reading ${scene.bills.length} bills` : "Settled"}
           </span>
         </div>
 

@@ -89,7 +89,7 @@ export default function LandingPage() {
             <p className="mt-4 text-center text-sm text-muted-foreground">
               Bill reading powered by{" "}
               <a href={site.nebiusUrl} target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-foreground">
-                Qwen3.8 vision on Nebius Token Factory
+                {site.model} on Nebius Token Factory
               </a>
             </p>
           </div>
@@ -301,7 +301,7 @@ export default function LandingPage() {
                 <Link href="/sign-up">Start splitting, free</Link>
               </Button>
               <Link href="/split" className="inline-flex items-center gap-1.5 underline underline-offset-4">
-                <Link2 className="size-4" /> Or a quick split, no account
+                <Link2 className="size-4" /> Or a quick split of one receipt
               </Link>
             </div>
           </div>

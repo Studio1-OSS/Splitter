@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     if (e instanceof AppError) return apiError(e.status, e.message);
     throw e;
   }
-  const guard = await aiGuard("ask", { requireUser: true });
+  const guard = await aiGuard("ask");
   if (!guard.ok) return guard.response;
   try {
     const { ledger } = await buildGroupLedger(db, guard.user!.id, parsed.data.groupId);

@@ -165,6 +165,6 @@ evalite<Case, Plan, Case>(`Settlement planning · ${config.model}`, {
       answers: [],
       recentExpenses: [],
       today: "2026-10-14",
-    }),
+    }).then((r) => r.plan),
   scorers: [{ name: "Plan accuracy", scorer: ({ output, expected }) => (expected ? score(output, expected) : 0) }],
 });

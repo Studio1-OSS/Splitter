@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { draftTotal, toSplitInput } from "../split/draft";
 import { proposalProblem, type NormalizedPlan, type Proposal, type ProposedPayment } from "./normalize";
 import type { Bill } from "./use-bills";
+import { CheckTrace } from "./check-trace";
+import type { ToolCall } from "@/server/ai/tools";
 
 export function splitLabel(p: Proposal, nameOf: (id: string) => string) {
   if (p.kind === "itemized") return `Per line · ${p.items.length} lines`;
@@ -20,6 +22,7 @@ export function splitLabel(p: Proposal, nameOf: (id: string) => string) {
 
 export function ReviewBoard({
   plan,
+  checks,
   proposals,
   payments,
   bills,
@@ -33,6 +36,7 @@ export function ReviewBoard({
   onTogglePayment,
 }: {
   plan: NormalizedPlan;
+  checks?: { trace: ToolCall[]; toolMode: "native" | "app" };
   proposals: Proposal[];
   payments: ProposedPayment[];
   bills: Bill[];
@@ -80,6 +84,8 @@ export function ReviewBoard({
             <p className="text-sm leading-relaxed">{plan.summary}</p>
           </div>
         )}
+
+        {checks && <CheckTrace trace={checks.trace} toolMode={checks.toolMode} />}
 
         {plan.questions.length > 0 && (
           <section className="grid gap-3 rounded-md border border-warning/40 bg-warning-soft p-5">

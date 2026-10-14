@@ -1,5 +1,6 @@
 import { ExtractionError, extractReceiptWithNebius } from "@/server/ai/nebius";
 import { reconcileReceipt } from "@/server/ai/receipt";
+import { createTools } from "@/server/ai/tools";
 import { aiConfig, aiGuard, apiError, readImages } from "@/server/ai/request";
 
 export const runtime = "nodejs";
@@ -21,7 +22,9 @@ export async function POST(request: Request) {
       return apiError(422, "This doesn't look like a bill. Upload a receipt, invoice, ticket or payment screenshot.");
     }
     console.info(`Bill read in ${Date.now() - started}ms (${images.dataUrls.length} page(s), ${receipt.items.length} lines)`);
-    return Response.json({ receipt, issues: reconcileReceipt(receipt), creditsLeft: guard.creditsLeft });
+    // The same calculator tool Settle with AI uses: checks the receipt's arithmetic.
+    const check = createTools({ currency: receipt.currency ?? "USD", memberRefs: [], bills: [{ no: 1, receipt }] }).run("check_receipt", { bill: 1 }, "app");
+    return Response.json({ receipt, issues: reconcileReceipt(receipt), checks: [check], creditsLeft: guard.creditsLeft });
   } catch (e) {
     if (e instanceof ExtractionError) return apiError(e.kind === "provider" ? 502 : 422, e.message);
     console.error("Unexpected extraction failure", e);

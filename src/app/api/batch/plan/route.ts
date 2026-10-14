@@ -22,7 +22,7 @@ const input = z.object({
 });
 
 /**
- * Stage 2 of "Settle with AI": plans the settlement from bills Qwen already read plus the group's notes.
+ * Stage 2 of "Settle with AI": plans the settlement (with calculator tool calls) from bills the model already read plus the group's notes.
  * Members are sent to the model as short refs (m1, m2…) and mapped back here, so unknown refs become null.
  */
 export async function POST(request: Request) {
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     if (e instanceof AppError) return apiError(e.status, e.message);
     throw e;
   }
-  const guard = await aiGuard("plan", { requireUser: true });
+  const guard = await aiGuard("plan");
   if (!guard.ok) return guard.response;
 
   try {
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     const resolve = (ref: string | null) => (ref ? (toId.get(ref.trim()) ?? null) : null);
 
     const started = Date.now();
-    const plan = await planSettlement(aiConfig(), {
+    const { plan, trace, toolMode } = await planSettlement(aiConfig(), {
       groupName: group.name,
       groupKind: group.kind,
       currency: group.currency,
@@ -69,7 +69,9 @@ export async function POST(request: Request) {
       recentExpenses: recent.map((e) => ({ ...e, total: fromMinor(e.total, group.currency) })),
       today: todayISO(),
     });
-    console.info(`Settlement planned in ${Date.now() - started}ms: ${plan.expenses.length} expenses, ${plan.questions.length} questions`);
+    console.info(
+      `Settlement planned in ${Date.now() - started}ms: ${plan.expenses.length} expenses, ${plan.questions.length} questions, ${trace.length} tool calls (${toolMode})`,
+    );
 
     // Safety net: the model should write names in prose, but swap any stray refs (m1, m2…) for names.
     const nameOfRef = new Map(refs.map((r) => [r.ref, r.name]));
@@ -92,7 +94,9 @@ export async function POST(request: Request) {
       })),
       payments: plan.payments.map((p) => ({ ...p, explanation: prose(p.explanation), from: resolve(p.from), to: resolve(p.to) })),
     };
-    return Response.json({ plan: resolved, creditsLeft: guard.creditsLeft });
+    // Tool calls use refs too; show names to people.
+    const namedTrace = JSON.parse(prose(JSON.stringify(trace))) as typeof trace;
+    return Response.json({ plan: resolved, trace: namedTrace, toolMode, creditsLeft: guard.creditsLeft });
   } catch (e) {
     if (e instanceof AppError) return apiError(e.status, e.message);
     if (e instanceof ExtractionError) return apiError(e.kind === "provider" ? 502 : 422, e.message);

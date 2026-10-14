@@ -18,6 +18,8 @@ import { BillTray } from "./bill-tray";
 import { normalizePlan, proposalProblem, type NormalizedPlan, type Proposal, type ProposedPayment } from "./normalize";
 import { ProposalEditor } from "./proposal-editor";
 import { ReviewBoard } from "./review-board";
+import { site } from "@/config/site";
+import type { ToolCall } from "@/server/ai/tools";
 import { useBills } from "./use-bills";
 
 type Group = { id: string; name: string; kind: string; currency: string };
@@ -55,6 +57,7 @@ export function BatchFlow({
   const [stage, setStage] = React.useState<"collect" | "planning" | "review">("collect");
   const [working, setWorking] = React.useState(0);
   const [plan, setPlan] = React.useState<NormalizedPlan | null>(null);
+  const [checks, setChecks] = React.useState<{ trace: ToolCall[]; toolMode: "native" | "app" }>({ trace: [], toolMode: "native" });
   const [proposals, setProposals] = React.useState<Proposal[]>([]);
   const [payments, setPayments] = React.useState<ProposedPayment[]>([]);
   const [answers, setAnswers] = React.useState<Record<string, string>>({});
@@ -112,7 +115,7 @@ export function BatchFlow({
           answers: withAnswers ? Object.entries(answers).filter(([, a]) => a.trim()).map(([question, answer]) => ({ question, answer })) : [],
         }),
       });
-      const body = (await res.json().catch(() => ({}))) as { plan?: Plan; error?: string; creditsLeft?: number };
+      const body = (await res.json().catch(() => ({}))) as { plan?: Plan; trace?: ToolCall[]; toolMode?: "native" | "app"; error?: string; creditsLeft?: number };
       if (typeof body.creditsLeft === "number") setCredits(body.creditsLeft);
       if (!res.ok || !body.plan) throw new Error(body.error ?? "Splitter couldn't work this out. Try again.");
       const normalized = normalizePlan(body.plan, {
@@ -123,6 +126,7 @@ export function BatchFlow({
         today: todayISO(),
       });
       setPlan(normalized);
+      setChecks({ trace: body.trace ?? [], toolMode: body.toolMode ?? "native" });
       setProposals(normalized.proposals);
       setPayments(normalized.payments);
       setAnswers({});
@@ -209,7 +213,7 @@ export function BatchFlow({
               <h1 className="text-4xl leading-none sm:text-6xl">Drop the bills. Splitter does the rest.</h1>
               <p className="mt-4 text-lg text-muted-foreground">
                 Add every bill from {kind.label === "Other" ? "this group" : `the ${kind.label.toLowerCase()}`}, say who paid what in your own words, and
-                Qwen3.8 vision works out one fair split for everyone. You review it before anything is saved.
+                {site.model} works out one fair split for everyone. You review it before anything is saved.
               </p>
             </div>
 
@@ -303,7 +307,7 @@ export function BatchFlow({
                   </li>
                 ))}
               </ul>
-              <p className="mt-5 text-xs text-white/50">Qwen3.8-27B is reasoning over {readable.length} bills and your notes. Usually 15–40 seconds.</p>
+              <p className="mt-5 text-xs text-white/50">{site.model} is reasoning over {readable.length} bills and your notes, checking the maths with calculator tools. Usually 15–40 seconds.</p>
             </div>
           </motion.div>
         )}
@@ -318,6 +322,7 @@ export function BatchFlow({
             </div>
             <ReviewBoard
               plan={plan}
+              checks={checks}
               proposals={proposals}
               payments={payments}
               bills={bills}

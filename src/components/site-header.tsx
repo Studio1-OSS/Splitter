@@ -13,7 +13,7 @@ export const NAV = [
   { href: "/#faq", label: "FAQ" },
 ];
 
-/** Three-zone nav from DESIGN.md: logo left, links centred, actions right; compact menu on phones. */
+/** Three-zone nav from the design system: logo left, links centred, actions right; compact menu on phones. */
 export async function SiteHeader() {
   const user = await getSessionUser();
   return (

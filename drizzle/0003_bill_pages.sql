@@ -1,0 +1,1 @@
+ALTER TABLE `bill_images` ADD `page` integer DEFAULT 1 NOT NULL;

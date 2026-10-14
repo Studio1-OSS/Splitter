@@ -1,0 +1,171 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (@media (prefers-color-scheme: dark));
+
+/* Design tokens from DESIGN.md: white editorial canvas, near-black pill CTAs,
+   deep-green feature bands, soft-stone cards, coral reserved for category chips. Flat, no shadows. */
+:root {
+  --background: #ffffff;
+  --foreground: #212121;
+  --card: #ffffff;
+  --card-foreground: #212121;
+  --stone: #eeece7;
+  --muted: #f5f4f1;
+  --muted-foreground: #616161;
+  --subtle: #93939f;
+  --border: #e5e7eb;
+  --hairline: #d9d9dd;
+  --input: #d9d9dd;
+  --ring: #4c6ee6;
+  --primary: #17171c;
+  --primary-foreground: #ffffff;
+  --band: #003c33;
+  --band-foreground: #ffffff;
+  --navy: #071829;
+  --accent: #ff7759; /* coral: fills, borders, markers */
+  --accent-ink: #b8401f; /* coral text that passes contrast on white */
+  --accent-soft: #fff1ec;
+  --link: #1863dc;
+  --positive: #0f6b57;
+  --positive-soft: #edfce9;
+  --negative: #b30000;
+  --negative-soft: #fdeeee;
+  --warning: #8a5a00;
+  --warning-soft: #fdf4dc;
+  --paper: #faf9f6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #17171c;
+    --foreground: #f2f2f2;
+    --card: #1f1f25;
+    --card-foreground: #f2f2f2;
+    --stone: #26262c;
+    --muted: #24242a;
+    --muted-foreground: #a8a8b3;
+    --subtle: #8a8a96;
+    --border: #2e2e36;
+    --hairline: #3a3a43;
+    --input: #3a3a43;
+    --ring: #7d95f0;
+    --primary: #ffffff;
+    --primary-foreground: #17171c;
+    --band: #003c33;
+    --band-foreground: #ffffff;
+    --navy: #071829;
+    --accent: #ff8a70;
+    --accent-ink: #ff9d86;
+    --accent-soft: #3a2420;
+    --link: #7aa6f5;
+    --positive: #5fd3a8;
+    --positive-soft: #10302a;
+    --negative: #ff7a7a;
+    --negative-soft: #3a1c1c;
+    --warning: #f2c46d;
+    --warning-soft: #33290f;
+    --paper: #1f1f25;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-stone: var(--stone);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle: var(--subtle);
+  --color-border: var(--border);
+  --color-hairline: var(--hairline);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-band: var(--band);
+  --color-band-foreground: var(--band-foreground);
+  --color-navy: var(--navy);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-link: var(--link);
+  --color-positive: var(--positive);
+  --color-positive-soft: var(--positive-soft);
+  --color-negative: var(--negative);
+  --color-negative-soft: var(--negative-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-paper: var(--paper);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+  --radius-pill: 32px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  /* Display type: light weight, tight leading, negative tracking. */
+  h1,
+  h2,
+  h3 {
+    @apply font-display font-normal;
+    letter-spacing: -0.02em;
+  }
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Uppercase mono system label ("mono-label" in DESIGN.md). */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Space for the mobile tab bar plus the iPhone home indicator. */
+@utility pb-tabbar {
+  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+}
+@utility bottom-tabbar {
+  bottom: calc(4.75rem + env(safe-area-inset-bottom));
+}
+
+/* Zig-zag bottom edge for receipt cards. */
+@utility receipt-edge {
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
+}
+
+@keyframes scan {
+  0%,
+  100% {
+    top: 0%;
+  }
+  50% {
+    top: calc(100% - 3px);
+  }
+}
+.animate-scan-line {
+  animation: scan 2.2s ease-in-out infinite;
+}

@@ -21,7 +21,7 @@
     "@novu/api": "^3.19.1",
     "@novu/nextjs": "^3.19.2",
     "@radix-ui/react-dialog": "^1.3.1",
-    "@radix-ui/react-slot": "^1.2.2",
+    "@radix-ui/react-slot": "^1.5.0",
     "better-auth": "^1.7.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

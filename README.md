@@ -150,7 +150,7 @@ Open **http://localhost:3000**. Generate the auth secret with `openssl rand -bas
 | `DATABASE_URL` | `file:local.db` locally, or `libsql://…` on [Turso](https://turso.tech). |
 | `DATABASE_AUTH_TOKEN` | Turso only. |
 | `BETTER_AUTH_SECRET` | Signs sessions ([Better Auth](https://www.better-auth.com)). Required. |
-| `BETTER_AUTH_URL` | The app's URL, e.g. `http://localhost:3000`. |
+| `BETTER_AUTH_URL` | The app's URL, e.g. `http://localhost:3000`. Required (https) in production; Vercel preview deployments fall back to their own URL. |
 | `AI_CREDITS_PER_USER_PER_DAY` | Daily AI allowance per account (default 30). |
 | `NOVU_SECRET_KEY`, `NEXT_PUBLIC_NOVU_APP_ID` | **Required.** In-app and email notifications via [Novu](https://novu.co). Production won't start without them. |
 | `NOVU_WORKFLOW_ID` | The Novu workflow to trigger (default `splitter-activity`). |
@@ -191,7 +191,7 @@ Members are notified when an expense or a whole Settle-with-AI batch is publishe
    turso db tokens create splitter
    ```
 2. Run `DATABASE_URL=libsql://… DATABASE_AUTH_TOKEN=… pnpm db:migrate`.
-3. Import the repo into [Vercel](https://vercel.com), set the variables above (with `BETTER_AUTH_URL` set to your domain), and deploy.
+3. Import the repo into [Vercel](https://vercel.com), set the variables above (with `BETTER_AUTH_URL` set to your domain for Production; leave it unset for Preview), and deploy. Use a separate `BETTER_AUTH_SECRET` per environment.
 
 Vercel's Hobby plan is for non-commercial use. The live camera needs HTTPS, which Vercel provides.
 

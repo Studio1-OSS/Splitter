@@ -26,7 +26,13 @@ const schema = z.object({
   AI_CREDITS_PER_USER_PER_DAY: z.coerce.number().int().min(0).default(30),
 });
 
-export const env = schema.parse(process.env);
+// Vercel preview deployments get a new URL each time: fall back to it when BETTER_AUTH_URL isn't set.
+const vercelPreviewUrl =
+  process.env.VERCEL_ENV === "preview" && (process.env.VERCEL_BRANCH_URL || process.env.VERCEL_URL)
+    ? `https://${process.env.VERCEL_BRANCH_URL || process.env.VERCEL_URL}`
+    : undefined;
+
+export const env = schema.parse({ ...process.env, BETTER_AUTH_URL: process.env.BETTER_AUTH_URL || vercelPreviewUrl });
 
 const isProdRuntime = process.env.NODE_ENV === "production" && process.env.NEXT_PHASE !== "phase-production-build";
 

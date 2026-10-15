@@ -15,6 +15,7 @@
     "smoke:nebius": "tsx scripts/nebius-smoke.mts",
     "smoke:batch": "tsx scripts/smoke-batch.mts",
     "bench:dataset": "node benchmark/dataset/generate.mjs",
+    "bench:import-real": "python3 benchmark/dataset/import_cord.py",
     "bench:agent": "tsx benchmark/receipt-agent.mts",
     "bench:eval": "tsx benchmark/eval.mts",
     "bench:dev": "tsx benchmark/server.mts",

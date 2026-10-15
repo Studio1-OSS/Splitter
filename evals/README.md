@@ -2,7 +2,7 @@
 
 Quick accuracy checks for Splitter's two AI stages. They make real calls to the model on Nebius Token Factory, so they use credits on your key (a full run costs a few cents).
 
-Use them when you change a prompt, the bill schema or the model. For the full 150-bill benchmark with confidence intervals and a dashboard, see [`benchmark/`](../benchmark/README.md).
+Use them when you change a prompt, the bill schema or the model. For the full 300-bill benchmark (synthetic and real receipts) with confidence intervals and a dashboard, see [`benchmark/`](../benchmark/README.md).
 
 ## Run them
 

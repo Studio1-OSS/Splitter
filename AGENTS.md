@@ -18,7 +18,7 @@ pnpm build
 pnpm eval              # live Nebius evals (spends AI credits on your key)
 pnpm smoke:nebius      # capability table for NEBIUS_MODEL (image, JSON schema, tools, reasoning) + one bill read
 pnpm smoke:batch       # live two-stage pipeline on sample bills
-pnpm bench:eval     # the 150-bill benchmark (real model calls, ~$0.50); bench:dev opens Receipt Lab
+pnpm bench:eval     # the 300-bill benchmark, synthetic + real receipts (real model calls, ~$1); bench:dev opens Receipt Lab
 pnpm db:generate       # after editing src/server/db/schema.ts
 ```
 

@@ -2,6 +2,7 @@
   {
     "id": "groceries-01",
     "file": "groceries-01.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "clean",
@@ -68,6 +69,7 @@
   {
     "id": "groceries-02",
     "file": "groceries-02.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "clean",
@@ -156,6 +158,7 @@
   {
     "id": "groceries-03",
     "file": "groceries-03.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "faded",
@@ -228,6 +231,7 @@
   {
     "id": "groceries-04",
     "file": "groceries-04.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "rotated",
@@ -313,6 +317,7 @@
   {
     "id": "groceries-05",
     "file": "groceries-05.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "long",
@@ -418,6 +423,7 @@
   {
     "id": "groceries-06",
     "file": "groceries-06.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "clean",
@@ -503,6 +509,7 @@
   {
     "id": "groceries-07",
     "file": "groceries-07.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "invoice",
     "condition": "clean",
@@ -585,6 +592,7 @@
   {
     "id": "groceries-08",
     "file": "groceries-08.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "invoice",
     "condition": "faded",
@@ -668,6 +676,7 @@
   {
     "id": "groceries-09",
     "file": "groceries-09.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "invoice",
     "condition": "rotated",
@@ -733,6 +742,7 @@
   {
     "id": "groceries-10",
     "file": "groceries-10.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "long",
@@ -880,6 +890,7 @@
   {
     "id": "groceries-11",
     "file": "groceries-11.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "clean",
@@ -958,6 +969,7 @@
   {
     "id": "groceries-12",
     "file": "groceries-12.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "clean",
@@ -1045,6 +1057,7 @@
   {
     "id": "groceries-13",
     "file": "groceries-13.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "faded",
@@ -1111,6 +1124,7 @@
   {
     "id": "groceries-14",
     "file": "groceries-14.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "rotated",
@@ -1171,6 +1185,7 @@
   {
     "id": "groceries-15",
     "file": "groceries-15.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "long",
@@ -1304,6 +1319,7 @@
   {
     "id": "groceries-16",
     "file": "groceries-16.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "invoice",
     "condition": "clean",
@@ -1402,6 +1418,7 @@
   {
     "id": "groceries-17",
     "file": "groceries-17.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "invoice",
     "condition": "clean",
@@ -1476,6 +1493,7 @@
   {
     "id": "groceries-18",
     "file": "groceries-18.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "invoice",
     "condition": "faded",
@@ -1536,6 +1554,7 @@
   {
     "id": "groceries-19",
     "file": "groceries-19.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "rotated",
@@ -1619,6 +1638,7 @@
   {
     "id": "groceries-20",
     "file": "groceries-20.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "long",
@@ -1753,6 +1773,7 @@
   {
     "id": "groceries-21",
     "file": "groceries-21.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "clean",
@@ -1836,6 +1857,7 @@
   {
     "id": "groceries-22",
     "file": "groceries-22.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "clean",
@@ -1922,6 +1944,7 @@
   {
     "id": "groceries-23",
     "file": "groceries-23.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "faded",
@@ -2007,6 +2030,7 @@
   {
     "id": "groceries-24",
     "file": "groceries-24.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "rotated",
@@ -2098,6 +2122,7 @@
   {
     "id": "groceries-25",
     "file": "groceries-25.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "invoice",
     "condition": "long",
@@ -2230,6 +2255,7 @@
   {
     "id": "groceries-26",
     "file": "groceries-26.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "invoice",
     "condition": "clean",
@@ -2298,6 +2324,7 @@
   {
     "id": "groceries-27",
     "file": "groceries-27.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "invoice",
     "condition": "clean",
@@ -2381,6 +2408,7 @@
   {
     "id": "groceries-28",
     "file": "groceries-28.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "faded",
@@ -2463,6 +2491,7 @@
   {
     "id": "groceries-29",
     "file": "groceries-29.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "rotated",
@@ -2547,6 +2576,7 @@
   {
     "id": "groceries-30",
     "file": "groceries-30.png",
+    "set": "synthetic",
     "category": "groceries",
     "layout": "thermal",
     "condition": "long",
@@ -2691,6 +2721,7 @@
   {
     "id": "party-01",
     "file": "party-01.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "thermal",
     "condition": "clean",
@@ -2748,6 +2779,7 @@
   {
     "id": "party-02",
     "file": "party-02.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "thermal",
     "condition": "clean",
@@ -2819,6 +2851,7 @@
   {
     "id": "party-03",
     "file": "party-03.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "thermal",
     "condition": "faded",
@@ -2899,6 +2932,7 @@
   {
     "id": "party-04",
     "file": "party-04.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "rotated",
@@ -2990,6 +3024,7 @@
   {
     "id": "party-05",
     "file": "party-05.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "long",
@@ -3107,6 +3142,7 @@
   {
     "id": "party-06",
     "file": "party-06.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "clean",
@@ -3178,6 +3214,7 @@
   {
     "id": "party-07",
     "file": "party-07.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "clean",
@@ -3253,6 +3290,7 @@
   {
     "id": "party-08",
     "file": "party-08.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "faded",
@@ -3323,6 +3361,7 @@
   {
     "id": "party-09",
     "file": "party-09.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "rotated",
@@ -3398,6 +3437,7 @@
   {
     "id": "party-10",
     "file": "party-10.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "thermal",
     "condition": "long",
@@ -3527,6 +3567,7 @@
   {
     "id": "party-11",
     "file": "party-11.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "thermal",
     "condition": "clean",
@@ -3610,6 +3651,7 @@
   {
     "id": "party-12",
     "file": "party-12.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "thermal",
     "condition": "clean",
@@ -3700,6 +3742,7 @@
   {
     "id": "party-13",
     "file": "party-13.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "faded",
@@ -3757,6 +3800,7 @@
   {
     "id": "party-14",
     "file": "party-14.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "rotated",
@@ -3819,6 +3863,7 @@
   {
     "id": "party-15",
     "file": "party-15.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "long",
@@ -3951,6 +3996,7 @@
   {
     "id": "party-16",
     "file": "party-16.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "clean",
@@ -4029,6 +4075,7 @@
   {
     "id": "party-17",
     "file": "party-17.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "clean",
@@ -4096,6 +4143,7 @@
   {
     "id": "party-18",
     "file": "party-18.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "faded",
@@ -4176,6 +4224,7 @@
   {
     "id": "party-19",
     "file": "party-19.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "thermal",
     "condition": "rotated",
@@ -4240,6 +4289,7 @@
   {
     "id": "party-20",
     "file": "party-20.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "thermal",
     "condition": "long",
@@ -4387,6 +4437,7 @@
   {
     "id": "party-21",
     "file": "party-21.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "thermal",
     "condition": "clean",
@@ -4470,6 +4521,7 @@
   {
     "id": "party-22",
     "file": "party-22.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "clean",
@@ -4541,6 +4593,7 @@
   {
     "id": "party-23",
     "file": "party-23.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "faded",
@@ -4609,6 +4662,7 @@
   {
     "id": "party-24",
     "file": "party-24.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "rotated",
@@ -4679,6 +4733,7 @@
   {
     "id": "party-25",
     "file": "party-25.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "long",
@@ -4799,6 +4854,7 @@
   {
     "id": "party-26",
     "file": "party-26.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "clean",
@@ -4859,6 +4915,7 @@
   {
     "id": "party-27",
     "file": "party-27.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "invoice",
     "condition": "clean",
@@ -4950,6 +5007,7 @@
   {
     "id": "party-28",
     "file": "party-28.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "thermal",
     "condition": "faded",
@@ -5028,6 +5086,7 @@
   {
     "id": "party-29",
     "file": "party-29.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "thermal",
     "condition": "rotated",
@@ -5092,6 +5151,7 @@
   {
     "id": "party-30",
     "file": "party-30.png",
+    "set": "synthetic",
     "category": "party",
     "layout": "thermal",
     "condition": "long",
@@ -5212,6 +5272,7 @@
   {
     "id": "home-01",
     "file": "home-01.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "clean",
@@ -5288,6 +5349,7 @@
   {
     "id": "home-02",
     "file": "home-02.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "clean",
@@ -5368,6 +5430,7 @@
   {
     "id": "home-03",
     "file": "home-03.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "faded",
@@ -5459,6 +5522,7 @@
   {
     "id": "home-04",
     "file": "home-04.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "rotated",
@@ -5565,6 +5629,7 @@
   {
     "id": "home-05",
     "file": "home-05.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "long",
@@ -5676,6 +5741,7 @@
   {
     "id": "home-06",
     "file": "home-06.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "clean",
@@ -5765,6 +5831,7 @@
   {
     "id": "home-07",
     "file": "home-07.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "app",
     "condition": "clean",
@@ -5862,6 +5929,7 @@
   {
     "id": "home-08",
     "file": "home-08.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "app",
     "condition": "faded",
@@ -5940,6 +6008,7 @@
   {
     "id": "home-09",
     "file": "home-09.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "app",
     "condition": "rotated",
@@ -6014,6 +6083,7 @@
   {
     "id": "home-10",
     "file": "home-10.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "long",
@@ -6160,6 +6230,7 @@
   {
     "id": "home-11",
     "file": "home-11.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "clean",
@@ -6253,6 +6324,7 @@
   {
     "id": "home-12",
     "file": "home-12.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "clean",
@@ -6335,6 +6407,7 @@
   {
     "id": "home-13",
     "file": "home-13.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "faded",
@@ -6392,6 +6465,7 @@
   {
     "id": "home-14",
     "file": "home-14.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "rotated",
@@ -6452,6 +6526,7 @@
   {
     "id": "home-15",
     "file": "home-15.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "long",
@@ -6604,6 +6679,7 @@
   {
     "id": "home-16",
     "file": "home-16.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "app",
     "condition": "clean",
@@ -6710,6 +6786,7 @@
   {
     "id": "home-17",
     "file": "home-17.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "app",
     "condition": "clean",
@@ -6793,6 +6870,7 @@
   {
     "id": "home-18",
     "file": "home-18.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "app",
     "condition": "faded",
@@ -6865,6 +6943,7 @@
   {
     "id": "home-19",
     "file": "home-19.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "rotated",
@@ -6929,6 +7008,7 @@
   {
     "id": "home-20",
     "file": "home-20.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "long",
@@ -7083,6 +7163,7 @@
   {
     "id": "home-21",
     "file": "home-21.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "clean",
@@ -7140,6 +7221,7 @@
   {
     "id": "home-22",
     "file": "home-22.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "clean",
@@ -7230,6 +7312,7 @@
   {
     "id": "home-23",
     "file": "home-23.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "faded",
@@ -7305,6 +7388,7 @@
   {
     "id": "home-24",
     "file": "home-24.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "rotated",
@@ -7395,6 +7479,7 @@
   {
     "id": "home-25",
     "file": "home-25.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "app",
     "condition": "long",
@@ -7524,6 +7609,7 @@
   {
     "id": "home-26",
     "file": "home-26.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "app",
     "condition": "clean",
@@ -7584,6 +7670,7 @@
   {
     "id": "home-27",
     "file": "home-27.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "app",
     "condition": "clean",
@@ -7658,6 +7745,7 @@
   {
     "id": "home-28",
     "file": "home-28.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "faded",
@@ -7758,6 +7846,7 @@
   {
     "id": "home-29",
     "file": "home-29.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "rotated",
@@ -7824,6 +7913,7 @@
   {
     "id": "home-30",
     "file": "home-30.png",
+    "set": "synthetic",
     "category": "home",
     "layout": "invoice",
     "condition": "long",
@@ -7937,6 +8027,7 @@
   {
     "id": "food-01",
     "file": "food-01.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "clean",
@@ -8004,6 +8095,7 @@
   {
     "id": "food-02",
     "file": "food-02.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "clean",
@@ -8066,6 +8158,7 @@
   {
     "id": "food-03",
     "file": "food-03.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "faded",
@@ -8159,6 +8252,7 @@
   {
     "id": "food-04",
     "file": "food-04.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "rotated",
@@ -8226,6 +8320,7 @@
   {
     "id": "food-05",
     "file": "food-05.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "long",
@@ -8335,6 +8430,7 @@
   {
     "id": "food-06",
     "file": "food-06.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "clean",
@@ -8423,6 +8519,7 @@
   {
     "id": "food-07",
     "file": "food-07.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "app",
     "condition": "clean",
@@ -8513,6 +8610,7 @@
   {
     "id": "food-08",
     "file": "food-08.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "app",
     "condition": "faded",
@@ -8580,6 +8678,7 @@
   {
     "id": "food-09",
     "file": "food-09.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "app",
     "condition": "rotated",
@@ -8653,6 +8752,7 @@
   {
     "id": "food-10",
     "file": "food-10.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "long",
@@ -8784,6 +8884,7 @@
   {
     "id": "food-11",
     "file": "food-11.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "clean",
@@ -8874,6 +8975,7 @@
   {
     "id": "food-12",
     "file": "food-12.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "clean",
@@ -8977,6 +9079,7 @@
   {
     "id": "food-13",
     "file": "food-13.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "faded",
@@ -9043,6 +9146,7 @@
   {
     "id": "food-14",
     "file": "food-14.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "rotated",
@@ -9120,6 +9224,7 @@
   {
     "id": "food-15",
     "file": "food-15.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "long",
@@ -9235,6 +9340,7 @@
   {
     "id": "food-16",
     "file": "food-16.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "app",
     "condition": "clean",
@@ -9295,6 +9401,7 @@
   {
     "id": "food-17",
     "file": "food-17.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "app",
     "condition": "clean",
@@ -9359,6 +9466,7 @@
   {
     "id": "food-18",
     "file": "food-18.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "app",
     "condition": "faded",
@@ -9420,6 +9528,7 @@
   {
     "id": "food-19",
     "file": "food-19.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "rotated",
@@ -9492,6 +9601,7 @@
   {
     "id": "food-20",
     "file": "food-20.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "long",
@@ -9619,6 +9729,7 @@
   {
     "id": "food-21",
     "file": "food-21.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "clean",
@@ -9675,6 +9786,7 @@
   {
     "id": "food-22",
     "file": "food-22.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "clean",
@@ -9735,6 +9847,7 @@
   {
     "id": "food-23",
     "file": "food-23.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "faded",
@@ -9795,6 +9908,7 @@
   {
     "id": "food-24",
     "file": "food-24.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "rotated",
@@ -9865,6 +9979,7 @@
   {
     "id": "food-25",
     "file": "food-25.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "app",
     "condition": "long",
@@ -9989,6 +10104,7 @@
   {
     "id": "food-26",
     "file": "food-26.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "app",
     "condition": "clean",
@@ -10066,6 +10182,7 @@
   {
     "id": "food-27",
     "file": "food-27.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "app",
     "condition": "clean",
@@ -10154,6 +10271,7 @@
   {
     "id": "food-28",
     "file": "food-28.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "faded",
@@ -10256,6 +10374,7 @@
   {
     "id": "food-29",
     "file": "food-29.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "rotated",
@@ -10320,6 +10439,7 @@
   {
     "id": "food-30",
     "file": "food-30.png",
+    "set": "synthetic",
     "category": "food",
     "layout": "thermal",
     "condition": "long",
@@ -10437,6 +10557,7 @@
   {
     "id": "travel-01",
     "file": "travel-01.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "invoice",
     "condition": "clean",
@@ -10513,6 +10634,7 @@
   {
     "id": "travel-02",
     "file": "travel-02.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "invoice",
     "condition": "clean",
@@ -10585,6 +10707,7 @@
   {
     "id": "travel-03",
     "file": "travel-03.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "invoice",
     "condition": "faded",
@@ -10680,6 +10803,7 @@
   {
     "id": "travel-04",
     "file": "travel-04.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "rotated",
@@ -10762,6 +10886,7 @@
   {
     "id": "travel-05",
     "file": "travel-05.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "long",
@@ -10873,6 +10998,7 @@
   {
     "id": "travel-06",
     "file": "travel-06.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "clean",
@@ -10964,6 +11090,7 @@
   {
     "id": "travel-07",
     "file": "travel-07.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "clean",
@@ -11055,6 +11182,7 @@
   {
     "id": "travel-08",
     "file": "travel-08.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "faded",
@@ -11137,6 +11265,7 @@
   {
     "id": "travel-09",
     "file": "travel-09.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "rotated",
@@ -11221,6 +11350,7 @@
   {
     "id": "travel-10",
     "file": "travel-10.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "invoice",
     "condition": "long",
@@ -11352,6 +11482,7 @@
   {
     "id": "travel-11",
     "file": "travel-11.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "invoice",
     "condition": "clean",
@@ -11414,6 +11545,7 @@
   {
     "id": "travel-12",
     "file": "travel-12.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "invoice",
     "condition": "clean",
@@ -11477,6 +11609,7 @@
   {
     "id": "travel-13",
     "file": "travel-13.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "faded",
@@ -11534,6 +11667,7 @@
   {
     "id": "travel-14",
     "file": "travel-14.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "rotated",
@@ -11594,6 +11728,7 @@
   {
     "id": "travel-15",
     "file": "travel-15.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "long",
@@ -11752,6 +11887,7 @@
   {
     "id": "travel-16",
     "file": "travel-16.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "clean",
@@ -11816,6 +11952,7 @@
   {
     "id": "travel-17",
     "file": "travel-17.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "clean",
@@ -11873,6 +12010,7 @@
   {
     "id": "travel-18",
     "file": "travel-18.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "faded",
@@ -11944,6 +12082,7 @@
   {
     "id": "travel-19",
     "file": "travel-19.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "invoice",
     "condition": "rotated",
@@ -12004,6 +12143,7 @@
   {
     "id": "travel-20",
     "file": "travel-20.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "invoice",
     "condition": "long",
@@ -12157,6 +12297,7 @@
   {
     "id": "travel-21",
     "file": "travel-21.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "invoice",
     "condition": "clean",
@@ -12232,6 +12373,7 @@
   {
     "id": "travel-22",
     "file": "travel-22.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "clean",
@@ -12321,6 +12463,7 @@
   {
     "id": "travel-23",
     "file": "travel-23.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "faded",
@@ -12407,6 +12550,7 @@
   {
     "id": "travel-24",
     "file": "travel-24.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "rotated",
@@ -12489,6 +12633,7 @@
   {
     "id": "travel-25",
     "file": "travel-25.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "long",
@@ -12607,6 +12752,7 @@
   {
     "id": "travel-26",
     "file": "travel-26.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "clean",
@@ -12685,6 +12831,7 @@
   {
     "id": "travel-27",
     "file": "travel-27.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "app",
     "condition": "clean",
@@ -12768,6 +12915,7 @@
   {
     "id": "travel-28",
     "file": "travel-28.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "invoice",
     "condition": "faded",
@@ -12870,6 +13018,7 @@
   {
     "id": "travel-29",
     "file": "travel-29.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "invoice",
     "condition": "rotated",
@@ -12953,6 +13102,7 @@
   {
     "id": "travel-30",
     "file": "travel-30.png",
+    "set": "synthetic",
     "category": "travel",
     "layout": "invoice",
     "condition": "long",

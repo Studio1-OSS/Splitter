@@ -1,13 +1,16 @@
 import { once } from "node:events";
+import { existsSync, readFileSync } from "node:fs";
 import { get } from "node:http";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { toMinor } from "../src/lib/money/format";
 import { createDashboardServer, dashboardData } from "./server.mts";
-import { expectedSplit, summarise, type Case, type Row } from "./eval.mts";
+import { expectedSplit, summarise, withSummaries, type Case, type Results, type Row } from "./eval.mts";
 import { costOf, wilson } from "./stats.mts";
 import cases from "./dataset/cases.json";
+import realCases from "./dataset/real/cases.json";
 
 const all = cases as Case[];
+const real = realCases as Case[];
 
 describe("dataset", () => {
   it("is balanced: 5 categories × 30, 6 planted errors and 10 per currency in each", () => {
@@ -34,6 +37,33 @@ describe("dataset", () => {
   });
 });
 
+describe("real receipts (CORD v2)", () => {
+  it("has 150 receipts with a licence file, an image and a CORD source each", () => {
+    expect(real).toHaveLength(150);
+    expect(readFileSync(new URL("./dataset/real/README.md", import.meta.url), "utf8")).toContain("CC BY 4.0");
+    expect(new Set(real.map((c) => c.id)).size).toBe(150);
+    for (const c of real) {
+      expect(c.set).toBe("real");
+      expect(c.source, c.id).toMatch(/^CORD v2 · (test|validation|train) #\d+$/);
+      expect(existsSync(new URL(`./dataset/${c.file}`, import.meta.url)), c.file).toBe(true);
+    }
+  });
+
+  it("has ground truth that adds up, unique line names and no planted errors", () => {
+    for (const c of real) {
+      const t = c.truth;
+      const lines = t.items.reduce((a, i) => a + i.totalPrice, 0);
+      expect(lines + (t.tax ?? 0) + (t.serviceCharge ?? 0) - (t.discount ?? 0), c.id).toBe(t.total);
+      expect(c.planted).toBe(false);
+      expect(t.correctTotal).toBe(t.total);
+      expect(t.items.length).toBeGreaterThanOrEqual(2);
+      expect(new Set(t.items.map((i) => i.name.toLowerCase())).size, c.id).toBe(t.items.length);
+      const shares = expectedSplit(c);
+      expect(Object.values(shares).reduce((a, b) => a + toMinor(b, c.currency), 0), c.id).toBe(toMinor(t.total, c.currency));
+    }
+  });
+});
+
 describe("stats", () => {
   it("Wilson intervals match known values and stay inside [0, 1]", () => {
     const w = wilson(24, 25);
@@ -50,12 +80,28 @@ describe("stats", () => {
 
   it("counts failed runs as failures, never drops them", () => {
     const base = { category: "food", layout: "thermal", condition: "clean", currency: "USD", people: 2, retries: 0, linesTotal: 2, modelCalls: {}, ms: 1000, tokensIn: 10, tokensOut: 5, costUsd: 0 };
-    const pass: Row = { ...base, id: "a", planted: false, ok: true, linesPriced: 2, linesNamed: 2, lineCountRight: true, totalRead: true, taxRead: true, extractionCorrect: true, modelComputed: true, splitCorrect: true, validationOk: true, flagged: false };
-    const fail: Row = { ...base, id: "b", planted: false, ok: false, linesPriced: 0, linesNamed: 0, lineCountRight: false, totalRead: false, taxRead: false, extractionCorrect: false, modelComputed: false, splitCorrect: false, validationOk: false, flagged: false };
+    const pass: Row = { ...base, id: "a", set: "synthetic", planted: false, ok: true, linesPriced: 2, linesNamed: 2, lineCountRight: true, totalRead: true, taxRead: true, extractionCorrect: true, modelComputed: true, splitCorrect: true, validationOk: true, flagged: false };
+    const fail: Row = { ...base, id: "b", set: "synthetic", planted: false, ok: false, linesPriced: 0, linesNamed: 0, lineCountRight: false, totalRead: false, taxRead: false, extractionCorrect: false, modelComputed: false, splitCorrect: false, validationOk: false, flagged: false };
     const s = summarise([pass, fail], null);
     expect(s.overall.splitCorrect).toMatchObject({ k: 1, n: 2 });
     expect(s.overall.completed).toMatchObject({ k: 1, n: 2 });
     expect(s.overall.linesPriced).toMatchObject({ k: 2, n: 4 });
+  });
+
+  it("summarises each track and the combined view from the same rows", () => {
+    const base = { category: "food", layout: "thermal", condition: "clean", currency: "USD", people: 2, retries: 0, linesTotal: 2, modelCalls: {}, ms: 1000, tokensIn: 10, tokensOut: 5, costUsd: 0, planted: false, ok: true, linesPriced: 2, linesNamed: 2, lineCountRight: true, totalRead: true, taxRead: true, extractionCorrect: true, modelComputed: true, validationOk: true, flagged: false };
+    const rows: Row[] = [
+      { ...base, id: "s1", set: "synthetic", splitCorrect: true },
+      { ...base, id: "s2", set: "synthetic", splitCorrect: true },
+      { ...base, id: "r1", set: "real", splitCorrect: false },
+    ];
+    const meta = { date: "2026-01-01T00:00:00Z", bills: 0, concurrency: 1, settings: "x" };
+    const res = withSummaries({ model: "m", baseURL: "u", rows, sets: { synthetic: meta, real: { ...meta, date: "2026-01-02T00:00:00Z" } }, price: { inPerM: 0.3, outPerM: 0.9, source: "test" } } as unknown as Results, null);
+    expect(res.summaries.all!.overall.splitCorrect).toMatchObject({ k: 2, n: 3 });
+    expect(res.summaries.synthetic!.overall.splitCorrect).toMatchObject({ k: 2, n: 2 });
+    expect(res.summaries.real!.overall.splitCorrect).toMatchObject({ k: 0, n: 1 });
+    expect(res.summary).toEqual(res.summaries.all);
+    expect(res.date).toBe("2026-01-02T00:00:00Z");
   });
 });
 
@@ -74,13 +120,13 @@ describe("dashboard server", () => {
   });
 
   it("serves the dashboard, data and images; nothing else", async () => {
-    for (const p of ["/", "/app.js", "/styles.css", "/icons.svg", "/favicon.svg", "/dataset/food-01.png", "/fonts/Geist-Variable.ttf", "/fonts/FragmentMono-Regular.ttf"]) {
+    for (const p of ["/", "/app.js", "/styles.css", "/icons.svg", "/favicon.svg", "/dataset/food-01.png", "/dataset/real/real-001.jpg", "/fonts/Geist-Variable.ttf", "/fonts/FragmentMono-Regular.ttf"]) {
       const r = await fetch(base + p);
       expect(r.status, p).toBe(200);
       expect(r.headers.get("x-content-type-options")).toBe("nosniff");
       await r.arrayBuffer();
     }
-    for (const p of ["/.env", "/%2eenv", "/.git/config", "/server.mts", "/dataset/generate.mjs", "/dataset/../.env", "/constructor", "/fonts/../../.env", "/fonts/Geist-OFL.txt", "/src/fonts/Geist-Variable.ttf"]) {
+    for (const p of ["/.env", "/%2eenv", "/.git/config", "/server.mts", "/dataset/generate.mjs", "/dataset/../.env", "/constructor", "/fonts/../../.env", "/fonts/Geist-OFL.txt", "/src/fonts/Geist-Variable.ttf", "/dataset/real/cases.json", "/dataset/real/README.md", "/dataset/real/../cases.json", "/dataset/real/real-1.jpg"]) {
       const r = await fetch(base + p);
       expect(r.status, p).toBe(404);
       await r.text();

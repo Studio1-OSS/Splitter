@@ -1,7 +1,9 @@
-// Runs the bill agent over the 150-bill synthetic set with real model calls and writes benchmark/results.json
-// (+ results.md). Methodology: benchmark/METHODOLOGY.md.
+// Runs the bill agent over the benchmark with real model calls and writes benchmark/results.json (+ results.md).
+// Two tracks: 150 synthetic bills (dataset/cases.json) and 150 real receipt photos (dataset/real/cases.json).
+// Results are merged by track, so running one track keeps the other's saved rows. Method: benchmark/METHODOLOGY.md.
 //
-//   pnpm bench:eval                         # all 150 bills
+//   pnpm bench:eval                         # both tracks, 300 bills
+//   pnpm bench:eval --set real              # or --set synthetic
 //   pnpm bench:eval --limit 10 --concurrency 2
 //   pnpm bench:eval --category food
 import "dotenv/config";
@@ -18,9 +20,16 @@ import { config, runAgent, SYSTEM, type AgentRun } from "./receipt-agent.mts";
 import { costOf, fetchModelInfo, wilson, type ModelInfo } from "./stats.mts";
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
+export type Track = "synthetic" | "real";
+export const TRACKS: Track[] = ["synthetic", "real"];
+const CASE_FILES: Record<Track, string> = { synthetic: "dataset/cases.json", real: "dataset/real/cases.json" };
+
 export type Case = {
   id: string;
   file: string;
+  set?: Track;
+  /** Where a real receipt came from, e.g. "CORD v2 · test #1". */
+  source?: string;
   category: string;
   layout: string;
   condition: string;
@@ -29,7 +38,7 @@ export type Case = {
   note: string;
   planted: boolean;
   truth: {
-    merchant: string;
+    merchant: string | null;
     currency: string;
     items: { name: string; quantity: number; totalPrice: number }[];
     tax: number | null;
@@ -68,6 +77,7 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
 
 export type Row = {
   id: string;
+  set: Track;
   category: string;
   layout: string;
   condition: string;
@@ -138,9 +148,15 @@ const transient = (e: unknown) =>
   e instanceof OpenAI.APIConnectionError || e instanceof OpenAI.APIConnectionTimeoutError || (e instanceof OpenAI.APIError && (e.status === 429 || (e.status ?? 0) >= 500)) ||
   /timed? ?out|ECONNRESET|socket/i.test(String((e as Error)?.message));
 
+export async function loadCases(tracks: Track[] = TRACKS): Promise<Case[]> {
+  const sets = await Promise.all(tracks.map(async (t) => (JSON.parse(await readFile(path.join(DIR, CASE_FILES[t]), "utf8")) as Case[]).map((c) => ({ ...c, set: t }))));
+  return sets.flat();
+}
+
 export async function score(c: Case, info: ModelInfo | null): Promise<Row> {
-  const image = `data:image/png;base64,${(await readFile(path.join(DIR, "dataset", c.file))).toString("base64")}`;
-  const base = { id: c.id, category: c.category, layout: c.layout, condition: c.condition, currency: c.currency, people: c.people.length, planted: c.planted, linesTotal: c.truth.items.length };
+  const mime = c.file.endsWith(".jpg") ? "image/jpeg" : "image/png";
+  const image = `data:${mime};base64,${(await readFile(path.join(DIR, "dataset", c.file))).toString("base64")}`;
+  const base = { id: c.id, set: c.set ?? "synthetic", category: c.category, layout: c.layout, condition: c.condition, currency: c.currency, people: c.people.length, planted: c.planted, linesTotal: c.truth.items.length };
   const started = performance.now();
   let retries = 0;
   for (;;) {
@@ -261,60 +277,84 @@ export function summarise(rows: Row[], info: ModelInfo | null) {
 
 const pct = (x: { k: number; n: number; lo: number; hi: number }) =>
   x.n ? `${((100 * x.k) / x.n).toFixed(1)}% (${x.k}/${x.n}, 95% CI ${(100 * x.lo).toFixed(0)}–${(100 * x.hi).toFixed(0)}%)` : "n/a";
+const short = (x: { k: number; n: number }) => (x.n ? `${((100 * x.k) / x.n).toFixed(1)}% (${x.k}/${x.n})` : "n/a");
 
-function markdown(meta: Awaited<ReturnType<typeof buildMeta>>, s: ReturnType<typeof summarise>) {
-  const o = s.overall;
-  const cats = Object.entries(s.byCategory);
-  return `# Results · ${meta.model}
+type Summary = ReturnType<typeof summarise>;
+type RunMeta = { date: string; bills: number; concurrency: number; settings: string };
+export type Results = Awaited<ReturnType<typeof buildMeta>> & { date: string; settings: string; bills: number; sets: Partial<Record<Track, RunMeta>>; summary: Summary; summaries: Record<"all" | Track, Summary | null>; rows: Row[] };
 
-${meta.date} · ${meta.bills} synthetic bills · endpoint \`${meta.baseURL}\` · settings \`${meta.settings}\`
-Application-level evaluation on synthetic data, not an official benchmark. Method: [METHODOLOGY.md](METHODOLOGY.md).
+function markdown(res: Results) {
+  const cols = [["all", `All ${res.rows.length}`], ...TRACKS.filter((t) => res.summaries[t]).map((t) => [t, `${t === "real" ? "Real" : "Synthetic"} ${res.summaries[t]!.overall.bills}`])] as ["all" | Track, string][];
+  const row = (label: string, f: (s: Summary) => string) => `| ${label} | ${cols.map(([k]) => f(res.summaries[k]!)).join(" | ")} |`;
+  const o = (k: keyof Summary["overall"]) => (s: Summary) => short(s.overall[k] as { k: number; n: number });
+  const runs = TRACKS.filter((t) => res.sets[t]).map((t) => `${t}: ${res.sets[t]!.date} · settings \`${res.sets[t]!.settings}\``).join(" · ");
+  const same = new Set(TRACKS.filter((t) => res.sets[t]).map((t) => res.sets[t]!.settings)).size <= 1;
+  const syn = res.summaries.synthetic;
+  return `# Results · ${res.model}
 
-| Metric | Result |
-|---|---|
-| Runs completed | ${pct(o.completed)} |
-| Line prices read exactly | ${pct(o.linesPriced)} |
-| Line names + prices read | ${pct(o.linesNamed)} |
-| Printed total read | ${pct(o.totalRead)} |
-| Tax read | ${pct(o.taxRead)} |
-| Split computed by the model (tool call) | ${pct(o.modelComputed)} |
-| Model's split correct to the cent (all bills) | ${pct(o.splitCorrect)} |
-| … on bills without a planted error | ${pct(o.splitCorrectClean)} |
-| App validation rule passed | ${pct(o.validationOk)} |
-| Bill read completely (every line, charge and total) | ${pct(o.extractionCorrect)} |
-| Split correct when the bill was read correctly | ${pct(o.splitCorrectGivenRead)} |
-| Planted wrong totals caught | ${pct(o.plantedCaught)} |
-| False alarms (flag on a correctly read, correct bill) | ${pct(o.falseAlarms)} |
-| Misreads on correct bills flagged by check_receipt | ${pct(o.misreadsFlagged)} |
-| Latency per bill (p50 / p95) | ${(s.latencyMs.p50 / 1000).toFixed(1)}s / ${(s.latencyMs.p95 / 1000).toFixed(1)}s |
-| Tokens per bill (in / out) | ${s.tokens.perBillIn} / ${s.tokens.perBillOut} |
-| Cost | ${s.costUsd ? `$${s.costUsd.total.toFixed(4)} total · $${s.costUsd.perBill.toFixed(5)} per bill · $${s.costUsd.per1000Bills.toFixed(2)} per 1,000 bills` : "n/a"} |
-| Network retries | ${s.retries} |
+${res.rows.length} bills · endpoint \`${res.baseURL}\` · ${runs}${same ? "" : "\n\n**The tracks were run with different settings, so the combined column mixes two configurations.**"}
+Application-level evaluation, not an official benchmark. Real receipts: CORD v2 (CC BY 4.0). Method: [METHODOLOGY.md](METHODOLOGY.md).
 
-Prices: $${meta.price.inPerM}/1M input, $${meta.price.outPerM}/1M output tokens (${meta.price.source}).
+| Metric | ${cols.map(([, l]) => l).join(" | ")} |
+|---|${cols.map(() => "---").join("|")}|
+${row("Runs completed", o("completed"))}
+${row("Model's split correct to the cent", (s) => pct(s.overall.splitCorrect))}
+${row("Split computed by the model (tool call)", o("modelComputed"))}
+${row("Bill read completely (every line, charge and total)", o("extractionCorrect"))}
+${row("Split correct when the bill was read correctly", o("splitCorrectGivenRead"))}
+${row("Line prices read exactly", o("linesPriced"))}
+${row("Line names + prices read", o("linesNamed"))}
+${row("Printed total read", o("totalRead"))}
+${row("Tax read", o("taxRead"))}
+${row("App validation rule passed", o("validationOk"))}
+${row("Planted wrong totals caught", (s) => (s.overall.plantedCaught.n ? short(s.overall.plantedCaught) : "n/a (none planted)"))}
+${row("False alarms (flag on a correctly read, correct bill)", o("falseAlarms"))}
+${row("Misreads on correct bills flagged by check_receipt", o("misreadsFlagged"))}
+${row("Latency per bill (p50 / p95)", (s) => `${(s.latencyMs.p50 / 1000).toFixed(1)}s / ${(s.latencyMs.p95 / 1000).toFixed(1)}s`)}
+${row("Tokens per bill (in / out)", (s) => `${s.tokens.perBillIn} / ${s.tokens.perBillOut}`)}
+${row("Cost per bill", (s) => (s.costUsd ? `$${s.costUsd.perBill.toFixed(5)}` : "n/a"))}
+${row("Cost per 1,000 bills", (s) => (s.costUsd ? `$${s.costUsd.per1000Bills.toFixed(2)}` : "n/a"))}
+${row("Network retries", (s) => String(s.retries))}
 
-## By category
+Prices: $${res.price.inPerM}/1M input, $${res.price.outPerM}/1M output tokens (${res.price.source}).
+${syn ? `
+## Synthetic bills by category
 
 | Category | Bills | Lines priced | Total read | Split correct | Planted caught | False alarms |
 |---|---|---|---|---|---|---|
-${cats.map(([k, b]) => `| ${k} | ${b.bills} | ${((100 * b.linesPriced.k) / (b.linesPriced.n || 1)).toFixed(1)}% | ${b.totalRead.k}/${b.totalRead.n} | ${b.splitCorrect.k}/${b.splitCorrect.n} | ${b.plantedCaught.k}/${b.plantedCaught.n} | ${b.falseAlarms.k}/${b.falseAlarms.n} |`).join("\n")}
-`;
+${Object.entries(syn.byCategory).map(([k, b]) => `| ${k} | ${b.bills} | ${((100 * b.linesPriced.k) / (b.linesPriced.n || 1)).toFixed(1)}% | ${b.totalRead.k}/${b.totalRead.n} | ${b.splitCorrect.k}/${b.splitCorrect.n} | ${b.plantedCaught.k}/${b.plantedCaught.n} | ${b.falseAlarms.k}/${b.falseAlarms.n} |`).join("\n")}
+` : ""}`;
 }
 
-async function buildMeta(info: ModelInfo | null, n: number, concurrency: number) {
+async function buildMeta(info: ModelInfo | null) {
   return {
     model: config.model,
     baseURL: config.baseURL,
-    date: new Date().toISOString(),
-    bills: n,
-    concurrency,
-    settings: settingsHash(),
     reasoning: { read: "off (JSON schema)", toolLoop: "off", param: process.env.AI_REASONING_PARAM ?? "chat_template_kwargs" },
     toolChoice: "auto",
     temperature: { read: 0, toolLoop: 0 },
     modelInfo: info && { contextLength: info.contextLength, modality: info.modality, quantization: info.quantization },
     price: info ? { inPerM: info.pricePromptPerM, outPerM: info.priceCompletionPerM, source: info.priceSource } : { inPerM: null, outPerM: null, source: "unavailable" },
   };
+}
+
+/** Reads results.json, upgrading a single-track file (written before the real track existed) to the per-track shape. */
+export async function loadResults(): Promise<Results | null> {
+  const saved = JSON.parse(await readFile(path.join(DIR, "results.json"), "utf8").catch(() => "null"));
+  if (!saved) return null;
+  const rows: Row[] = saved.rows.map((r: Row) => ({ ...r, set: r.set ?? "synthetic" }));
+  const sets = saved.sets ?? { synthetic: { date: saved.date, bills: saved.bills, concurrency: saved.concurrency, settings: saved.settings } };
+  return { ...saved, rows, sets };
+}
+
+/** Recomputes every summary from the rows, so the combined view always matches the per-track ones. */
+export function withSummaries(res: Omit<Results, "summary" | "summaries">, info: ModelInfo | null): Results {
+  const price = info ?? ({ pricePromptPerM: res.price.inPerM, priceCompletionPerM: res.price.outPerM } as ModelInfo);
+  const has = (t: Track) => res.rows.some((r) => r.set === t);
+  const all = summarise(res.rows, res.price.inPerM == null ? null : price);
+  const per = Object.fromEntries(TRACKS.map((t) => [t, has(t) ? summarise(res.rows.filter((r) => r.set === t), res.price.inPerM == null ? null : price) : null])) as Record<Track, Summary | null>;
+  const latest = TRACKS.map((t) => res.sets[t]).filter(Boolean).sort((a, b) => b!.date.localeCompare(a!.date))[0]!;
+  return { ...res, date: latest.date, settings: latest.settings, bills: res.rows.length, summary: all, summaries: { all, ...per } } as Results;
 }
 
 /** Writes the results table into README.md between the results markers, so the README and the dashboard
@@ -331,18 +371,23 @@ async function writeReadme(md: string) {
 // CLI
 if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1] ?? "") && process.argv.includes("--report")) {
   // Rebuild results.md and the README section from the saved run, without any model calls.
-  const saved = JSON.parse(await readFile(path.join(DIR, "results.json"), "utf8"));
-  const md = markdown(saved, saved.summary);
-  await writeFile(path.join(DIR, "results.md"), md);
-  await writeReadme(md);
+  const saved = await loadResults();
+  if (!saved) throw new Error("No benchmark/results.json yet. Run pnpm bench:eval first.");
+  const res = withSummaries(saved, null);
+  await writeFile(path.join(DIR, "results.json"), JSON.stringify(res, null, 2));
+  await writeFile(path.join(DIR, "results.md"), markdown(res));
+  await writeReadme(markdown(res));
   console.log("Rebuilt benchmark/results.md and the README results section from results.json");
 } else if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1] ?? "")) {
-  const all: Case[] = JSON.parse(await readFile(path.join(DIR, "dataset/cases.json"), "utf8"));
+  const setFlag = flag("--set") ?? "all";
+  if (setFlag !== "all" && !TRACKS.includes(setFlag as Track)) throw new Error("--set must be synthetic, real or all");
+  const tracks = setFlag === "all" ? TRACKS : [setFlag as Track];
+  const all = await loadCases(tracks);
   const category = flag("--category");
   const cases = (category ? all.filter((c) => c.category === category) : all).slice(0, Number(flag("--limit") ?? all.length));
   const concurrency = Number(flag("--concurrency") ?? 6);
   const info = await fetchModelInfo(config).catch(() => null);
-  console.log(`Model ${config.model} · ${cases.length} bills · concurrency ${concurrency}${info ? ` · $${info.pricePromptPerM}/$${info.priceCompletionPerM} per 1M tokens (${info.priceSource})` : ""}\n`);
+  console.log(`Model ${config.model} · ${tracks.join(" + ")} · ${cases.length} bills · concurrency ${concurrency}${info ? ` · $${info.pricePromptPerM}/$${info.priceCompletionPerM} per 1M tokens (${info.priceSource})` : ""}\n`);
 
   const rows: Row[] = [];
   let next = 0;
@@ -357,11 +402,18 @@ if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1] ?? "") && pr
       }
     }),
   );
-  rows.sort((a, b) => a.id.localeCompare(b.id));
-  const summary = summarise(rows, info);
-  const meta = await buildMeta(info, rows.length, concurrency);
-  await writeFile(path.join(DIR, "results.json"), JSON.stringify({ ...meta, summary, rows }, null, 2));
-  await writeFile(path.join(DIR, "results.md"), markdown(meta, summary));
-  await writeReadme(markdown(meta, summary));
-  console.log(`\n${markdown(meta, summary)}\nWrote benchmark/results.json and results.md`);
+
+  // Replace only the tracks that ran; the other track's saved rows and run details stay as they were.
+  const saved = await loadResults();
+  const ran = new Set(rows.map((r) => r.set));
+  const keep = (saved?.rows ?? []).filter((r) => !ran.has(r.set));
+  const runMeta: RunMeta = { date: new Date().toISOString(), bills: 0, concurrency, settings: settingsHash() };
+  const sets = { ...(saved?.sets ?? {}) };
+  for (const t of ran) sets[t] = { ...runMeta, bills: rows.filter((r) => r.set === t).length };
+  const merged = [...keep, ...rows].sort((a, b) => TRACKS.indexOf(a.set) - TRACKS.indexOf(b.set) || a.id.localeCompare(b.id));
+  const res = withSummaries({ ...(await buildMeta(info)), sets, rows: merged } as Results, info);
+  await writeFile(path.join(DIR, "results.json"), JSON.stringify(res, null, 2));
+  await writeFile(path.join(DIR, "results.md"), markdown(res));
+  await writeReadme(markdown(res));
+  console.log(`\n${markdown(res)}\nWrote benchmark/results.json and results.md`);
 }

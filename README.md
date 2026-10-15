@@ -166,7 +166,7 @@ pnpm smoke:batch    # reads five sample bills and plans two settlements
 
 Every AI call spends daily credits from the signed-in account: reading a bill, a payment screenshot or answering a question costs 1, and a Settle-with-AI plan costs 3. When credits run out, manual entry still works, and they reset at midnight UTC. The account sheet shows what's left.
 
-Measured on 150 benchmark bills, reading a bill and splitting it with tool calls uses about 8,900 input and 730 output tokens, which is about $0.0033 at Token Factory prices ($0.30 / $0.90 per 1M tokens). A Settle-with-AI plan with reasoning uses more. Photos are resized in the browser before upload, and an exact duplicate file isn't sent at all. Check current pricing on [Nebius Token Factory](https://tokenfactory.nebius.com).
+Measured on 300 benchmark bills, reading a bill and splitting it with tool calls uses about 9,200 input and 650 output tokens, which is about $0.0033 at Token Factory prices ($0.30 / $0.90 per 1M tokens). A Settle-with-AI plan with reasoning uses more. Photos are resized in the browser before upload, and an exact duplicate file isn't sent at all. Check current pricing on [Nebius Token Factory](https://tokenfactory.nebius.com).
 
 ### Notifications
 
@@ -213,16 +213,26 @@ See [evals/README.md](evals/README.md) for the sample bills and how they're gene
 3. it calls the calculator tools, and its own tool result is the split;
 4. the app checks it with a validation rule.
 
-It runs on 150 synthetic bills (30 each of groceries, party, home & rent, food and travel), all real model runs, with live Token Factory prices and 95% confidence intervals. A local dashboard shows every bill, tool call and miss.
+It runs on 300 bills in two tracks: 150 synthetic bills (30 each of groceries, party, home & rent, food and travel, with planted wrong totals) and 150 real receipt photos from [CORD v2](benchmark/dataset/real/README.md). All are real model runs, with live Token Factory prices and 95% confidence intervals. A local dashboard shows every bill, tool call and miss.
+
+| | All 300 | Synthetic 150 | Real 150 |
+|---|---|---|---|
+| Splits correct to the cent | 91.0% | 97.3% | 84.7% |
+| …when the bill was read correctly | 98.1% | 99.3% | 96.7% |
+| Split computed by the model's own tool call | 300/300 | 150/150 | 150/150 |
+| Planted wrong totals caught | 30/30 | 30/30 | none planted |
+| Cost per bill | $0.0033 | $0.0034 | $0.0033 |
+
+The real track found a reading bug: the model took "60.000" rupiah for 60. A rule in Splitter's bill prompt fixed it (real-receipt splits went from 57.3% to 84.7% correct), and every user gets that fix. Details in [benchmark/README.md](benchmark/README.md#results).
 
 ```sh
-pnpm bench:eval    # run the benchmark (about $0.50)
+pnpm bench:eval    # run the benchmark (about $1)
 pnpm bench:dev     # open Receipt Lab on http://localhost:3001
 ```
 
 Every deployment also serves Receipt Lab at `/benchmark`. `pnpm build` publishes the saved results there as static files, so it makes no model calls.
 
-![Receipt Lab: headline results (95.3% of splits correct to the cent, every split computed by the model, 30/30 planted wrong totals caught, $0.0033 per bill) and the model under test](benchmark/screenshots/lab-overview.png)
+![Receipt Lab: headline results on all 300 bills (91.0% of splits correct to the cent, every split computed by the model, 30/30 planted wrong totals caught, $0.0033 per bill), the track switch and the model under test](benchmark/screenshots/lab-overview.png)
 
 ## Data and privacy
 
@@ -234,6 +244,8 @@ Nothing leaves your server except calls to the services you configure:
 - **Novu** receives each member's account id, display name, email address and the notification text.
 
 Splitter sends no telemetry of its own. Public share links show display names and amounts, never emails or account ids. Bill photos and the group's notes appear on a share link only if someone in the group turns that on.
+
+The benchmark ships 150 third-party receipt photos from CORD v2 (CC BY 4.0, credited in [`benchmark/dataset/real/`](benchmark/dataset/real/README.md)). The dataset authors had already blurred identifying details, and `/benchmark` serves them as public static files. No user data is part of the benchmark.
 
 ## Features
 

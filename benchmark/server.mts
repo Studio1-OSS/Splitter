@@ -9,20 +9,24 @@ import { toMinor } from "../src/lib/money/format.ts";
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 type DatasetCase = {
-  id: string; file: string; style: string; people: string[]; note: string; planted: boolean;
+  id: string; file: string; set?: string; source?: string; people: string[]; note: string; planted: boolean;
   truth: {
-    merchant: string; currency: string; items: { name: string; quantity: number; totalPrice: number }[];
+    merchant: string | null; currency: string; items: { name: string; quantity: number; totalPrice: number }[];
     assignment: string[][]; total: number; correctTotal: number;
     tax: number | null; tip: number | null; serviceCharge: number | null; discount: number | null;
   };
 };
 
 export async function dashboardData() {
-  const [resultsText, casesText] = await Promise.all([
+  const [resultsText, syntheticText, realText] = await Promise.all([
     readFile(path.join(DIR, "results.json"), "utf8"),
     readFile(path.join(DIR, "dataset/cases.json"), "utf8"),
+    readFile(path.join(DIR, "dataset/real/cases.json"), "utf8").catch(() => "[]"),
   ]);
-  const cases: DatasetCase[] = JSON.parse(casesText);
+  const cases: DatasetCase[] = [
+    ...JSON.parse(syntheticText).map((c: DatasetCase) => ({ ...c, set: "synthetic" })),
+    ...JSON.parse(realText).map((c: DatasetCase) => ({ ...c, set: "real" })),
+  ];
   return {
     ...JSON.parse(resultsText),
     cases: cases.map((c) => {
@@ -78,7 +82,7 @@ export function createDashboardServer() {
         res.end(req.method === "HEAD" ? undefined : data); return;
       }
       const asset = (Object.hasOwn(assets, pathname) ? assets[pathname] : undefined) ?? (/^\/dataset\/[a-z]+-\d{2}\.png$/.test(pathname)
-        ? [pathname.slice(1), "image/png"] : undefined);
+        ? [pathname.slice(1), "image/png"] : /^\/dataset\/real\/real-\d{3}\.jpg$/.test(pathname) ? [pathname.slice(1), "image/jpeg"] : undefined);
       if (!asset) { res.writeHead(404, headers).end("Not found"); return; }
       const body = await readFile(path.join(DIR, asset[0]));
       res.writeHead(200, { ...headers, "Content-Type": asset[1] });

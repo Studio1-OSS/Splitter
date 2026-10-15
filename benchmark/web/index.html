@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="color-scheme" content="light dark">
-    <meta name="description" content="A benchmark of Nemotron 3.5 Super VL on 150 synthetic bills: vision, reasoning and calculator tool calls, with every run open for inspection.">
+    <meta name="description" content="A benchmark of Nemotron 3.5 Super VL on 300 bills, 150 synthetic and 150 real receipt photos: vision, reasoning and calculator tool calls, with every run open for inspection.">
     <title>Receipt Lab</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="/fonts/Geist-Variable.ttf" as="font" type="font/ttf" crossorigin>
@@ -21,7 +21,7 @@
         </a>
         <nav id="navigation" aria-label="Sections">
           <a href="#overview" data-view="overview">Benchmark</a>
-          <a href="#bills" data-view="bills">Bills <span class="nav-count" id="nav-count">150</span></a>
+          <a href="#bills" data-view="bills">Bills <span class="nav-count" id="nav-count">300</span></a>
           <a href="#method" data-view="method">Method</a>
           <a href="#guide" data-view="guide">Run it</a>
         </nav>
@@ -34,11 +34,11 @@
     <main id="main" tabindex="-1"><div class="loading-state" role="status">Loading the benchmark…</div></main>
     <footer class="footer">
       <div class="footer-inner">
-        <div><span class="mono-label">Receipt Lab</span><p>Built from Splitter. Synthetic bills, real model runs.</p></div>
+        <div><span class="mono-label">Receipt Lab</span><p>Built from Splitter. Synthetic bills and real CORD v2 receipts (CC BY 4.0), real model runs.</p></div>
         <p class="footer-right">The model calls the calculator tools. The app checks the answer.</p>
       </div>
     </footer>
-    <dialog id="image-dialog" aria-label="Bill image"><button class="dialog-close icon-button" aria-label="Close bill image"><svg aria-hidden="true"><use href="/icons.svg#close"/></svg></button><img alt="Selected synthetic bill at full size"></dialog>
+    <dialog id="image-dialog" aria-label="Bill image"><button class="dialog-close icon-button" aria-label="Close bill image"><svg aria-hidden="true"><use href="/icons.svg#close"/></svg></button><img alt="Selected bill at full size"></dialog>
     <div id="toast" role="status" aria-live="polite"></div>
   </body>
 </html>

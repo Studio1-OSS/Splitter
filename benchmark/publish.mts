@@ -13,7 +13,7 @@ const OUT = path.join(ROOT, "public", "benchmark");
 const BASE = "/benchmark/";
 
 await rm(OUT, { recursive: true, force: true });
-await mkdir(path.join(OUT, "dataset"), { recursive: true });
+await mkdir(path.join(OUT, "dataset", "real"), { recursive: true });
 await mkdir(path.join(OUT, "fonts"), { recursive: true });
 
 // The page, pointed at /benchmark/ instead of the local server's root.
@@ -29,7 +29,11 @@ for (const f of ["Geist-Variable.ttf", "FragmentMono-Regular.ttf"]) await cp(pat
 await writeFile(path.join(OUT, "data.json"), JSON.stringify(await dashboardData()));
 await cp(path.join(DIR, "results.json"), path.join(OUT, "results.json"));
 
-const images = (await readdir(path.join(DIR, "dataset"))).filter((f) => f.endsWith(".png"));
+// Synthetic bills (PNG) and the real CORD v2 receipt photos (JPEG, CC BY 4.0).
+const images = [
+  ...(await readdir(path.join(DIR, "dataset"))).filter((f) => f.endsWith(".png")),
+  ...(await readdir(path.join(DIR, "dataset/real")).catch(() => [])).filter((f) => f.endsWith(".jpg")).map((f) => `real/${f}`),
+];
 await Promise.all(images.map((f) => cp(path.join(DIR, "dataset", f), path.join(OUT, "dataset", f))));
 
 console.log(`Published Receipt Lab to public/benchmark/ (${images.length} bills) → served at ${BASE}`);

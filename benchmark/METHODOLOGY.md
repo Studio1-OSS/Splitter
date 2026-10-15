@@ -1,8 +1,17 @@
 # How the benchmark works
 
-This is an application-level evaluation of one workflow (bill image → extraction → reasoning → calculator tool calls → validated split) on synthetic data. It isn't an official model benchmark.
+This is an application-level evaluation of one workflow (bill image → extraction → reasoning → calculator tool calls → validated split). It isn't an official model benchmark.
 
-## Dataset
+It has two tracks, 300 bills in all, scored the same way:
+
+| Track | Bills | What it tests |
+|---|---|---|
+| **Synthetic** | 150 rendered bills, 5 categories, 3 currencies, with planted errors | The whole workflow, under conditions we control and can balance |
+| **Real receipts** | 150 photos from CORD v2 (Indonesian restaurants and cafés, rupiah) | Reading real photos: lighting, creases, shadows, odd fonts and local number formats |
+
+Results are reported per track and combined. Each track records its own run date and settings fingerprint.
+
+## Synthetic bills
 
 `dataset/generate.mjs` builds 150 bills with a fixed seed. Each axis is assigned in rotation, so every category gets the same mix.
 
@@ -24,9 +33,23 @@ This is an application-level evaluation of one workflow (bill image → extracti
   So "errors caught" can't be explained by any one easy case.
 - **Rendering:** Chrome via `playwright-core`, each bill screenshotted as its own element. Spot-check the images after any generator change.
 
+## Real receipts
+
+`dataset/import_cord.py` takes 150 photographed receipts from [CORD v2](https://huggingface.co/datasets/naver-clova-ix/cord-v2) (NAVER Clova AI, CC BY 4.0), with CORD's human labels as the ground truth. See [`dataset/real/README.md`](dataset/real/README.md) for the licence and citation.
+
+- **Fixed order, no cherry-picking.** It reads test, then validation, then train, and keeps the first 150 receipts whose labels are unambiguous and add up:
+  - at least 2 lines, every line priced, unique line names (so the note points at one line);
+  - no priced add-ons or per-line discounts;
+  - lines + tax + service − discount = printed total.
+  
+  Of the 416 receipts read (all of test and validation, then train up to #215), 266 were skipped, most for having a single line (168).
+- **Who had what is generated,** with the same rules as the synthetic set (2–5 people; shared, paired or single lines). The receipts are real; the notes aren't.
+- **No planted errors.** These totals are real, so the track measures reading, reasoning, splits and false alarms.
+- **Photos** are resized to at most 1,600 px and re-encoded as JPEG. Identifying details were already blurred by the dataset authors.
+
 ## Ground truth
 
-`dataset/cases.json` holds, for each bill:
+`dataset/cases.json` (synthetic) and `dataset/real/cases.json` (real) hold, for each bill:
 - every line, charge and printed total, and the correct total;
 - who had each line;
 - the note shown to the model, written from the same truth.
@@ -42,6 +65,7 @@ The **expected split** comes from Splitter's money engine: integer minor units, 
 
 - **Why reasoning is off.** For JSON output it's faster and the output is just as clean. With it off, a free-text answer would carry the model's reasoning, but this workflow only uses JSON and tool calls.
 - **`tool_choice: auto` is enough here.** The model called the tools on every bill.
+- **The bill prompt is Splitter's own,** including its rule for number formats ("60.000" on a rupiah receipt is 60000). The rule was added after the first real-receipt run showed the model reading thousands separators as decimal points; both tracks were then rerun with it.
 - **Recorded per run:** the model id, endpoint, date and a settings fingerprint (a hash of model, endpoint, reasoning setting, prompts and tool definitions), so runs are only compared like for like.
 
 ## Scoring
@@ -70,8 +94,10 @@ The **expected split** comes from Splitter's money engine: integer minor units, 
 
 ## Reproducibility
 
-- **A second full run** on the final dataset agreed with the reported run on every one of the 150 bills (143 of 150 splits correct in both). It raised one flag on a correct bill that the reported run didn't.
+- **Run to run.** Before the number-format rule, two full synthetic runs agreed on every one of the 150 bills (143 splits correct in both).
+- **Before and after the rule.** The reported synthetic run (with the rule) matched the earlier one on 147 of 150 splits; the 3 that changed all went from wrong to right. On the real track, 44 splits went from wrong to right and 3 from right to wrong.
+- **Every run is kept as data:** `results.json` stores each call's raw usage, the model's reading and its tool calls, so any number here can be traced to a bill.
 
 ## Limits
 
-See [README → Limitations](README.md#limitations). In short: synthetic bills, unambiguous notes, tools that check arithmetic but not intent, and results that apply to one model, endpoint and date.
+See [README → Limitations](README.md#limitations). In short: clean synthetic bills, a narrow real track (Indonesian receipts, one currency), generated notes, tools that check arithmetic but not intent, and results that apply to one model, endpoint and date.

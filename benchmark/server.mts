@@ -18,8 +18,9 @@ type DatasetCase = {
 };
 
 export async function dashboardData() {
-  const [resultsText, syntheticText, realText] = await Promise.all([
+  const [resultsText, reasoningText, syntheticText, realText] = await Promise.all([
     readFile(path.join(DIR, "results.json"), "utf8"),
+    readFile(path.join(DIR, "results-reasoning.json"), "utf8").catch(() => null),
     readFile(path.join(DIR, "dataset/cases.json"), "utf8"),
     readFile(path.join(DIR, "dataset/real/cases.json"), "utf8").catch(() => "[]"),
   ]);
@@ -29,6 +30,8 @@ export async function dashboardData() {
   ];
   return {
     ...JSON.parse(resultsText),
+    // The same bills with the model's reasoning on, for the off/on comparison (when it has been run).
+    reasoningOn: reasoningText ? JSON.parse(reasoningText) : null,
     cases: cases.map((c) => {
       const minor = (value: number | null) => toMinor(value ?? 0, c.truth.currency);
       const split = computeSplit({
@@ -51,6 +54,7 @@ const assets: Record<string, [string, string]> = {
   "/styles.css": ["web/styles.css", "text/css; charset=utf-8"],
   "/icons.svg": ["web/icons.svg", "image/svg+xml"],
   "/results.json": ["results.json", "application/json; charset=utf-8"],
+  "/results-reasoning.json": ["results-reasoning.json", "application/json; charset=utf-8"],
   "/results.md": ["results.md", "text/plain; charset=utf-8"],
   "/README.md": ["README.md", "text/plain; charset=utf-8"],
   "/favicon.svg": ["web/favicon.svg", "image/svg+xml"],

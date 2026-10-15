@@ -21,6 +21,19 @@ export const config: NebiusConfig = {
   model: process.env.NEBIUS_MODEL || "nvidia/Nemotron-3.5-Super-VL",
 };
 
+/** The two reasoning modes the benchmark compares, set the way Nebius Token Factory exposes them.
+ *  "off" is what Splitter uses: reasoning disabled, temperature 0.
+ *  "on" uses Token Factory's `reasoning_effort: "medium"` (the level the endpoint applies by default) and leaves
+ *  temperature and top_p at Token Factory's defaults. Reasoning tokens share max_tokens with the answer, so it gets room. */
+export const MODES = {
+  off: { read: { thinking: false }, loop: { thinking: false, maxTokens: 4000 } },
+  on: {
+    read: { reasoningEffort: "medium", temperature: null, maxTokens: 16384 },
+    loop: { reasoningEffort: "medium", temperature: null, maxTokens: 16384 },
+  },
+} as const;
+export type Mode = keyof typeof MODES;
+
 const decisionSchema = z.object({
   lines: z.array(z.object({ line: z.number().int(), members: z.array(z.string()) })).describe("Who had each bill line"),
   receiptIssues: z.array(z.string()).describe("Problems check_receipt found, in plain words; [] if none"),
@@ -54,13 +67,13 @@ export type AgentRun = {
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
 
-export async function runAgent(image: string, people: string[], note: string, cfg: NebiusConfig = config): Promise<AgentRun> {
+export async function runAgent(image: string, people: string[], note: string, cfg: NebiusConfig = config, mode: Mode = "off"): Promise<AgentRun> {
   const calls: Usage[] = [];
   const metered: NebiusConfig = { ...cfg, onUsage: (u) => calls.push({ prompt: u.prompt_tokens, completion: u.completion_tokens }) };
 
   // 1. SEE
   let t = performance.now();
-  const receipt = await extractReceiptWithNebius(metered, [image]);
+  const receipt = await extractReceiptWithNebius(metered, [image], { ...MODES[mode].read });
   const see = performance.now() - t;
 
   // 2 + 3. REASON and CALCULATE with tools (native function calling)
@@ -86,8 +99,7 @@ export async function runAgent(image: string, people: string[], note: string, cf
       trace.push(call);
       return call.result;
     },
-    thinking: false,
-    maxTokens: 4000,
+    ...MODES[mode].loop,
   });
   const reason = performance.now() - t;
 

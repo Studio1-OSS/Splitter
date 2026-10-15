@@ -28,6 +28,7 @@ for (const f of ["Geist-Variable.ttf", "FragmentMono-Regular.ttf"]) await cp(pat
 // The same data the local server builds for /api/data, plus the raw results for download.
 await writeFile(path.join(OUT, "data.json"), JSON.stringify(await dashboardData()));
 await cp(path.join(DIR, "results.json"), path.join(OUT, "results.json"));
+await cp(path.join(DIR, "results-reasoning.json"), path.join(OUT, "results-reasoning.json")).catch(() => {});
 
 // Synthetic bills (PNG) and the real CORD v2 receipt photos (JPEG, CC BY 4.0).
 const images = [

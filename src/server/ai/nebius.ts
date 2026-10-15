@@ -68,6 +68,15 @@ export function reasoningOptions(thinking: boolean | undefined): Record<string, 
   return { chat_template_kwargs: { enable_thinking: Boolean(thinking) } };
 }
 
+/** Token Factory's own reasoning control ("none" … "max"). When set, it replaces `thinking`. */
+export type ReasoningEffort = "none" | "minimal" | "low" | "medium" | "high";
+
+/** Sampling and reasoning fields for one request. A null temperature leaves Token Factory's default in place. */
+function samplingOptions(opts: { thinking?: boolean; reasoningEffort?: ReasoningEffort; temperature?: number | null }): Record<string, unknown> {
+  const temperature = opts.temperature === null ? {} : { temperature: opts.temperature ?? (opts.thinking ? 0.6 : 0) };
+  return { ...temperature, ...(opts.reasoningEffort ? { reasoning_effort: opts.reasoningEffort } : reasoningOptions(opts.thinking)) };
+}
+
 const imageParts = (images: string[]): Content =>
   images.map((url) => ({ type: "image_url", image_url: { url } }));
 
@@ -84,8 +93,9 @@ export async function chatJSON<T>(
     jsonSchema: Record<string, unknown>;
     name: string;
     thinking?: boolean;
+    reasoningEffort?: ReasoningEffort;
     maxTokens?: number;
-    temperature?: number;
+    temperature?: number | null;
     /** Shown when the model runs out of output tokens. */
     truncatedMessage?: string;
   },
@@ -98,7 +108,6 @@ export async function chatJSON<T>(
     try {
       completion = await client.chat.completions.create({
         model: config.model,
-        temperature: opts.temperature ?? (opts.thinking ? 0.6 : 0),
         max_tokens: opts.maxTokens ?? 4096,
         response_format:
           mode === "json_schema"
@@ -108,7 +117,7 @@ export async function chatJSON<T>(
           { role: "system", content: opts.system },
           { role: "user", content: opts.content },
         ],
-        ...reasoningOptions(opts.thinking),
+        ...samplingOptions(opts),
       });
     } catch (error) {
       lastError = error;
@@ -180,7 +189,10 @@ const multiPageSchema = receiptSchema.extend({
 });
 const { $schema: _mp, ...multiPageJsonSchema } = z.toJSONSchema(multiPageSchema, { target: "draft-7" });
 
-export async function extractReceiptWithNebius(config: NebiusConfig, images: string | string[]): Promise<ExtractedReceipt> {
+/** Sampling for the bill read. The app uses the defaults (reasoning off, temperature 0); the benchmark can turn reasoning on. */
+export type ReadOptions = { thinking?: boolean; reasoningEffort?: ReasoningEffort; temperature?: number | null; maxTokens?: number };
+
+export async function extractReceiptWithNebius(config: NebiusConfig, images: string | string[], read: ReadOptions = {}): Promise<ExtractedReceipt> {
   const pages = Array.isArray(images) ? images : [images];
   const multi = pages.length > 1;
   let result: ExtractedReceipt & { billsShown?: number };
@@ -190,6 +202,7 @@ export async function extractReceiptWithNebius(config: NebiusConfig, images: str
       name: "receipt",
       schema: multi ? multiPageSchema : receiptSchema,
       jsonSchema: (multi ? multiPageJsonSchema : receiptJsonSchema) as Record<string, unknown>,
+      ...read,
       content: [
         {
           type: "text",
@@ -234,6 +247,8 @@ export async function chatWithTools<T>(
     tools: OpenAI.Chat.Completions.ChatCompletionTool[];
     runTool: (name: string, args: string) => unknown;
     thinking?: boolean;
+    reasoningEffort?: ReasoningEffort;
+    temperature?: number | null;
     maxTokens?: number;
     maxCalls?: number;
     truncatedMessage?: string;
@@ -254,12 +269,11 @@ export async function chatWithTools<T>(
     try {
       completion = await client.chat.completions.create({
         model: config.model,
-        temperature: opts.thinking ? 0.6 : 0,
         max_tokens: opts.maxTokens ?? 8000,
         messages,
         tools: opts.tools,
         tool_choice: toolsAllowed ? "auto" : "none",
-        ...reasoningOptions(opts.thinking),
+        ...samplingOptions(opts),
       });
     } catch (error) {
       if (turn === 0 && error instanceof OpenAI.APIError && error.status === 400) throw new ToolsUnsupportedError(error.message);

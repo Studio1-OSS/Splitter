@@ -5,7 +5,13 @@ const escape = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '
 const icon = (name) => `<svg aria-hidden="true"><use href="${BASE}icons.svg#${name}"/></svg>`;
 const chip = (label, kind = '', symbol = '') => `<span class="chip ${kind}">${symbol ? icon(symbol) : ''}${escape(label)}</span>`;
 const fmt = new Intl.NumberFormat('en-US');
-const money = (value, currency) => new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(value);
+// Amounts are shown the way the bill prints them: rupiah as "Rp 73.450" (a dot for thousands, no decimals), rupees with
+// Indian grouping. Everything else in en-US.
+const LOCALE = { IDR: 'id-ID', INR: 'en-IN' };
+const money = (value, currency) => {
+  const whole = currency === 'IDR' && Number.isInteger(Math.round(value * 100) / 100);
+  return new Intl.NumberFormat(LOCALE[currency] ?? 'en-US', { style: 'currency', currency, ...(whole ? { minimumFractionDigits: 0, maximumFractionDigits: 0 } : {}) }).format(value);
+};
 const seconds = (ms) => `${(ms / 1000).toFixed(1)}s`;
 const pct = (r) => (r && r.n ? `${(100 * r.k / r.n).toFixed(r.k === r.n || r.k === 0 ? 0 : 1)}%` : 'n/a');
 const ci = (r) => (r && r.n ? `95% CI ${Math.round(100 * r.lo)}–${Math.round(100 * r.hi)}%` : '');
@@ -17,6 +23,9 @@ const TRACKS = { all: 'All', synthetic: 'Synthetic', real: 'Real receipts' };
 let data, toastTimer;
 let selected = null, filter = 'all', category = 'all', search = '', detailTab = 'split';
 let track = 'all';
+// Reasoning off is what Splitter uses; "on" swaps in the same bills run with Token Factory's reasoning_effort: "medium".
+let mode = 'off', full = null;
+try { mode = localStorage.getItem('receipt-lab-reasoning') === 'on' ? 'on' : 'off'; } catch { /* works without storage */ }
 try { track = Object.hasOwn(TRACKS, localStorage.getItem('receipt-lab-track')) ? localStorage.getItem('receipt-lab-track') : 'all'; } catch { /* works without storage */ }
 
 function toast(message) {
@@ -49,6 +58,33 @@ const rowsT = () => (track === 'all' ? data.rows : data.rows.filter((r) => setOf
 const S = () => data.summaries?.[track] ?? data.summary;
 const billName = (c) => c?.truth.merchant ?? (c?.set === 'real' ? 'Real receipt' : c?.id ?? '');
 const trackCount = (t) => (t === 'all' ? data.rows.length : data.rows.filter((r) => setOf(r) === t).length);
+const hasOn = () => Boolean(full?.reasoningOn);
+function applyMode() {
+  if (mode === 'on' && !hasOn()) mode = 'off';
+  data = mode === 'on' ? { ...full, ...full.reasoningOn, cases: full.cases } : full;
+}
+function modeSwitch() {
+  if (!hasOn()) return '';
+  return `<div class="segmented mode-switch" role="group" aria-label="Model reasoning">${[['off', 'Reasoning off'], ['on', 'Reasoning on']].map(([k, l]) => `<button data-mode="${k}" class="${mode === k ? 'active' : ''}" aria-pressed="${mode === k}">${l}</button>`).join('')}</div>`;
+}
+// Off vs on for the selected track, from the two saved runs.
+function reasoningCompare() {
+  if (!hasOn()) return '';
+  const off = full.summaries?.[track] ?? full.summary, on = full.reasoningOn.summaries?.[track];
+  if (!off || !on) return '';
+  const rows = [
+    ['Splits correct to the cent', (s) => pct(s.overall.splitCorrect), (s) => s.overall.splitCorrect],
+    ['Bill read completely', (s) => pct(s.overall.extractionCorrect), (s) => s.overall.extractionCorrect],
+    ['Split right when read right', (s) => pct(s.overall.splitCorrectGivenRead), (s) => s.overall.splitCorrectGivenRead],
+    ['Split by the model\'s own tool call', (s) => `${s.overall.modelComputed.k}/${s.overall.modelComputed.n}`],
+    ['Median time per bill', (s) => seconds(s.latencyMs.p50)],
+    ['Output tokens per bill', (s) => fmt.format(s.tokens.perBillOut)],
+    ['Cost per bill', (s) => (s.costUsd ? `$${s.costUsd.perBill.toFixed(4)}` : 'n/a')],
+  ];
+  return `<section class="section"><div class="section-head"><div><span class="eyebrow">${icon('workflow')} Reasoning off vs on</span><h2>Does thinking first help?</h2><p>The same ${off.overall.bills} bills, run twice. Off is what Splitter uses (temperature 0). On uses Token Factory's <code>reasoning_effort: "medium"</code>, its default level, with default sampling.</p></div></div>
+    <div class="table-wrap card"><table class="compare"><thead><tr><th>Metric</th><th class="n">Reasoning off</th><th class="n">Reasoning on</th></tr></thead><tbody>${rows.map(([l, f, r]) => `<tr><td>${l}</td><td class="n">${f(off)}${r ? `<small>${ci(r(off))}</small>` : ''}</td><td class="n">${f(on)}${r ? `<small>${ci(r(on))}</small>` : ''}</td></tr>`).join('')}</tbody></table></div></section>`;
+}
+
 function trackSwitch() {
   if (!hasReal()) return '';
   return `<div class="segmented track-switch" role="group" aria-label="Benchmark track">${Object.entries(TRACKS).map(([k, l]) => `<button data-track="${k}" class="${track === k ? 'active' : ''}" aria-pressed="${track === k}">${l} <span class="count">${trackCount(k)}</span></button>`).join('')}</div>`;
@@ -87,7 +123,7 @@ function band() {
     third,
     [cost ? `$${cost.perBill.toFixed(4)}` : 'n/a', 'Cost per bill', cost ? `$${cost.per1000Bills.toFixed(2)} per 1,000 · median ${seconds(S().latencyMs.p50)}` : ''],
   ];
-  return `<section class="band" aria-label="Headline results"><span class="eyebrow">${icon('shield')} Headline results · ${o.bills} ${track === 'real' ? 'real receipts' : track === 'synthetic' ? 'synthetic bills' : 'bills'} · real model runs</span><div class="band-grid">${stats.map(([v, l, f]) => `<div class="stat"><div class="stat-value">${v}</div><div class="stat-label">${l}</div><div class="stat-foot">${f}</div></div>`).join('')}</div></section>`;
+  return `<section class="band" aria-label="Headline results"><span class="eyebrow">${icon('shield')} Headline results · ${o.bills} ${track === 'real' ? 'real receipts' : track === 'synthetic' ? 'synthetic bills' : 'bills'} · reasoning ${mode} · real model runs</span><div class="band-grid">${stats.map(([v, l, f]) => `<div class="stat"><div class="stat-value">${v}</div><div class="stat-label">${l}</div><div class="stat-foot">${f}</div></div>`).join('')}</div></section>`;
 }
 
 function modelCard() {
@@ -96,8 +132,8 @@ function modelCard() {
     <div><dt>Endpoint</dt><dd><code>${escape(data.baseURL)}</code></dd></div>
     <div><dt>Price</dt><dd>$${Number(p.inPerM).toFixed(2)} per 1M input · $${Number(p.outPerM).toFixed(2)} per 1M output</dd></div>
     <div><dt>Model</dt><dd>${escape(info.modality ?? 'text+image->text')} · ${info.contextLength ? `${fmt.format(info.contextLength)} context` : ''} · ${escape(info.quantization ?? '')}</dd></div>
-    <div><dt>Bill read</dt><dd>JSON schema · reasoning off · temperature 0</dd></div>
-    <div><dt>Tool loop</dt><dd>Native function calling · <code>tool_choice: ${escape(data.toolChoice)}</code></dd></div>
+    <div><dt>Bill read</dt><dd>JSON schema · ${mode === 'on' ? 'reasoning on (<code>reasoning_effort: medium</code>) · default temperature' : 'reasoning off · temperature 0'}</dd></div>
+    <div><dt>Tool loop</dt><dd>Native function calling · <code>tool_choice: ${escape(data.toolChoice)}</code>${mode === 'on' ? ' · reasoning on' : ''}</dd></div>
     ${runLine()}</dl></section>`;
 }
 
@@ -194,8 +230,8 @@ function overview() {
     : 'An application-level evaluation, not an official benchmark.</strong> Real receipts come from CORD v2 (Indonesian restaurants and cafés, CC BY 4.0); who had what is generated for them. Measure on your own bills before relying on it.';
   return `<section class="hero"><div><span class="eyebrow">${icon('book')} Splitter benchmark · ${eyebrow}</span><h1>Read the bill.<br>Do the maths <em>with tools.</em></h1><p>${escape(data.model)} reads each bill, works out who had what from a plain-English note, and calls calculator tools for every number. The app only checks the answer.</p><div class="actions"><a class="button" href="#bills">Explore the bills ${icon('arrow')}</a><a class="text-link" href="#method">How it was measured ${icon('arrow')}</a></div></div>
     <div class="hero-art" aria-hidden="true"><img class="a" src="${BASE}dataset/home-01.png" alt=""><img class="b" src="${BASE}dataset/${hasReal() && track !== 'synthetic' ? 'real/real-013.jpg' : 'food-03.png'}" alt=""><span class="tag">${icon('shield')}${tag}</span></div></section>
-  <div class="track-bar">${trackSwitch()}</div>
-  ${band()}${modelCard()}
+  <div class="track-bar">${trackSwitch()}${modeSwitch()}</div>
+  ${band()}${modelCard()}${reasoningCompare()}
   <section class="section"><div class="section-head"><div><span class="eyebrow">Results</span><h2>Where it's right, and where it isn't</h2></div></div>${resultCards()}</section>
   <section class="section"><div class="section-head"><div><span class="eyebrow">Every miss, in the open</span><h2>${rowsT().filter(isIssue).length} bills worth a closer look</h2><p>Open one to see the image, what the model read, its tool calls and its split.</p></div><a class="text-link" href="#bills">All ${rowsT().length} bills ${icon('arrow')}</a></div>${misses()}</section>
   <p class="note"><strong>${note}</p>`;
@@ -255,7 +291,7 @@ function bills() {
   if (!filters.some(([k]) => k === filter)) filter = 'all';
   const categories = [...new Set(rows.map((r) => r.category))];
   if (!categories.includes(category)) category = 'all';
-  return `<div class="page-intro"><span class="eyebrow">${icon('database')} ${rows.length} bills, all open</span><h1>Every bill. Every tool call.</h1><p>Compare what the model read with the truth, follow its tool calls, and check its split against the expected one.</p>${trackSwitch()}</div>
+  return `<div class="page-intro"><span class="eyebrow">${icon('database')} ${rows.length} bills, all open</span><h1>Every bill. Every tool call.</h1><p>Compare what the model read with the truth, follow its tool calls, and check its split against the expected one.</p><div class="track-bar">${trackSwitch()}${modeSwitch()}</div></div>
   <div class="toolbar"><div class="segmented" role="group" aria-label="Filter bills">${filters.map(([k, l]) => `<button data-filter="${k}" class="${filter === k ? 'active' : ''}" aria-pressed="${filter === k}">${l}</button>`).join('')}</div>${categories.length > 1 ? `<label class="field">${icon('layers')}<select id="category-filter" aria-label="Category"><option value="all">All categories</option>${Object.entries(CATEGORY).filter(([k]) => categories.includes(k)).map(([k, v]) => `<option value="${k}" ${category === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>` : ''}<label class="field search">${icon('search')}<input type="search" id="bill-search" placeholder="Search merchant, ID, source…" aria-label="Search bills" value="${escape(search)}"></label></div>
   <div class="explorer"><section class="list" aria-label="Bill list">${billList()}</section><section class="detail" aria-label="Selected bill">${billDetail()}</section></div>`;
 }
@@ -268,6 +304,7 @@ function method() {
     ['Planted errors', 'Caught when check_receipt fails and the model reports the problem.'],
     ['False alarm', 'A flag on a correct bill that was also read correctly. A flag after a misread counts as a catch.'],
     ['Cost', 'Tokens reported by each call × the live price from GET /v1/models?verbose=true.'],
+    ['Reasoning', 'Off (what Splitter uses): reasoning disabled, temperature 0. On: Token Factory\'s reasoning_effort "medium", its default level, with default sampling. Same bills, same tools, same scoring.'],
   ];
   return `<div class="page-intro"><span class="eyebrow">${icon('workflow')} The recipe and the method</span><h1>The model reasons.<br>Tools do the maths.</h1><p>Every split here is the model's own calculator-tool result. The app adds one validation rule and scores the answer against ground truth.</p></div>
   <div class="pipeline">${[['01', 'See', 'Vision → bill JSON: lines, tax, tip, fees, total'], ['02', 'Reason', 'The note → who had each line'], ['03', 'Calculate', 'check_receipt, allocate_tax_tip, validate_total'], ['04', 'Check', 'App rule: shares = lines + charges']].map(([n, t, d]) => `<div class="step"><span class="n">${n}</span><h3>${t}</h3><p>${d}</p></div>`).join('')}</div>
@@ -276,7 +313,7 @@ function method() {
     <article class="card"><h3>Real receipts</h3><p>150 photographed restaurant and café receipts from <a class="text-link" href="https://huggingface.co/datasets/naver-clova-ix/cord-v2" target="_blank" rel="noreferrer">CORD v2</a> (Indonesia, rupiah, CC BY 4.0), with CORD's human labels as ground truth. Kept in a fixed order when the labels are unambiguous and add up: 2+ lines, unique names, no priced add-ons, lines + tax + service − discount = total. Who had what is generated, as for the synthetic set. No planted errors: these totals are real.</p></article>
     <article class="card"><h3>Ground truth</h3><p>Every line, charge and printed total, who had what, and the expected split from Splitter's integer money engine (largest-remainder rounding, ties by group order). The note the model reads is written from the same truth.</p></article>
     <article class="card"><h3>What is scored</h3><dl class="def-list" style="margin-top:12px">${defs.map(([t, d]) => `<div><dt>${t}</dt><dd>${d}</dd></div>`).join('')}</dl></article>
-    <article class="card"><h3>Honest reporting</h3><p>Failed runs count as failures. Only network errors (HTTP 429/5xx, timeouts) are retried, up to 3 times, and the count is reported. Every rate has a Wilson 95% interval. A settings fingerprint (model, endpoint, prompts, tools) marks comparable runs. Two full synthetic runs with the same settings agreed on all 150 bills. Each track records its own run date and fingerprint.</p></article>
+    <article class="card"><h3>Honest reporting</h3><p>Failed runs count as failures. Only network errors (HTTP 429/5xx, timeouts) are retried, up to 3 times, and the count is reported. Every rate has a Wilson 95% interval. A settings fingerprint (model, endpoint, prompts, tools) marks comparable runs. Two full synthetic runs with the same settings agreed on all 150 bills. Each track records its own run date and fingerprint. In the reasoning-on run, 71 bills hit a network outage and were rerun once; those retries are counted.</p></article>
   </div></section>
   <section class="limits"><span class="eyebrow" style="color:var(--band-muted)">Limits</span><h2>What this does and doesn't show</h2><p>The real track is one kind of receipt (Indonesian restaurants, one currency) and its notes are generated, so it measures reading real photos more than reasoning about real groups. On synthetic bills, misreads cluster on A4 invoices, especially rotated ones. The calculator tools check arithmetic, not intent: a line given to the wrong person still adds up, so people should review assignments. This lab tests image understanding, reasoning and tool calls only.</p></section>`;
 }
@@ -285,7 +322,7 @@ function method() {
 const commands = {
   setup: 'git clone https://github.com/Studio1-OSS/Splitter\ncd Splitter && pnpm install\ncp .env.example .env   # add NEBIUS_API_KEY',
   agent: ['pnpm bench:agent benchmark/dataset/party-01.png \\', '  "Everyone shared the DJ booking 3h, Priya had the Sparkling wine x2, everyone shared the Birthday cake 2kg." \\', '  Aman,Priya'].join('\n'),
-  eval: 'pnpm bench:eval                  # both tracks, 300 bills\npnpm bench:eval --set real        # or --set synthetic\npnpm bench:eval --limit 10 --concurrency 2',
+  eval: 'pnpm bench:eval                  # both tracks, 300 bills, reasoning off\npnpm bench:eval --reasoning on    # the same bills with reasoning on\npnpm bench:eval --set real        # or --set synthetic\npnpm bench:eval --limit 10 --concurrency 2',
   ui: 'pnpm bench:dev                   # http://localhost:3001\npnpm bench:dataset               # rebuild the synthetic bills (needs Chrome)\npnpm bench:import-real           # re-import the real receipts (Python)',
 };
 const codeBlock = (key) => `<div class="code-block"><pre><code>${escape(commands[key])}</code></pre><button class="copy-button" data-copy="${key}" aria-label="Copy commands">${icon('copy')}</button></div>`;
@@ -321,7 +358,8 @@ async function load() {
   try {
     const res = await fetch(`${BASE}data.json`, { cache: 'no-store' });
     if (!res.ok) throw new Error(await res.text());
-    data = await res.json();
+    full = await res.json();
+    applyMode();
     route();
   } catch (error) {
     $('#main').innerHTML = `<div class="empty"><h1>No saved run yet.</h1><p>${escape(error.message)}</p><p>Run <code>pnpm bench:eval</code>, then reload.</p></div>`;
@@ -333,6 +371,7 @@ document.addEventListener('click', async (event) => {
   if (!target) return;
   if (target.dataset.bill) { selected = target.dataset.bill; history.replaceState(null, '', `#bills/${selected}`); route(); return; }
   if (target.dataset.filter) { filter = target.dataset.filter; route(); return; }
+  if (target.dataset.mode) { mode = target.dataset.mode; try { localStorage.setItem('receipt-lab-reasoning', mode); } catch { /* works without storage */ } applyMode(); route(); return; }
   if (target.dataset.track) { track = target.dataset.track; try { localStorage.setItem('receipt-lab-track', track); } catch { /* works without storage */ } route(); return; }
   if (target.dataset.detail) { detailTab = target.dataset.detail; route(); return; }
   if (target.dataset.action === 'expand') { const d = $('#image-dialog'); $('img', d).src = `${BASE}dataset/${caseFor(selected).file}`; d.showModal(); return; }

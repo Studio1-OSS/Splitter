@@ -4,7 +4,7 @@ import { get } from "node:http";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { toMinor } from "../src/lib/money/format";
 import { createDashboardServer, dashboardData } from "./server.mts";
-import { expectedSplit, summarise, withSummaries, type Case, type Results, type Row } from "./eval.mts";
+import { expectedSplit, summarise, transient, withSummaries, type Case, type Results, type Row } from "./eval.mts";
 import { costOf, wilson } from "./stats.mts";
 import cases from "./dataset/cases.json";
 import realCases from "./dataset/real/cases.json";
@@ -86,6 +86,13 @@ describe("stats", () => {
     expect(s.overall.splitCorrect).toMatchObject({ k: 1, n: 2 });
     expect(s.overall.completed).toMatchObject({ k: 1, n: 2 });
     expect(s.overall.linesPriced).toMatchObject({ k: 2, n: 4 });
+  });
+
+  it("retries network errors only, including the app's wrapped messages", () => {
+    for (const m of ["The AI service returned an error: Connection error.", "The AI service returned 429: rate limited", "The AI service returned 503: overloaded", "Could not reach the AI service", "Request timed out."])
+      expect(transient(new Error(m)), m).toBe(true);
+    for (const m of ["The AI service returned 400: bad request", "The AI response couldn't be understood. Please try again.", "The bill could not be read. Try a sharper, well-lit photo."])
+      expect(transient(new Error(m)), m).toBe(false);
   });
 
   it("summarises each track and the combined view from the same rows", () => {

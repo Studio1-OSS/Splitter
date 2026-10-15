@@ -62,8 +62,10 @@ The **expected split** comes from Splitter's money engine: integer minor units, 
 |---|---|
 | Read the bill | Splitter's bill prompt and schema; `response_format: json_schema` (strict); reasoning off (`chat_template_kwargs.enable_thinking=false`); temperature 0 |
 | Reason and calculate | Native function calling with the four Splitter tools; `tool_choice: auto`, at most 8 tool calls; reasoning off; temperature 0; final answer as JSON |
+| Reasoning-on run | Both steps again with Token Factory's `reasoning_effort: "medium"` (the level the endpoint applies when nothing is set), temperature and top_p left at Token Factory's defaults, 16,384 output tokens (reasoning shares that budget). Results in `results-reasoning.json` |
 
-- **Why reasoning is off.** For JSON output it's faster and the output is just as clean. With it off, a free-text answer would carry the model's reasoning, but this workflow only uses JSON and tool calls.
+- **Why Splitter runs reasoning off.** For JSON and tool calls the output stays clean, and it's about 3× faster and cheaper. The benchmark measures what that costs in accuracy: every bill is also run with reasoning on, and Receipt Lab and the README compare the two.
+- **How reasoning is set.** Off uses the chat template switch (`chat_template_kwargs.enable_thinking=false`); on uses Token Factory's own `reasoning_effort` parameter. Both are documented controls; with reasoning off, the model returns 0 reasoning tokens either way.
 - **`tool_choice: auto` is enough here.** The model called the tools on every bill.
 - **The bill prompt is Splitter's own,** including its rule for number formats ("60.000" on a rupiah receipt is 60000). The rule was added after the first real-receipt run showed the model reading thousands separators as decimal points; both tracks were then rerun with it.
 - **Recorded per run:** the model id, endpoint, date and a settings fingerprint (a hash of model, endpoint, reasoning setting, prompts and tool definitions), so runs are only compared like for like.
@@ -83,7 +85,7 @@ The **expected split** comes from Splitter's money engine: integer minor units, 
 | App validation rule | The model's shares add up to the bill's own lines and charges |
 
 - **Failures count against the model.** A failed run counts as wrong on every metric; nothing is dropped.
-- **Retries are only for network errors** (HTTP 429/5xx, timeouts), up to 3 times, and the count is reported. Wrong answers are never retried.
+- **Retries are only for network errors** (HTTP 429/5xx, timeouts, connection errors), up to 3 times, and the count is reported. Wrong answers are never retried. In the reasoning-on run, a network outage failed 71 bills in a row with "Connection error"; `--retry-failed` reran exactly those bills once, and the 71 retries are counted in the results.
 - **Rates come with Wilson 95% score intervals,** which stay honest at small counts and near 0% or 100%.
 
 ## Cost and latency

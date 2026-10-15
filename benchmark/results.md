@@ -35,3 +35,22 @@ Prices: $0.3/1M input, $0.9/1M output tokens (GET /v1/models?verbose=true on 202
 | home | 30 | 98.3% | 30/30 | 29/30 | 6/6 | 0/22 |
 | party | 30 | 99.4% | 30/30 | 29/30 | 6/6 | 0/23 |
 | travel | 30 | 99.4% | 30/30 | 29/30 | 6/6 | 0/23 |
+
+## Reasoning off vs on
+
+The same 300 bills, run again with reasoning on, set the way Nebius Token Factory exposes it: `reasoning_effort: "medium"` (the endpoint's default level) on both the bill read and the tool loop, with temperature and top_p left at Token Factory's defaults. Each cell is **off → on**. Splitter uses reasoning off.
+
+| Metric | All 300 | Synthetic | Real |
+|---|---|---|---|
+| Splits correct to the cent | 91.0% → 98.0% | 97.3% → 98.7% | 84.7% → 97.3% |
+| Bill read completely | 89.3% → 97.0% | 97.3% → 98.7% | 81.3% → 95.3% |
+| Split correct when read correctly | 98.1% → 98.6% | 99.3% → 100.0% | 96.7% → 97.2% |
+| Split computed by the model (tool call) | 100.0% → 100.0% | 100.0% → 100.0% | 100.0% → 100.0% |
+| Runs completed | 100.0% → 100.0% | 100.0% → 100.0% | 100.0% → 100.0% |
+| Planted wrong totals caught | 30/30 → 30/30 | 30/30 → 30/30 | n/a → n/a |
+| False alarms | 0/238 → 0/261 | 0/116 → 0/118 | 0/122 → 0/143 |
+| Latency p50 | 4.7s → 13.6s | 5.0s → 12.4s | 4.5s → 14.5s |
+| Output tokens per bill | 649 → 3252 | 732 → 3155 | 567 → 3350 |
+| Cost per bill | $0.0033 → $0.0057 | $0.0034 → $0.0056 | $0.0033 → $0.0058 |
+
+Reasoning on runs at Token Factory's default temperature (above 0), so a single run carries some run-to-run noise. Run: 2026-10-15T18:47:22.919Z · settings `639167d2c826`.

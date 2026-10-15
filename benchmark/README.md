@@ -10,6 +10,8 @@ The app then checks that answer with a validation rule. Every number below comes
 - **Synthetic:** 150 rendered bills (groceries, party, home & rent, food, travel; INR, USD, EUR), balanced on every axis, with 30 planted wrong totals.
 - **Real receipts:** 150 photographed restaurant and café receipts from [CORD v2](dataset/real/README.md) (Indonesia, rupiah, CC BY 4.0), with the dataset's human labels as ground truth.
 
+Every bill is run twice: with the model's reasoning **off** (what Splitter uses: fast, temperature 0) and **on** (Token Factory's `reasoning_effort: "medium"`). Receipt Lab switches between the two.
+
 **Tested model:** [`nvidia/Nemotron-3.5-Super-VL`](https://tokenfactory.nebius.com/?modals=endpoint-details&model-id=nvidia/Nemotron-3.5-Super-VL) on Nebius Token Factory.
 - **Endpoint:** `https://api.tokenfactory.us-north1.nebius.com/v1/`
 - **Input:** text and image; context about 1M tokens; bf16.
@@ -77,6 +79,8 @@ pnpm bench:agent benchmark/dataset/party-01.png \
 
 pnpm bench:eval                   # both tracks, 300 bills (about $1)
 pnpm bench:eval --set real        # one track (--set synthetic / real); the other's saved results are kept
+pnpm bench:eval --reasoning on    # the same bills with reasoning on → results-reasoning.json (about $1.70)
+pnpm bench:eval --retry-failed    # rerun only bills that failed on a network error
 pnpm bench:eval --limit 10        # or a quick sample; also --category travel, --concurrency N
 pnpm bench:eval --report          # rebuild results.md and this README's results from results.json
 pnpm bench:dev                    # Receipt Lab on http://localhost:3001 (reads saved results, no model calls)
@@ -136,6 +140,25 @@ Prices: $0.3/1M input, $0.9/1M output tokens (GET /v1/models?verbose=true on 202
 | home | 30 | 98.3% | 30/30 | 29/30 | 6/6 | 0/22 |
 | party | 30 | 99.4% | 30/30 | 29/30 | 6/6 | 0/23 |
 | travel | 30 | 99.4% | 30/30 | 29/30 | 6/6 | 0/23 |
+
+## Reasoning off vs on
+
+The same 300 bills, run again with reasoning on, set the way Nebius Token Factory exposes it: `reasoning_effort: "medium"` (the endpoint's default level) on both the bill read and the tool loop, with temperature and top_p left at Token Factory's defaults. Each cell is **off → on**. Splitter uses reasoning off.
+
+| Metric | All 300 | Synthetic | Real |
+|---|---|---|---|
+| Splits correct to the cent | 91.0% → 98.0% | 97.3% → 98.7% | 84.7% → 97.3% |
+| Bill read completely | 89.3% → 97.0% | 97.3% → 98.7% | 81.3% → 95.3% |
+| Split correct when read correctly | 98.1% → 98.6% | 99.3% → 100.0% | 96.7% → 97.2% |
+| Split computed by the model (tool call) | 100.0% → 100.0% | 100.0% → 100.0% | 100.0% → 100.0% |
+| Runs completed | 100.0% → 100.0% | 100.0% → 100.0% | 100.0% → 100.0% |
+| Planted wrong totals caught | 30/30 → 30/30 | 30/30 → 30/30 | n/a → n/a |
+| False alarms | 0/238 → 0/261 | 0/116 → 0/118 | 0/122 → 0/143 |
+| Latency p50 | 4.7s → 13.6s | 5.0s → 12.4s | 4.5s → 14.5s |
+| Output tokens per bill | 649 → 3252 | 732 → 3155 | 567 → 3350 |
+| Cost per bill | $0.0033 → $0.0057 | $0.0034 → $0.0056 | $0.0033 → $0.0058 |
+
+Reasoning on runs at Token Factory's default temperature (above 0), so a single run carries some run-to-run noise. Run: 2026-10-15T18:47:22.919Z · settings `639167d2c826`.
 <!-- results:end -->
 
 **Reading the numbers:**
@@ -143,14 +166,20 @@ Prices: $0.3/1M input, $0.9/1M output tokens (GET /v1/models?verbose=true on 202
 - **Reasoning is strong on both tracks.** When the bill had been read correctly, the split was right to the cent on 145 of 146 synthetic bills and 118 of 122 real receipts.
 - **Real photos are harder to read.** 81.3% of real receipts were read completely, against 97.3% of synthetic bills. What's left: a line missed or a coupon read as a discount, and tax missed or swapped with the service charge. On 8 receipts the model also listed free lines (sauces, bags) that CORD doesn't label; those don't change any amount, and 9 misread receipts still got the right split.
 - **One prompt rule fixed the biggest real-photo error.** In the first real-receipt run, the model read "60.000" and "60,000" rupiah as 60 on 44 of 150 receipts, so every amount was 1,000× too small. `check_receipt` couldn't see it, because a bill scaled down evenly still adds up. Splitter's bill prompt now says how to read thousands separators; that error fell to 1 receipt, and real-receipt splits went from 57.3% to 84.7% correct. Both tracks were rerun with the new prompt, and no synthetic bill got worse (146 correct, up from 143).
+- **Reasoning on buys accuracy with time.** With Token Factory's `reasoning_effort: "medium"`, 98.0% of splits were right (97.3% on real receipts, up from 84.7%), almost all of it from reading the photo better: 22 real receipts went from misread to read correctly. Each bill took about 3× as long (13.6 s median) and cost about 70% more ($0.0057). Splitter keeps reasoning off for now; the table under Results has every metric.
 - **On synthetic bills, misreads cluster on A4 invoices:** all 4 were invoices, 3 of them rotated. `check_receipt` flagged 3 of the 4.
 - **Planted wrong totals:** caught on all 30, spread across every currency, layout and photo condition, with no false alarms on any correctly read bill in either track.
 
 ## Limitations
 
 - **Synthetic bills** are clean renders with simulated fading and rotation. The real track shows how much harder photos are.
+- **The number-format rule was found on this real track.** It was written after seeing the first run's misses on these 150 receipts, and the real-track numbers since are measured on the same receipts. The rule is generic (how thousands separators work), but a held-out set of receipts would be a fairer test of it.
+- **The real track is the cleanly labelled part of CORD.** 266 of the 416 receipts read were skipped (one-line receipts, priced add-ons, per-line discounts, labels that don't add up), so the hardest receipts aren't in it.
 - **The real track is narrow:** Indonesian restaurant and café receipts in one currency, with no planted errors. Receipts from other countries, long invoices and handwriting aren't covered. Measure on your own bills before relying on the numbers.
 - **Generated, unambiguous notes.** On both tracks, who had what is generated, each line name is unique and the note names everyone. Real "who had what" is messier, and Splitter shows every assignment for review before saving.
 - **Arithmetic, not intent.** The tools check sums; they can't tell that a line went to the wrong person, and such a split still adds up. The 5 reasoning misses were of this kind.
 - **Scope.** This lab measures image understanding, reasoning and tool calls on bills. It makes no claims about other tasks, computer use or browser control.
+- **Reasoning on changes two things at once:** the model reasons, and it samples at Token Factory's default temperature instead of 0. That's how Token Factory exposes reasoning; the gap (95% ranges 87–94% off, 96–99% on) is far larger than run-to-run noise, but the two effects aren't separated.
+- **No other model is measured.** These numbers describe one model in one workflow; they say nothing about how other models would do.
+- **Reasoning on is one run at Token Factory's default temperature,** so it carries some run-to-run noise; reasoning off runs at temperature 0. In that run, 71 bills hit a network outage and were rerun once (network errors only, counted as retries).
 - **One model, one endpoint, one date.** The results apply to the settings shown, which are recorded in `results.json` as a settings fingerprint.

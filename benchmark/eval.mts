@@ -4,6 +4,8 @@
 //
 //   pnpm bench:eval                         # both tracks, 300 bills
 //   pnpm bench:eval --set real              # or --set synthetic
+//   pnpm bench:eval --reasoning on          # same bills with the model's reasoning on → results-reasoning.json
+//   pnpm bench:eval --retry-failed          # rerun only bills that failed on a network error (add --reasoning on for that run)
 //   pnpm bench:eval --limit 10 --concurrency 2
 //   pnpm bench:eval --category food
 import "dotenv/config";
@@ -16,13 +18,15 @@ import { computeSplit } from "../src/lib/money/allocate.ts";
 import { fromMinor, toMinor } from "../src/lib/money/format.ts";
 import { RECEIPT_SYSTEM_PROMPT } from "../src/server/ai/receipt.ts";
 import { toolDefinitions } from "../src/server/ai/tools.ts";
-import { config, runAgent, SYSTEM, type AgentRun } from "./receipt-agent.mts";
+import { config, MODES, runAgent, SYSTEM, type AgentRun, type Mode } from "./receipt-agent.mts";
 import { costOf, fetchModelInfo, wilson, type ModelInfo } from "./stats.mts";
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 export type Track = "synthetic" | "real";
 export const TRACKS: Track[] = ["synthetic", "real"];
 const CASE_FILES: Record<Track, string> = { synthetic: "dataset/cases.json", real: "dataset/real/cases.json" };
+/** Reasoning off (what the app uses) is the main result; reasoning on is saved next to it for comparison. */
+export const RESULT_FILES: Record<Mode, string> = { off: "results.json", on: "results-reasoning.json" };
 
 export type Case = {
   id: string;
@@ -144,16 +148,18 @@ function matchLines(truth: Case["truth"]["items"], read: { name: string; totalPr
   return { priced, named };
 }
 
-const transient = (e: unknown) =>
+export const transient = (e: unknown) =>
   e instanceof OpenAI.APIConnectionError || e instanceof OpenAI.APIConnectionTimeoutError || (e instanceof OpenAI.APIError && (e.status === 429 || (e.status ?? 0) >= 500)) ||
-  /timed? ?out|ECONNRESET|socket/i.test(String((e as Error)?.message));
+  // The app wraps provider errors in its own message, so match those too: "…returned an error: Connection error.",
+  // "…returned 429: …", "…returned 503: …", "Could not reach the AI service".
+  /timed? ?out|ECONNRESET|socket|connection error|could not reach|returned (429|5\d\d)\b/i.test(String((e as Error)?.message));
 
 export async function loadCases(tracks: Track[] = TRACKS): Promise<Case[]> {
   const sets = await Promise.all(tracks.map(async (t) => (JSON.parse(await readFile(path.join(DIR, CASE_FILES[t]), "utf8")) as Case[]).map((c) => ({ ...c, set: t }))));
   return sets.flat();
 }
 
-export async function score(c: Case, info: ModelInfo | null): Promise<Row> {
+export async function score(c: Case, info: ModelInfo | null, mode: Mode = "off"): Promise<Row> {
   const mime = c.file.endsWith(".jpg") ? "image/jpeg" : "image/png";
   const image = `data:${mime};base64,${(await readFile(path.join(DIR, "dataset", c.file))).toString("base64")}`;
   const base = { id: c.id, set: c.set ?? "synthetic", category: c.category, layout: c.layout, condition: c.condition, currency: c.currency, people: c.people.length, planted: c.planted, linesTotal: c.truth.items.length };
@@ -161,7 +167,7 @@ export async function score(c: Case, info: ModelInfo | null): Promise<Row> {
   let retries = 0;
   for (;;) {
     try {
-      const run = await runAgent(image, c.people, c.note);
+      const run = await runAgent(image, c.people, c.note, config, mode);
       const r = run.receipt;
       const { priced, named } = matchLines(c.truth.items, r.items);
       const expected = expectedSplit(c);
@@ -220,9 +226,10 @@ export async function score(c: Case, info: ModelInfo | null): Promise<Row> {
 }
 
 /** A short, stable fingerprint of everything that affects results, so runs are only compared like for like. */
-export function settingsHash() {
+export function settingsHash(mode: Mode = "off") {
   const h = createHash("sha256");
-  h.update(JSON.stringify({ model: config.model, baseURL: config.baseURL, reasoning: process.env.AI_REASONING_PARAM ?? "chat_template_kwargs", system: SYSTEM, read: RECEIPT_SYSTEM_PROMPT, tools: toolDefinitions }));
+  // Mode is only hashed when on, so reasoning-off fingerprints stay comparable with earlier runs.
+  h.update(JSON.stringify({ model: config.model, baseURL: config.baseURL, reasoning: process.env.AI_REASONING_PARAM ?? "chat_template_kwargs", system: SYSTEM, read: RECEIPT_SYSTEM_PROMPT, tools: toolDefinitions, ...(mode === "on" ? { mode: MODES.on } : {}) }));
   return h.digest("hex").slice(0, 12);
 }
 
@@ -280,10 +287,37 @@ const pct = (x: { k: number; n: number; lo: number; hi: number }) =>
 const short = (x: { k: number; n: number }) => (x.n ? `${((100 * x.k) / x.n).toFixed(1)}% (${x.k}/${x.n})` : "n/a");
 
 type Summary = ReturnType<typeof summarise>;
-type RunMeta = { date: string; bills: number; concurrency: number; settings: string };
+type RunMeta = { date: string; bills: number; concurrency: number; settings: string; retriedFailed?: { date: string; bills: number } };
 export type Results = Awaited<ReturnType<typeof buildMeta>> & { date: string; settings: string; bills: number; sets: Partial<Record<Track, RunMeta>>; summary: Summary; summaries: Record<"all" | Track, Summary | null>; rows: Row[] };
 
-function markdown(res: Results) {
+function comparison(off: Results, on: Results) {
+  const tracks = (["all", ...TRACKS] as const).filter((t) => off.summaries[t] && on.summaries[t]);
+  const head = tracks.map((t) => (t === "all" ? `All ${off.summaries.all!.overall.bills}` : `${t === "real" ? "Real" : "Synthetic"}`));
+  const row = (label: string, f: (s: Summary) => string) => `| ${label} | ${tracks.map((t) => `${f(off.summaries[t]!)} → ${f(on.summaries[t]!)}`).join(" | ")} |`;
+  const r = (k: keyof Summary["overall"]) => (s: Summary) => { const x = s.overall[k] as { k: number; n: number }; return x.n ? `${((100 * x.k) / x.n).toFixed(1)}%` : "n/a"; };
+  return `
+## Reasoning off vs on
+
+The same ${on.rows.length} bills, run again with reasoning on, set the way Nebius Token Factory exposes it: \`reasoning_effort: "medium"\` (the endpoint's default level) on both the bill read and the tool loop, with temperature and top_p left at Token Factory's defaults. Each cell is **off → on**. Splitter uses reasoning off.
+
+| Metric | ${head.join(" | ")} |
+|---|${tracks.map(() => "---").join("|")}|
+${row("Splits correct to the cent", r("splitCorrect"))}
+${row("Bill read completely", r("extractionCorrect"))}
+${row("Split correct when read correctly", r("splitCorrectGivenRead"))}
+${row("Split computed by the model (tool call)", r("modelComputed"))}
+${row("Runs completed", r("completed"))}
+${row("Planted wrong totals caught", (s) => (s.overall.plantedCaught.n ? `${s.overall.plantedCaught.k}/${s.overall.plantedCaught.n}` : "n/a"))}
+${row("False alarms", (s) => `${s.overall.falseAlarms.k}/${s.overall.falseAlarms.n}`)}
+${row("Latency p50", (s) => `${(s.latencyMs.p50 / 1000).toFixed(1)}s`)}
+${row("Output tokens per bill", (s) => String(s.tokens.perBillOut))}
+${row("Cost per bill", (s) => (s.costUsd ? `$${s.costUsd.perBill.toFixed(4)}` : "n/a"))}
+
+Reasoning on runs at Token Factory's default temperature (above 0), so a single run carries some run-to-run noise. Run: ${on.date} · settings \`${on.settings}\`.
+`;
+}
+
+function markdown(res: Results, on: Results | null = null) {
   const cols = [["all", `All ${res.rows.length}`], ...TRACKS.filter((t) => res.summaries[t]).map((t) => [t, `${t === "real" ? "Real" : "Synthetic"} ${res.summaries[t]!.overall.bills}`])] as ["all" | Track, string][];
   const row = (label: string, f: (s: Summary) => string) => `| ${label} | ${cols.map(([k]) => f(res.summaries[k]!)).join(" | ")} |`;
   const o = (k: keyof Summary["overall"]) => (s: Summary) => short(s.overall[k] as { k: number; n: number });
@@ -323,24 +357,27 @@ ${syn ? `
 | Category | Bills | Lines priced | Total read | Split correct | Planted caught | False alarms |
 |---|---|---|---|---|---|---|
 ${Object.entries(syn.byCategory).map(([k, b]) => `| ${k} | ${b.bills} | ${((100 * b.linesPriced.k) / (b.linesPriced.n || 1)).toFixed(1)}% | ${b.totalRead.k}/${b.totalRead.n} | ${b.splitCorrect.k}/${b.splitCorrect.n} | ${b.plantedCaught.k}/${b.plantedCaught.n} | ${b.falseAlarms.k}/${b.falseAlarms.n} |`).join("\n")}
-` : ""}`;
+` : ""}${on ? comparison(res, on) : ""}`;
 }
 
-async function buildMeta(info: ModelInfo | null) {
+async function buildMeta(info: ModelInfo | null, mode: Mode = "off") {
   return {
     model: config.model,
     baseURL: config.baseURL,
-    reasoning: { read: "off (JSON schema)", toolLoop: "off", param: process.env.AI_REASONING_PARAM ?? "chat_template_kwargs" },
+    mode,
+    reasoning: mode === "on"
+      ? { read: "on, reasoning_effort medium", toolLoop: "on, reasoning_effort medium", param: "reasoning_effort" }
+      : { read: "off (JSON schema)", toolLoop: "off", param: process.env.AI_REASONING_PARAM ?? "chat_template_kwargs" },
     toolChoice: "auto",
-    temperature: { read: 0, toolLoop: 0 },
+    temperature: mode === "on" ? { read: "Token Factory default", toolLoop: "Token Factory default" } : { read: 0, toolLoop: 0 },
     modelInfo: info && { contextLength: info.contextLength, modality: info.modality, quantization: info.quantization },
     price: info ? { inPerM: info.pricePromptPerM, outPerM: info.priceCompletionPerM, source: info.priceSource } : { inPerM: null, outPerM: null, source: "unavailable" },
   };
 }
 
 /** Reads results.json, upgrading a single-track file (written before the real track existed) to the per-track shape. */
-export async function loadResults(): Promise<Results | null> {
-  const saved = JSON.parse(await readFile(path.join(DIR, "results.json"), "utf8").catch(() => "null"));
+export async function loadResults(mode: Mode = "off"): Promise<Results | null> {
+  const saved = JSON.parse(await readFile(path.join(DIR, RESULT_FILES[mode]), "utf8").catch(() => "null"));
   if (!saved) return null;
   const rows: Row[] = saved.rows.map((r: Row) => ({ ...r, set: r.set ?? "synthetic" }));
   const sets = saved.sets ?? { synthetic: { date: saved.date, bills: saved.bills, concurrency: saved.concurrency, settings: saved.settings } };
@@ -369,25 +406,45 @@ async function writeReadme(md: string) {
 }
 
 // CLI
+const reasoningFlag = (flag("--reasoning") ?? "off") as Mode;
+if (!(reasoningFlag in MODES)) throw new Error("--reasoning must be on or off");
+
+/** Writes a mode's results, then results.md and the README from the reasoning-off run plus the comparison. */
+async function save(mode: Mode, res: Results) {
+  await writeFile(path.join(DIR, RESULT_FILES[mode]), JSON.stringify(res, null, 2));
+  const off = mode === "off" ? res : await loadResults("off");
+  const on = mode === "on" ? res : await loadResults("on");
+  if (!off) return;
+  const md = markdown(off, on && withSummaries(on, null));
+  await writeFile(path.join(DIR, "results.md"), md);
+  await writeReadme(md);
+  return md;
+}
+
 if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1] ?? "") && process.argv.includes("--report")) {
-  // Rebuild results.md and the README section from the saved run, without any model calls.
-  const saved = await loadResults();
+  // Rebuild results.md and the README section from the saved runs, without any model calls.
+  const saved = await loadResults("off");
   if (!saved) throw new Error("No benchmark/results.json yet. Run pnpm bench:eval first.");
-  const res = withSummaries(saved, null);
-  await writeFile(path.join(DIR, "results.json"), JSON.stringify(res, null, 2));
-  await writeFile(path.join(DIR, "results.md"), markdown(res));
-  await writeReadme(markdown(res));
-  console.log("Rebuilt benchmark/results.md and the README results section from results.json");
+  const on = await loadResults("on");
+  if (on) await writeFile(path.join(DIR, RESULT_FILES.on), JSON.stringify(withSummaries(on, null), null, 2));
+  await save("off", withSummaries(saved, null));
+  console.log("Rebuilt benchmark/results.md and the README results section from the saved results");
 } else if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1] ?? "")) {
+  const mode = reasoningFlag;
   const setFlag = flag("--set") ?? "all";
   if (setFlag !== "all" && !TRACKS.includes(setFlag as Track)) throw new Error("--set must be synthetic, real or all");
   const tracks = setFlag === "all" ? TRACKS : [setFlag as Track];
   const all = await loadCases(tracks);
   const category = flag("--category");
-  const cases = (category ? all.filter((c) => c.category === category) : all).slice(0, Number(flag("--limit") ?? all.length));
+  const retryFailed = process.argv.includes("--retry-failed");
+  const previous = retryFailed ? await loadResults(mode) : null;
+  const failedIds = new Set((previous?.rows ?? []).filter((r) => !r.ok && transient(new Error(r.error ?? ""))).map((r) => r.id));
+  const cases = retryFailed
+    ? all.filter((c) => failedIds.has(c.id))
+    : (category ? all.filter((c) => c.category === category) : all).slice(0, Number(flag("--limit") ?? all.length));
   const concurrency = Number(flag("--concurrency") ?? 6);
   const info = await fetchModelInfo(config).catch(() => null);
-  console.log(`Model ${config.model} · ${tracks.join(" + ")} · ${cases.length} bills · concurrency ${concurrency}${info ? ` · $${info.pricePromptPerM}/$${info.priceCompletionPerM} per 1M tokens (${info.priceSource})` : ""}\n`);
+  console.log(`Model ${config.model} · reasoning ${mode} · ${tracks.join(" + ")} · ${cases.length} bills · concurrency ${concurrency}${info ? ` · $${info.pricePromptPerM}/$${info.priceCompletionPerM} per 1M tokens (${info.priceSource})` : ""}\n`);
 
   const rows: Row[] = [];
   let next = 0;
@@ -395,7 +452,7 @@ if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1] ?? "") && pr
     Array.from({ length: concurrency }, async () => {
       while (next < cases.length) {
         const c = cases[next++];
-        const row = await score(c, info);
+        const row = await score(c, info, mode);
         rows.push(row);
         const mark = !row.ok ? "✗" : row.splitCorrect ? "✓" : "·";
         console.log(`${mark} ${c.id.padEnd(13)} lines ${row.linesPriced}/${row.linesTotal} split ${row.splitCorrect ? "correct" : row.modelComputed ? "wrong" : "none"}${c.planted ? ` planted:${row.flagged ? "caught" : "missed"}` : row.flagged ? " false-alarm" : ""} ${(row.ms / 1000).toFixed(1)}s${row.error ? ` ${row.error}` : ""}`);
@@ -403,17 +460,19 @@ if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1] ?? "") && pr
     }),
   );
 
-  // Replace only the tracks that ran; the other track's saved rows and run details stay as they were.
-  const saved = await loadResults();
+  // Replace only the tracks that ran (or, with --retry-failed, only the retried bills); everything else stays as saved.
+  const saved = await loadResults(mode);
   const ran = new Set(rows.map((r) => r.set));
-  const keep = (saved?.rows ?? []).filter((r) => !ran.has(r.set));
-  const runMeta: RunMeta = { date: new Date().toISOString(), bills: 0, concurrency, settings: settingsHash() };
+  const retried = new Set(rows.map((r) => r.id));
+  const keep = (saved?.rows ?? []).filter((r) => (retryFailed ? !retried.has(r.id) : !ran.has(r.set)));
+  // A rerun of failed bills counts as a retry on those rows, so the reported retry total stays honest.
+  if (retryFailed) for (const r of rows) r.retries += 1 + ((saved?.rows ?? []).find((x) => x.id === r.id)?.retries ?? 0);
+  const runMeta: RunMeta = { date: new Date().toISOString(), bills: 0, concurrency, settings: settingsHash(mode) };
   const sets = { ...(saved?.sets ?? {}) };
-  for (const t of ran) sets[t] = { ...runMeta, bills: rows.filter((r) => r.set === t).length };
+  if (!retryFailed) for (const t of ran) sets[t] = { ...runMeta, bills: rows.filter((r) => r.set === t).length };
+  else for (const t of ran) sets[t] = { ...sets[t]!, retriedFailed: { date: runMeta.date, bills: rows.filter((r) => r.set === t).length } } as RunMeta;
   const merged = [...keep, ...rows].sort((a, b) => TRACKS.indexOf(a.set) - TRACKS.indexOf(b.set) || a.id.localeCompare(b.id));
-  const res = withSummaries({ ...(await buildMeta(info)), sets, rows: merged } as Results, info);
-  await writeFile(path.join(DIR, "results.json"), JSON.stringify(res, null, 2));
-  await writeFile(path.join(DIR, "results.md"), markdown(res));
-  await writeReadme(markdown(res));
-  console.log(`\n${markdown(res)}\nWrote benchmark/results.json and results.md`);
+  const res = withSummaries({ ...(await buildMeta(info, mode)), sets, rows: merged } as Results, info);
+  const md = await save(mode, res);
+  console.log(`\n${md ?? ""}\nWrote benchmark/${RESULT_FILES[mode]} and results.md`);
 }

@@ -218,12 +218,13 @@ It runs on 300 bills in two tracks: 150 synthetic bills (30 each of groceries, p
 | | All 300 | Synthetic 150 | Real 150 |
 |---|---|---|---|
 | Splits correct to the cent | 91.0% | 97.3% | 84.7% |
+| …with reasoning on | 98.0% | 98.7% | 97.3% |
 | …when the bill was read correctly | 98.1% | 99.3% | 96.7% |
 | Split computed by the model's own tool call | 300/300 | 150/150 | 150/150 |
 | Planted wrong totals caught | 30/30 | 30/30 | none planted |
-| Cost per bill | $0.0033 | $0.0034 | $0.0033 |
+| Cost per bill (reasoning off / on) | $0.0033 / $0.0057 | $0.0034 / $0.0056 | $0.0033 / $0.0058 |
 
-The real track found a reading bug: the model took "60.000" rupiah for 60. A rule in Splitter's bill prompt fixed it (real-receipt splits went from 57.3% to 84.7% correct), and every user gets that fix. Details in [benchmark/README.md](benchmark/README.md#results).
+The real track found a reading bug: the model took "60.000" rupiah for 60. A rule in Splitter's bill prompt fixed it (real-receipt splits went from 57.3% to 84.7% correct), and every user gets that fix. Splitter runs the model with reasoning off, which is about 3× faster; the benchmark also measures it with Token Factory's `reasoning_effort: "medium"`, which reads real photos far better. Details in [benchmark/README.md](benchmark/README.md#results).
 
 ```sh
 pnpm bench:eval    # run the benchmark (about $1)

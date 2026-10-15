@@ -19,7 +19,9 @@ const MODEL_URL = 'https://tokenfactory.nebius.com/?modals=endpoint-details&mode
 const REPO_URL = 'https://github.com/Studio1-OSS/Splitter';
 const CATEGORY = { groceries: 'Groceries', party: 'Party', home: 'Home & rent', food: 'Food', travel: 'Travel' };
 const titles = { overview: 'Benchmark', bills: 'Bills', method: 'Method', guide: 'Run it' };
-const TRACKS = { all: 'All', synthetic: 'Synthetic', real: 'Real receipts' };
+// "All" is the 300-bill benchmark. Held-out receipts were never looked at while building or tuning, and stay separate.
+const TRACKS = { all: 'All', synthetic: 'Synthetic', real: 'Real receipts', holdout: 'Held-out' };
+const MAIN = ['synthetic', 'real'];
 let data, toastTimer;
 let selected = null, filter = 'all', category = 'all', search = '', detailTab = 'split';
 let track = 'all';
@@ -54,10 +56,10 @@ const rowFor = (id) => data.rows.find((r) => r.id === id);
 const setOf = (r) => r.set ?? 'synthetic';
 const hasReal = () => data.rows.some((r) => setOf(r) === 'real');
 // The selected track's rows and summary. "all" is the combined view.
-const rowsT = () => (track === 'all' ? data.rows : data.rows.filter((r) => setOf(r) === track));
+const rowsT = () => (track === 'all' ? data.rows.filter((r) => MAIN.includes(setOf(r))) : data.rows.filter((r) => setOf(r) === track));
 const S = () => data.summaries?.[track] ?? data.summary;
-const billName = (c) => c?.truth.merchant ?? (c?.set === 'real' ? 'Real receipt' : c?.id ?? '');
-const trackCount = (t) => (t === 'all' ? data.rows.length : data.rows.filter((r) => setOf(r) === t).length);
+const billName = (c) => c?.truth.merchant ?? (c?.set === 'real' ? 'Real receipt' : c?.set === 'holdout' ? 'Held-out receipt' : c?.id ?? '');
+const trackCount = (t) => (t === 'all' ? data.rows.filter((r) => MAIN.includes(setOf(r))).length : data.rows.filter((r) => setOf(r) === t).length);
 const hasOn = () => Boolean(full?.reasoningOn);
 function applyMode() {
   if (mode === 'on' && !hasOn()) mode = 'off';
@@ -87,7 +89,7 @@ function reasoningCompare() {
 
 function trackSwitch() {
   if (!hasReal()) return '';
-  return `<div class="segmented track-switch" role="group" aria-label="Benchmark track">${Object.entries(TRACKS).map(([k, l]) => `<button data-track="${k}" class="${track === k ? 'active' : ''}" aria-pressed="${track === k}">${l} <span class="count">${trackCount(k)}</span></button>`).join('')}</div>`;
+  return `<div class="segmented track-switch" role="group" aria-label="Benchmark track">${Object.entries(TRACKS).filter(([k]) => trackCount(k)).map(([k, l]) => `<button data-track="${k}" class="${track === k ? 'active' : ''}" aria-pressed="${track === k}">${l} <span class="count">${trackCount(k)}</span></button>`).join('')}</div>`;
 }
 // Wilson 95% interval, for groupings computed in the page.
 function rate(k, n) {
@@ -123,7 +125,7 @@ function band() {
     third,
     [cost ? `$${cost.perBill.toFixed(4)}` : 'n/a', 'Cost per bill', cost ? `$${cost.per1000Bills.toFixed(2)} per 1,000 · median ${seconds(S().latencyMs.p50)}` : ''],
   ];
-  return `<section class="band" aria-label="Headline results"><span class="eyebrow">${icon('shield')} Headline results · ${o.bills} ${track === 'real' ? 'real receipts' : track === 'synthetic' ? 'synthetic bills' : 'bills'} · reasoning ${mode} · real model runs</span><div class="band-grid">${stats.map(([v, l, f]) => `<div class="stat"><div class="stat-value">${v}</div><div class="stat-label">${l}</div><div class="stat-foot">${f}</div></div>`).join('')}</div></section>`;
+  return `<section class="band" aria-label="Headline results"><span class="eyebrow">${icon('shield')} Headline results · ${o.bills} ${track === 'real' ? 'real receipts' : track === 'holdout' ? 'held-out real receipts' : track === 'synthetic' ? 'synthetic bills' : 'bills'} · reasoning ${mode} · real model runs</span><div class="band-grid">${stats.map(([v, l, f]) => `<div class="stat"><div class="stat-value">${v}</div><div class="stat-label">${l}</div><div class="stat-foot">${f}</div></div>`).join('')}</div></section>`;
 }
 
 function modelCard() {
@@ -201,7 +203,7 @@ function realMisreads(rows) {
 
 function resultCards() {
   const S_ = S(), rows = rowsT();
-  if (track === 'real') {
+  if (track === 'real' || track === 'holdout') {
     const lines = (r) => (r.linesTotal <= 2 ? '2 lines' : r.linesTotal === 3 ? '3 lines' : r.linesTotal <= 5 ? '4–5 lines' : '6+ lines');
     const charges = (r) => { const c = caseFor(r.id)?.truth ?? {}; return c.serviceCharge != null ? 'Tax + service' : c.tax != null ? 'Tax only' : c.discount != null ? 'Discount' : 'No charges'; };
     const o = S_.overall;
@@ -223,7 +225,7 @@ function resultCards() {
 
 function overview() {
   const o = S().overall, n = trackCount('real');
-  const eyebrow = !hasReal() ? `${data.rows.length} synthetic bills` : track === 'real' ? `${n} real receipt photos (CORD v2)` : track === 'synthetic' ? `${trackCount('synthetic')} synthetic bills` : `${data.rows.length} bills · ${trackCount('synthetic')} synthetic + ${n} real photos`;
+  const eyebrow = !hasReal() ? `${trackCount('all')} synthetic bills` : track === 'real' ? `${n} real receipt photos (CORD v2)` : track === 'holdout' ? `${trackCount('holdout')} held-out real receipts (CORD v2)` : track === 'synthetic' ? `${trackCount('synthetic')} synthetic bills` : `${trackCount('all')} bills · ${trackCount('synthetic')} synthetic + ${n} real photos`;
   const tag = o.plantedCaught.n ? `${o.plantedCaught.k}/${o.plantedCaught.n} wrong totals caught · ${pct(o.linesPriced)} of lines read exactly` : `${pct(o.linesPriced)} of lines read exactly on real photos`;
   const note = track === 'synthetic'
     ? 'An application-level evaluation on synthetic bills, not an official benchmark.</strong> Real photos (glare, folds, handwriting) and ambiguous notes are harder; switch to the real-receipt track to see how much.'
@@ -231,6 +233,7 @@ function overview() {
   return `<section class="hero"><div><span class="eyebrow">${icon('book')} Splitter benchmark · ${eyebrow}</span><h1>Read the bill.<br>Do the maths <em>with tools.</em></h1><p>${escape(data.model)} reads each bill, works out who had what from a plain-English note, and calls calculator tools for every number. The app only checks the answer.</p><div class="actions"><a class="button" href="#bills">Explore the bills ${icon('arrow')}</a><a class="text-link" href="#method">How it was measured ${icon('arrow')}</a></div></div>
     <div class="hero-art" aria-hidden="true"><img class="a" src="${BASE}dataset/home-01.png" alt=""><img class="b" src="${BASE}dataset/${hasReal() && track !== 'synthetic' ? 'real/real-013.jpg' : 'food-03.png'}" alt=""><span class="tag">${icon('shield')}${tag}</span></div></section>
   <div class="track-bar">${trackSwitch()}${modeSwitch()}</div>
+  ${track === 'holdout' ? `<p class="note" style="margin:0 0 24px"><strong>A fair check of the real-receipt numbers.</strong> These ${trackCount('holdout')} receipts come straight after the 150 in the same fixed order from CORD v2, chosen by the same rules, and were never looked at while building the benchmark or writing the prompt.</p>` : ''}
   ${band()}${modelCard()}${reasoningCompare()}
   <section class="section"><div class="section-head"><div><span class="eyebrow">Results</span><h2>Where it's right, and where it isn't</h2></div></div>${resultCards()}</section>
   <section class="section"><div class="section-head"><div><span class="eyebrow">Every miss, in the open</span><h2>${rowsT().filter(isIssue).length} bills worth a closer look</h2><p>Open one to see the image, what the model read, its tool calls and its split.</p></div><a class="text-link" href="#bills">All ${rowsT().length} bills ${icon('arrow')}</a></div>${misses()}</section>
@@ -311,6 +314,7 @@ function method() {
   <section class="section"><div class="grid-2">
     <article class="card"><h3>Synthetic bills</h3><p>150 synthetic bills: 30 each of groceries, party, home & rent, food and travel. In every category: 10 INR / 10 USD / 10 EUR; 12 clean, 6 faded, 6 rotated, 6 long; 6 planted wrong totals (20%) balanced across currency, layout and condition; groups of 2–5. Merchants and lines fit the category. A fixed seed, rendered in Chrome, so anyone can rebuild it.</p></article>
     <article class="card"><h3>Real receipts</h3><p>150 photographed restaurant and café receipts from <a class="text-link" href="https://huggingface.co/datasets/naver-clova-ix/cord-v2" target="_blank" rel="noreferrer">CORD v2</a> (Indonesia, rupiah, CC BY 4.0), with CORD's human labels as ground truth. Kept in a fixed order when the labels are unambiguous and add up: 2+ lines, unique names, no priced add-ons, lines + tax + service − discount = total. Who had what is generated, as for the synthetic set. No planted errors: these totals are real.</p></article>
+    <article class="card"><h3>Held-out receipts</h3><p>100 more CORD v2 receipts, picked by the same rules in the same order right after the 150, and scored once after Splitter's prompt was final. They check the real-track numbers on receipts nobody had looked at, so they're reported on their own, not inside the 300.</p></article>
     <article class="card"><h3>Ground truth</h3><p>Every line, charge and printed total, who had what, and the expected split from Splitter's integer money engine (largest-remainder rounding, ties by group order). The note the model reads is written from the same truth.</p></article>
     <article class="card"><h3>What is scored</h3><dl class="def-list" style="margin-top:12px">${defs.map(([t, d]) => `<div><dt>${t}</dt><dd>${d}</dd></div>`).join('')}</dl></article>
     <article class="card"><h3>Honest reporting</h3><p>Failed runs count as failures. Only network errors (HTTP 429/5xx, timeouts) are retried, up to 3 times, and the count is reported. Every rate has a Wilson 95% interval. A settings fingerprint (model, endpoint, prompts, tools) marks comparable runs. Two full synthetic runs with the same settings agreed on all 150 bills. Each track records its own run date and fingerprint. In the reasoning-on run, 71 bills hit a network outage and were rerun once; those retries are counted.</p></article>

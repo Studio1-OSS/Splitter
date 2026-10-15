@@ -8,9 +8,11 @@ import { expectedSplit, summarise, transient, withSummaries, type Case, type Res
 import { costOf, wilson } from "./stats.mts";
 import cases from "./dataset/cases.json";
 import realCases from "./dataset/real/cases.json";
+import holdoutCases from "./dataset/holdout/cases.json";
 
 const all = cases as Case[];
 const real = realCases as Case[];
+const holdout = holdoutCases as Case[];
 
 describe("dataset", () => {
   it("is balanced: 5 categories × 30, 6 planted errors and 10 per currency in each", () => {
@@ -60,6 +62,21 @@ describe("real receipts (CORD v2)", () => {
       expect(new Set(t.items.map((i) => i.name.toLowerCase())).size, c.id).toBe(t.items.length);
       const shares = expectedSplit(c);
       expect(Object.values(shares).reduce((a, b) => a + toMinor(b, c.currency), 0), c.id).toBe(toMinor(t.total, c.currency));
+    }
+  });
+});
+
+describe("held-out real receipts", () => {
+  it("has 100 receipts that come after the real track and never overlap it", () => {
+    expect(holdout).toHaveLength(100);
+    const used = new Set(real.map((c) => c.source));
+    for (const c of holdout) {
+      expect(c.set).toBe("holdout");
+      expect(used.has(c.source), c.id).toBe(false);
+      expect(existsSync(new URL(`./dataset/${c.file}`, import.meta.url)), c.file).toBe(true);
+      const t = c.truth;
+      expect(t.items.reduce((a, i) => a + i.totalPrice, 0) + (t.tax ?? 0) + (t.serviceCharge ?? 0) - (t.discount ?? 0), c.id).toBe(t.total);
+      expect(new Set(t.items.map((i) => i.name.toLowerCase())).size, c.id).toBe(t.items.length);
     }
   });
 });
@@ -127,13 +144,13 @@ describe("dashboard server", () => {
   });
 
   it("serves the dashboard, data and images; nothing else", async () => {
-    for (const p of ["/", "/app.js", "/styles.css", "/icons.svg", "/favicon.svg", "/dataset/food-01.png", "/dataset/real/real-001.jpg", "/fonts/Geist-Variable.ttf", "/fonts/FragmentMono-Regular.ttf"]) {
+    for (const p of ["/", "/app.js", "/styles.css", "/icons.svg", "/favicon.svg", "/dataset/food-01.png", "/dataset/real/real-001.jpg", "/dataset/holdout/holdout-001.jpg", "/fonts/Geist-Variable.ttf", "/fonts/FragmentMono-Regular.ttf"]) {
       const r = await fetch(base + p);
       expect(r.status, p).toBe(200);
       expect(r.headers.get("x-content-type-options")).toBe("nosniff");
       await r.arrayBuffer();
     }
-    for (const p of ["/.env", "/%2eenv", "/.git/config", "/server.mts", "/dataset/generate.mjs", "/dataset/../.env", "/constructor", "/fonts/../../.env", "/fonts/Geist-OFL.txt", "/src/fonts/Geist-Variable.ttf", "/dataset/real/cases.json", "/dataset/real/README.md", "/dataset/real/../cases.json", "/dataset/real/real-1.jpg"]) {
+    for (const p of ["/.env", "/%2eenv", "/.git/config", "/server.mts", "/dataset/generate.mjs", "/dataset/../.env", "/constructor", "/fonts/../../.env", "/fonts/Geist-OFL.txt", "/src/fonts/Geist-Variable.ttf", "/dataset/real/cases.json", "/dataset/real/README.md", "/dataset/real/../cases.json", "/dataset/real/real-1.jpg", "/dataset/holdout/cases.json", "/dataset/holdout/real-001.jpg"]) {
       const r = await fetch(base + p);
       expect(r.status, p).toBe(404);
       await r.text();

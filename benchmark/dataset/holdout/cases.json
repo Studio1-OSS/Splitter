@@ -1,0 +1,6823 @@
+[
+  {
+    "id": "holdout-001",
+    "file": "holdout/holdout-001.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #218",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Everyone shared the Grilled Dorry Fish, Rakesh and Aman shared the Set Menu Family, everyone shared the Teppan Seafood Udon.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Grilled Dorry Fish",
+          "quantity": 1,
+          "totalPrice": 42000
+        },
+        {
+          "name": "Set Menu Family",
+          "quantity": 1,
+          "totalPrice": 318000
+        },
+        {
+          "name": "Teppan Seafood Udon",
+          "quantity": 1,
+          "totalPrice": 38000
+        }
+      ],
+      "subtotal": 398000,
+      "tax": 41949,
+      "serviceCharge": 21492,
+      "tip": null,
+      "discount": 39800,
+      "total": 421641,
+      "correctTotal": 421641,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Rakesh",
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-002",
+    "file": "holdout/holdout-002.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #220",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the KING DEAL CHEESE BURGER R, Mahima had the 1 PC BIC.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "KING DEAL CHEESE BURGER R",
+          "quantity": 1,
+          "totalPrice": 25000
+        },
+        {
+          "name": "1 PC BIC",
+          "quantity": 1,
+          "totalPrice": 15909
+        }
+      ],
+      "subtotal": 40909,
+      "tax": 4091,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 45000,
+      "correctTotal": 45000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-003",
+    "file": "holdout/holdout-003.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #221",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Aman had the POTATO SAUSAGE BREAD, Aman had the OREO GREEN TEA SPREAD, everyone shared the WHITE CHOCO BANANA SPREAD.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "POTATO SAUSAGE BREAD",
+          "quantity": 1,
+          "totalPrice": 19000
+        },
+        {
+          "name": "OREO GREEN TEA SPREAD",
+          "quantity": 1,
+          "totalPrice": 52000
+        },
+        {
+          "name": "WHITE CHOCO BANANA SPREAD",
+          "quantity": 1,
+          "totalPrice": 52000
+        }
+      ],
+      "subtotal": 123000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 123000,
+      "correctTotal": 123000,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-004",
+    "file": "holdout/holdout-004.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #226",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Priya and Aman shared the PKT TELOR/PERKEDEL, everyone shared the DENDENG, Aman and Rakesh shared the SBL GR TERI, Priya had the NESTLE 330 ML.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "PKT TELOR/PERKEDEL",
+          "quantity": 1,
+          "totalPrice": 26000
+        },
+        {
+          "name": "DENDENG",
+          "quantity": 1,
+          "totalPrice": 23000
+        },
+        {
+          "name": "SBL GR TERI",
+          "quantity": 1,
+          "totalPrice": 17000
+        },
+        {
+          "name": "NESTLE 330 ML",
+          "quantity": 2,
+          "totalPrice": 16000
+        }
+      ],
+      "subtotal": 82000,
+      "tax": 8200,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 90200,
+      "correctTotal": 90200,
+      "assignment": [
+        [
+          "Priya",
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Rakesh"
+        ],
+        [
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-005",
+    "file": "holdout/holdout-005.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #233",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Mahima had the Pepenero Pastel, Aman had the Arem Arem.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Pepenero Pastel",
+          "quantity": 1,
+          "totalPrice": 15000
+        },
+        {
+          "name": "Arem Arem",
+          "quantity": 1,
+          "totalPrice": 12000
+        }
+      ],
+      "subtotal": 27000,
+      "tax": 2700,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 29700,
+      "correctTotal": 29700,
+      "assignment": [
+        [
+          "Mahima"
+        ],
+        [
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-006",
+    "file": "holdout/holdout-006.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #234",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the REDBEAN BREAD, Sam had the FRANKFRUT SAUSAGE ROLL.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "REDBEAN BREAD",
+          "quantity": 1,
+          "totalPrice": 9000
+        },
+        {
+          "name": "FRANKFRUT SAUSAGE ROLL",
+          "quantity": 1,
+          "totalPrice": 12000
+        }
+      ],
+      "subtotal": 21000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 21000,
+      "correctTotal": 21000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Sam"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-007",
+    "file": "holdout/holdout-007.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #239",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Aman had the TWIST DONUT, Aman had the BANANA DONUT, Aman had the DARK CHOCOLATE MUFFIN, Priya had the [MD] MINI CASTELLA CHOCOL, everyone shared the PREMIUM MILK PAN BREAD, everyone shared the APPLE PIE, Aman had the PAIN AU CHOCOLATE, everyone shared the KAYA BUN, Priya had the SAUSAGE BREAD, Aman had the TLJ HOTDOG.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "TWIST DONUT",
+          "quantity": 1,
+          "totalPrice": 9000
+        },
+        {
+          "name": "BANANA DONUT",
+          "quantity": 1,
+          "totalPrice": 11000
+        },
+        {
+          "name": "DARK CHOCOLATE MUFFIN",
+          "quantity": 2,
+          "totalPrice": 46000
+        },
+        {
+          "name": "[MD] MINI CASTELLA CHOCOL",
+          "quantity": 1,
+          "totalPrice": 11000
+        },
+        {
+          "name": "PREMIUM MILK PAN BREAD",
+          "quantity": 1,
+          "totalPrice": 17500
+        },
+        {
+          "name": "APPLE PIE",
+          "quantity": 1,
+          "totalPrice": 11000
+        },
+        {
+          "name": "PAIN AU CHOCOLATE",
+          "quantity": 2,
+          "totalPrice": 22000
+        },
+        {
+          "name": "KAYA BUN",
+          "quantity": 2,
+          "totalPrice": 19000
+        },
+        {
+          "name": "SAUSAGE BREAD",
+          "quantity": 1,
+          "totalPrice": 15000
+        },
+        {
+          "name": "TLJ HOTDOG",
+          "quantity": 1,
+          "totalPrice": 16000
+        }
+      ],
+      "subtotal": 177500,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 177500,
+      "correctTotal": 177500,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-008",
+    "file": "holdout/holdout-008.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #243",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Priya had the BULGOGI JEONGSIK, everyone shared the EL KEUN HWANGTAE, Rakesh had the SUNDUBU(TUKBEGI) GYERAN CIM.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "BULGOGI JEONGSIK",
+          "quantity": 1,
+          "totalPrice": 150000
+        },
+        {
+          "name": "EL KEUN HWANGTAE",
+          "quantity": 1,
+          "totalPrice": 130000
+        },
+        {
+          "name": "SUNDUBU(TUKBEGI) GYERAN CIM",
+          "quantity": 1,
+          "totalPrice": 45000
+        }
+      ],
+      "subtotal": 325000,
+      "tax": 34600,
+      "serviceCharge": 22750,
+      "tip": null,
+      "discount": 0,
+      "total": 382350,
+      "correctTotal": 382350,
+      "assignment": [
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-009",
+    "file": "holdout/holdout-009.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #245",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Everyone shared the BLACK PRAWN PASTA, everyone shared the CARBONARA, Aman had the EARL GREY MILK TEA.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "BLACK PRAWN PASTA",
+          "quantity": 1,
+          "totalPrice": 80500
+        },
+        {
+          "name": "CARBONARA",
+          "quantity": 1,
+          "totalPrice": 70500
+        },
+        {
+          "name": "EARL GREY MILK TEA",
+          "quantity": 1,
+          "totalPrice": 57000
+        }
+      ],
+      "subtotal": 208000,
+      "tax": 22048,
+      "serviceCharge": 12480,
+      "tip": null,
+      "discount": null,
+      "total": 242528,
+      "correctTotal": 242528,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-010",
+    "file": "holdout/holdout-010.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #246",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the CARAMEL PASTRY, Sam had the CHOCOLATE TWIST, Priya and Sam shared the SAUSAGE BREAD.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "CARAMEL PASTRY",
+          "quantity": 1,
+          "totalPrice": 12000
+        },
+        {
+          "name": "CHOCOLATE TWIST",
+          "quantity": 1,
+          "totalPrice": 16000
+        },
+        {
+          "name": "SAUSAGE BREAD",
+          "quantity": 1,
+          "totalPrice": 15000
+        }
+      ],
+      "subtotal": 43000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 43000,
+      "correctTotal": 43000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Sam"
+        ],
+        [
+          "Priya",
+          "Sam"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-011",
+    "file": "holdout/holdout-011.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #254",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Aman had the Ayam goreng+Sayur asem, everyone shared the Nasi Uduk Ayam, everyone shared the Nasi Rawon, everyone shared the NASI PUTIH, Priya had the Mineral Water, everyone shared the Teh Tawar Dingin, Aman had the Sayur Asem.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Ayam goreng+Sayur asem",
+          "quantity": 1,
+          "totalPrice": 51500
+        },
+        {
+          "name": "Nasi Uduk Ayam",
+          "quantity": 1,
+          "totalPrice": 47000
+        },
+        {
+          "name": "Nasi Rawon",
+          "quantity": 1,
+          "totalPrice": 58000
+        },
+        {
+          "name": "NASI PUTIH",
+          "quantity": 1,
+          "totalPrice": 9000
+        },
+        {
+          "name": "Mineral Water",
+          "quantity": 2,
+          "totalPrice": 18000
+        },
+        {
+          "name": "Teh Tawar Dingin",
+          "quantity": 2,
+          "totalPrice": 22000
+        },
+        {
+          "name": "Sayur Asem",
+          "quantity": 1,
+          "totalPrice": 19000
+        }
+      ],
+      "subtotal": 224500,
+      "tax": 23573,
+      "serviceCharge": 11225,
+      "tip": null,
+      "discount": null,
+      "total": 259298,
+      "correctTotal": 259298,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-012",
+    "file": "holdout/holdout-012.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #255",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Rakesh had the NEW BEEF SPAGHETTI, Rakesh and Aman shared the P/P AMERICAN FAV, everyone shared the PAKET HAPPY HOUR.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "NEW BEEF SPAGHETTI",
+          "quantity": 1,
+          "totalPrice": 38182
+        },
+        {
+          "name": "P/P AMERICAN FAV",
+          "quantity": 1,
+          "totalPrice": 29091
+        },
+        {
+          "name": "PAKET HAPPY HOUR",
+          "quantity": 1,
+          "totalPrice": 27273
+        }
+      ],
+      "subtotal": 94546,
+      "tax": 9454,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 104000,
+      "correctTotal": 104000,
+      "assignment": [
+        [
+          "Rakesh"
+        ],
+        [
+          "Rakesh",
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-013",
+    "file": "holdout/holdout-013.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #256",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Aman had the AMBUSH DBL CHS BURG, everyone shared the AMBUSH CHS BURGER, Aman had the TAKE AWAY CHARGE.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "AMBUSH DBL CHS BURG",
+          "quantity": 11,
+          "totalPrice": 181500
+        },
+        {
+          "name": "AMBUSH CHS BURGER",
+          "quantity": 4,
+          "totalPrice": 44000
+        },
+        {
+          "name": "TAKE AWAY CHARGE",
+          "quantity": 1,
+          "totalPrice": 1000
+        }
+      ],
+      "subtotal": 226500,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 226500,
+      "correctTotal": 226500,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-014",
+    "file": "holdout/holdout-014.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #260",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Mahima had the BITTERBALLEN, everyone shared the MOZZARELA STICK, everyone shared the NOUGAT ICE CREAM, Mahima had the SAUCYS BROOD, Aman and Priya shared the AMANDEL BROOD, everyone shared the BOKKEPOOTJES.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "BITTERBALLEN",
+          "quantity": 1,
+          "totalPrice": 33000
+        },
+        {
+          "name": "MOZZARELA STICK",
+          "quantity": 1,
+          "totalPrice": 55000
+        },
+        {
+          "name": "NOUGAT ICE CREAM",
+          "quantity": 1,
+          "totalPrice": 20000
+        },
+        {
+          "name": "SAUCYS BROOD",
+          "quantity": 1,
+          "totalPrice": 19000
+        },
+        {
+          "name": "AMANDEL BROOD",
+          "quantity": 1,
+          "totalPrice": 18000
+        },
+        {
+          "name": "BOKKEPOOTJES",
+          "quantity": 1,
+          "totalPrice": 90000
+        }
+      ],
+      "subtotal": 235000,
+      "tax": 23500,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 258500,
+      "correctTotal": 258500,
+      "assignment": [
+        [
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-015",
+    "file": "holdout/holdout-015.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #261",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Aman had the Mie Jumbo Pst/bakso, Aman had the Bakmie Pst/ Bakso, everyone shared the Liang Teh, everyone shared the Es /hagat Jeruk, everyone shared the Krupuk Babi Bungkus.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Mie Jumbo Pst/bakso",
+          "quantity": 2,
+          "totalPrice": 68000
+        },
+        {
+          "name": "Bakmie Pst/ Bakso",
+          "quantity": 1,
+          "totalPrice": 26000
+        },
+        {
+          "name": "Liang Teh",
+          "quantity": 2,
+          "totalPrice": 10000
+        },
+        {
+          "name": "Es /hagat Jeruk",
+          "quantity": 1,
+          "totalPrice": 10000
+        },
+        {
+          "name": "Krupuk Babi Bungkus",
+          "quantity": 1,
+          "totalPrice": 20000
+        }
+      ],
+      "subtotal": 134000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 134000,
+      "correctTotal": 134000,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-016",
+    "file": "holdout/holdout-016.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #262",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Rakesh and Aman shared the TWIST DONUT, everyone shared the PEACH PASTRY, Aman and Priya shared the CHOCO CUSTARD PASTRY, everyone shared the EGG TART, everyone shared the ROYAL CHEESE TART.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "TWIST DONUT",
+          "quantity": 1,
+          "totalPrice": 9000
+        },
+        {
+          "name": "PEACH PASTRY",
+          "quantity": 1,
+          "totalPrice": 17000
+        },
+        {
+          "name": "CHOCO CUSTARD PASTRY",
+          "quantity": 1,
+          "totalPrice": 12000
+        },
+        {
+          "name": "EGG TART",
+          "quantity": 1,
+          "totalPrice": 13000
+        },
+        {
+          "name": "ROYAL CHEESE TART",
+          "quantity": 1,
+          "totalPrice": 16000
+        }
+      ],
+      "subtotal": 67000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 67000,
+      "correctTotal": 67000,
+      "assignment": [
+        [
+          "Rakesh",
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-017",
+    "file": "holdout/holdout-017.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #263",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Everyone shared the Nutella Cheese, Priya and Rakesh shared the Toblerone BanCheese.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Nutella Cheese",
+          "quantity": 1,
+          "totalPrice": 27272
+        },
+        {
+          "name": "Toblerone BanCheese",
+          "quantity": 1,
+          "totalPrice": 28182
+        }
+      ],
+      "subtotal": 55454,
+      "tax": 5545,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 60999,
+      "correctTotal": 60999,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-018",
+    "file": "holdout/holdout-018.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #265",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Rakesh and Sam shared the Popcorn Salt (M), Priya had the Mineral Water (S), Rakesh and Priya shared the Fanta Stwbry (L).",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Popcorn Salt (M)",
+          "quantity": 1,
+          "totalPrice": 40000
+        },
+        {
+          "name": "Mineral Water (S)",
+          "quantity": 1,
+          "totalPrice": 10000
+        },
+        {
+          "name": "Fanta Stwbry (L)",
+          "quantity": 1,
+          "totalPrice": 25000
+        }
+      ],
+      "subtotal": 75000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 75000,
+      "correctTotal": 75000,
+      "assignment": [
+        [
+          "Rakesh",
+          "Sam"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Rakesh",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-019",
+    "file": "holdout/holdout-019.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #269",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Priya had the TUNA & CHEDDAR, Priya had the ONION RINGS, Aman had the AQUA BTL.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "TUNA & CHEDDAR",
+          "quantity": 1,
+          "totalPrice": 55000
+        },
+        {
+          "name": "ONION RINGS",
+          "quantity": 1,
+          "totalPrice": 19800
+        },
+        {
+          "name": "AQUA BTL",
+          "quantity": 1,
+          "totalPrice": 6600
+        }
+      ],
+      "subtotal": 81400,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 81400,
+      "correctTotal": 81400,
+      "assignment": [
+        [
+          "Priya"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-020",
+    "file": "holdout/holdout-020.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #272",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Everyone shared the Astor Stick Cokelat 40gr, everyone shared the green tea.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Astor Stick Cokelat 40gr",
+          "quantity": 1,
+          "totalPrice": 8000
+        },
+        {
+          "name": "green tea",
+          "quantity": 1,
+          "totalPrice": 8500
+        }
+      ],
+      "subtotal": 16500,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 16500,
+      "correctTotal": 16500,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-021",
+    "file": "holdout/holdout-021.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #274",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Everyone shared the NASI UDUK SATE BUNTEL, Priya had the NASI BALI (EMPAL).",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "NASI UDUK SATE BUNTEL",
+          "quantity": 1,
+          "totalPrice": 55000
+        },
+        {
+          "name": "NASI BALI (EMPAL)",
+          "quantity": 1,
+          "totalPrice": 62000
+        }
+      ],
+      "subtotal": 117000,
+      "tax": 11700,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 128700,
+      "correctTotal": 128700,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-022",
+    "file": "holdout/holdout-022.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #275",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Rakesh had the Benedict Burrito, Aman and Priya shared the Lychee Ice Tea, Rakesh and Aman shared the Soup Of The Day, Rakesh had the Strawberry jc.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Benedict Burrito",
+          "quantity": 1,
+          "totalPrice": 85000
+        },
+        {
+          "name": "Lychee Ice Tea",
+          "quantity": 1,
+          "totalPrice": 40000
+        },
+        {
+          "name": "Soup Of The Day",
+          "quantity": 1,
+          "totalPrice": 45000
+        },
+        {
+          "name": "Strawberry jc",
+          "quantity": 1,
+          "totalPrice": 45000
+        }
+      ],
+      "subtotal": 215000,
+      "tax": 23650,
+      "serviceCharge": 21500,
+      "tip": null,
+      "discount": null,
+      "total": 260150,
+      "correctTotal": 260150,
+      "assignment": [
+        [
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Rakesh",
+          "Aman"
+        ],
+        [
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-023",
+    "file": "holdout/holdout-023.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #280",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Aman had the RB. COKLAT BAR, Aman had the RB. COKLAT BUN, everyone shared the RB. CREPES CHICKEN.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "RB. COKLAT BAR",
+          "quantity": 1,
+          "totalPrice": 8000
+        },
+        {
+          "name": "RB. COKLAT BUN",
+          "quantity": 1,
+          "totalPrice": 8000
+        },
+        {
+          "name": "RB. CREPES CHICKEN",
+          "quantity": 1,
+          "totalPrice": 9000
+        }
+      ],
+      "subtotal": 25000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 25000,
+      "correctTotal": 25000,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-024",
+    "file": "holdout/holdout-024.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #283",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Aman and Priya shared the ELEPHANT READ BEAN, everyone shared the chapsal twister donnut.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "ELEPHANT READ BEAN",
+          "quantity": 1,
+          "totalPrice": 12000
+        },
+        {
+          "name": "chapsal twister donnut",
+          "quantity": 1,
+          "totalPrice": 10000
+        }
+      ],
+      "subtotal": 22000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 22000,
+      "correctTotal": 22000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-025",
+    "file": "holdout/holdout-025.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #285",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Rakesh had the Popcorn Salt (M), everyone shared the Mineral Water (S), Mahima and Priya shared the Fanta Stwbry (L).",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Popcorn Salt (M)",
+          "quantity": 1,
+          "totalPrice": 40000
+        },
+        {
+          "name": "Mineral Water (S)",
+          "quantity": 1,
+          "totalPrice": 10000
+        },
+        {
+          "name": "Fanta Stwbry (L)",
+          "quantity": 1,
+          "totalPrice": 25000
+        }
+      ],
+      "subtotal": 75000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 75000,
+      "correctTotal": 75000,
+      "assignment": [
+        [
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Mahima",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-026",
+    "file": "holdout/holdout-026.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #292",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Sam had the Mineral Water (S)., everyone shared the Popcorn Salt (S)..",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Mineral Water (S).",
+          "quantity": 2,
+          "totalPrice": 20000
+        },
+        {
+          "name": "Popcorn Salt (S).",
+          "quantity": 1,
+          "totalPrice": 20000
+        }
+      ],
+      "subtotal": 40000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 40000,
+      "correctTotal": 40000,
+      "assignment": [
+        [
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-027",
+    "file": "holdout/holdout-027.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #293",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Everyone shared the Nasi Liwet, everyone shared the Nasi Uduk Ayam, Priya had the Ayam Garang Asem, Aman had the Ayam. Kremes, Aman had the Nila Penyet + Nasi, everyone shared the Nasi Goreng Gila, Priya had the Nasi Goreng Rawon, Aman had the Mendoan, Priya had the Teh Tawar Dingin, everyone shared the Teh Tawar Panas.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Nasi Liwet",
+          "quantity": 1,
+          "totalPrice": 49000
+        },
+        {
+          "name": "Nasi Uduk Ayam",
+          "quantity": 1,
+          "totalPrice": 47000
+        },
+        {
+          "name": "Ayam Garang Asem",
+          "quantity": 1,
+          "totalPrice": 46000
+        },
+        {
+          "name": "Ayam. Kremes",
+          "quantity": 1,
+          "totalPrice": 47000
+        },
+        {
+          "name": "Nila Penyet + Nasi",
+          "quantity": 1,
+          "totalPrice": 45000
+        },
+        {
+          "name": "Nasi Goreng Gila",
+          "quantity": 1,
+          "totalPrice": 52000
+        },
+        {
+          "name": "Nasi Goreng Rawon",
+          "quantity": 1,
+          "totalPrice": 43000
+        },
+        {
+          "name": "Mendoan",
+          "quantity": 1,
+          "totalPrice": 31000
+        },
+        {
+          "name": "Teh Tawar Dingin",
+          "quantity": 3,
+          "totalPrice": 33000
+        },
+        {
+          "name": "Teh Tawar Panas",
+          "quantity": 1,
+          "totalPrice": 11000
+        }
+      ],
+      "subtotal": 404000,
+      "tax": 42420,
+      "serviceCharge": 20200,
+      "tip": null,
+      "discount": null,
+      "total": 466620,
+      "correctTotal": 466620,
+      "assignment": [
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-028",
+    "file": "holdout/holdout-028.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #294",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Rakesh had the Dumpling, Priya had the Jamur Kuping, everyone shared the Caisim Kecil, Priya had the Lapchiong, everyone shared the Otak-otak Singapore, Priya and Rakesh shared the Bihun (MLY).",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Dumpling",
+          "quantity": 1,
+          "totalPrice": 9000
+        },
+        {
+          "name": "Jamur Kuping",
+          "quantity": 1,
+          "totalPrice": 8000
+        },
+        {
+          "name": "Caisim Kecil",
+          "quantity": 1,
+          "totalPrice": 7000
+        },
+        {
+          "name": "Lapchiong",
+          "quantity": 2,
+          "totalPrice": 24000
+        },
+        {
+          "name": "Otak-otak Singapore",
+          "quantity": 2,
+          "totalPrice": 22000
+        },
+        {
+          "name": "Bihun (MLY)",
+          "quantity": 1,
+          "totalPrice": 8000
+        }
+      ],
+      "subtotal": 78000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 78000,
+      "correctTotal": 78000,
+      "assignment": [
+        [
+          "Rakesh"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-029",
+    "file": "holdout/holdout-029.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #300",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Priya and Rakesh shared the PAKET SUPER MANTAP 2A RAACHA, Aman had the RICE.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "PAKET SUPER MANTAP 2A RAACHA",
+          "quantity": 1,
+          "totalPrice": 59091
+        },
+        {
+          "name": "RICE",
+          "quantity": 1,
+          "totalPrice": 6364
+        }
+      ],
+      "subtotal": 65455,
+      "tax": 6546,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 72001,
+      "correctTotal": 72001,
+      "assignment": [
+        [
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-030",
+    "file": "holdout/holdout-030.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #303",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Priya and Rakesh shared the AQUA 600ML, everyone shared the BIHUN GORENG SPECIAL, everyone shared the BIHUN MASAK KUAH, Mahima and Priya shared the ES ALPUKAT, everyone shared the ES TEH MANIS, Mahima and Priya shared the ES THE TAWAR, Sam had the IFUMIE, Sam had the JUICE ALPUKAT, everyone shared the JUICE STRAWBERRY, Rakesh had the KWETIAW SIRAM SAPI, Rakesh and Aman shared the KWETIAW SIRAM SEA, Priya and Rakesh shared the KWETIAW GORENG SAPI, everyone shared the KWETIAW GORENG SEA, everyone shared the MIE GORENG SPECIAL, Rakesh had the MPEKMPEK K SELAM, Mahima had the MPEKMPEK LENJER, Priya had the NASI GORENG SPECIAL, everyone shared the TEH MANIS PANAS, Sam had the TEH TAWAR, Aman had the YAMIN BASO SAPI, Sam and Aman shared the YAMIN PANGSIT REBUS.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "AQUA 600ML",
+          "quantity": 5,
+          "totalPrice": 35000
+        },
+        {
+          "name": "BIHUN GORENG SPECIAL",
+          "quantity": 1,
+          "totalPrice": 41000
+        },
+        {
+          "name": "BIHUN MASAK KUAH",
+          "quantity": 1,
+          "totalPrice": 38000
+        },
+        {
+          "name": "ES ALPUKAT",
+          "quantity": 1,
+          "totalPrice": 18000
+        },
+        {
+          "name": "ES TEH MANIS",
+          "quantity": 5,
+          "totalPrice": 30000
+        },
+        {
+          "name": "ES THE TAWAR",
+          "quantity": 1,
+          "totalPrice": 4000
+        },
+        {
+          "name": "IFUMIE",
+          "quantity": 1,
+          "totalPrice": 43000
+        },
+        {
+          "name": "JUICE ALPUKAT",
+          "quantity": 1,
+          "totalPrice": 20000
+        },
+        {
+          "name": "JUICE STRAWBERRY",
+          "quantity": 1,
+          "totalPrice": 21000
+        },
+        {
+          "name": "KWETIAW SIRAM SAPI",
+          "quantity": 1,
+          "totalPrice": 43000
+        },
+        {
+          "name": "KWETIAW SIRAM SEA",
+          "quantity": 1,
+          "totalPrice": 45000
+        },
+        {
+          "name": "KWETIAW GORENG SAPI",
+          "quantity": 1,
+          "totalPrice": 45000
+        },
+        {
+          "name": "KWETIAW GORENG SEA",
+          "quantity": 2,
+          "totalPrice": 90000
+        },
+        {
+          "name": "MIE GORENG SPECIAL",
+          "quantity": 2,
+          "totalPrice": 82000
+        },
+        {
+          "name": "MPEKMPEK K SELAM",
+          "quantity": 1,
+          "totalPrice": 20000
+        },
+        {
+          "name": "MPEKMPEK LENJER",
+          "quantity": 1,
+          "totalPrice": 20000
+        },
+        {
+          "name": "NASI GORENG SPECIAL",
+          "quantity": 2,
+          "totalPrice": 82000
+        },
+        {
+          "name": "TEH MANIS PANAS",
+          "quantity": 3,
+          "totalPrice": 18000
+        },
+        {
+          "name": "TEH TAWAR",
+          "quantity": 2,
+          "totalPrice": 4000
+        },
+        {
+          "name": "YAMIN BASO SAPI",
+          "quantity": 1,
+          "totalPrice": 30000
+        },
+        {
+          "name": "YAMIN PANGSIT REBUS",
+          "quantity": 1,
+          "totalPrice": 31000
+        }
+      ],
+      "subtotal": 760000,
+      "tax": 76000,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 836000,
+      "correctTotal": 836000,
+      "assignment": [
+        [
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Mahima",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Mahima",
+          "Priya"
+        ],
+        [
+          "Sam"
+        ],
+        [
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Rakesh"
+        ],
+        [
+          "Rakesh",
+          "Aman"
+        ],
+        [
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Rakesh"
+        ],
+        [
+          "Mahima"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Sam"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Sam",
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-031",
+    "file": "holdout/holdout-031.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #305",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Everyone shared the CARAMELALMOND, everyone shared the STIX ECLAIRS.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "CARAMELALMOND",
+          "quantity": 1,
+          "totalPrice": 23000
+        },
+        {
+          "name": "STIX ECLAIRS",
+          "quantity": 1,
+          "totalPrice": 19000
+        }
+      ],
+      "subtotal": 42000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 42000,
+      "correctTotal": 42000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-032",
+    "file": "holdout/holdout-032.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #308",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Everyone shared the Mineral water (s), everyone shared the Blend GT (M), Priya and Aman shared the Extra Jelly Lychee, Priya had the Extra Ice Cream, everyone shared the French Fries + FF.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Mineral water (s)",
+          "quantity": 1,
+          "totalPrice": 15000
+        },
+        {
+          "name": "Blend GT (M)",
+          "quantity": 1,
+          "totalPrice": 55000
+        },
+        {
+          "name": "Extra Jelly Lychee",
+          "quantity": 1,
+          "totalPrice": 5000
+        },
+        {
+          "name": "Extra Ice Cream",
+          "quantity": 1,
+          "totalPrice": 15000
+        },
+        {
+          "name": "French Fries + FF",
+          "quantity": 1,
+          "totalPrice": 50000
+        }
+      ],
+      "subtotal": 140000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 140000,
+      "correctTotal": 140000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Priya",
+          "Aman"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-033",
+    "file": "holdout/holdout-033.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #316",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Everyone shared the Peach Tea, everyone shared the Lemon Tea, Rakesh and Priya shared the Chicken Kazan Curry, everyone shared the Chicken Karamiso Special, everyone shared the Chicken Shio Special, everyone shared the Beef Set A.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Peach Tea",
+          "quantity": 3,
+          "totalPrice": 44400
+        },
+        {
+          "name": "Lemon Tea",
+          "quantity": 4,
+          "totalPrice": 59200
+        },
+        {
+          "name": "Chicken Kazan Curry",
+          "quantity": 1,
+          "totalPrice": 69800
+        },
+        {
+          "name": "Chicken Karamiso Special",
+          "quantity": 1,
+          "totalPrice": 54800
+        },
+        {
+          "name": "Chicken Shio Special",
+          "quantity": 2,
+          "totalPrice": 109600
+        },
+        {
+          "name": "Beef Set A",
+          "quantity": 1,
+          "totalPrice": 99800
+        }
+      ],
+      "subtotal": 437600,
+      "tax": 45948,
+      "serviceCharge": 21880,
+      "tip": null,
+      "discount": null,
+      "total": 505428,
+      "correctTotal": 505428,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Rakesh",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-034",
+    "file": "holdout/holdout-034.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #319",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the LONTONG CAP GO MEH, everyone shared the NASI LIWET (SATE BUNTEL AYAM), Rakesh had the TEH JAWA.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "LONTONG CAP GO MEH",
+          "quantity": 1,
+          "totalPrice": 57000
+        },
+        {
+          "name": "NASI LIWET (SATE BUNTEL AYAM)",
+          "quantity": 1,
+          "totalPrice": 45000
+        },
+        {
+          "name": "TEH JAWA",
+          "quantity": 2,
+          "totalPrice": 26000
+        }
+      ],
+      "subtotal": 128000,
+      "tax": 12800,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 140800,
+      "correctTotal": 140800,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-035",
+    "file": "holdout/holdout-035.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #325",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Everyone shared the AOP Seafood, Aman had the Omurice Katsu Curry, Priya had the Earl Gray Tea, Priya had the Hot Tea.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "AOP Seafood",
+          "quantity": 1,
+          "totalPrice": 85000
+        },
+        {
+          "name": "Omurice Katsu Curry",
+          "quantity": 1,
+          "totalPrice": 95000
+        },
+        {
+          "name": "Earl Gray Tea",
+          "quantity": 1,
+          "totalPrice": 35000
+        },
+        {
+          "name": "Hot Tea",
+          "quantity": 1,
+          "totalPrice": 25000
+        }
+      ],
+      "subtotal": 240000,
+      "tax": 26160,
+      "serviceCharge": 21600,
+      "tip": null,
+      "discount": null,
+      "total": 287760,
+      "correctTotal": 287760,
+      "assignment": [
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-036",
+    "file": "holdout/holdout-036.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #329",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Everyone shared the Mineral Water (S)., Aman had the Popcorn Salt (S)..",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Mineral Water (S).",
+          "quantity": 1,
+          "totalPrice": 10000
+        },
+        {
+          "name": "Popcorn Salt (S).",
+          "quantity": 1,
+          "totalPrice": 20000
+        }
+      ],
+      "subtotal": 30000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 30000,
+      "correctTotal": 30000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-037",
+    "file": "holdout/holdout-037.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #331",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Mahima had the KWT GR MGMSP, Rakesh had the TEH HANGAT.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "KWT GR MGMSP",
+          "quantity": 1,
+          "totalPrice": 43182
+        },
+        {
+          "name": "TEH HANGAT",
+          "quantity": 1,
+          "totalPrice": 5909
+        }
+      ],
+      "subtotal": 49091,
+      "tax": 4909,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 54000,
+      "correctTotal": 54000,
+      "assignment": [
+        [
+          "Mahima"
+        ],
+        [
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-038",
+    "file": "holdout/holdout-038.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #334",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Rakesh and Priya shared the Kwetiaw Ayam Jamur, Aman and Priya shared the 1/2 OTAK-OTAK, Priya and Aman shared the Es Cincau.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Kwetiaw Ayam Jamur",
+          "quantity": 2,
+          "totalPrice": 56364
+        },
+        {
+          "name": "1/2 OTAK-OTAK",
+          "quantity": 1,
+          "totalPrice": 10000
+        },
+        {
+          "name": "Es Cincau",
+          "quantity": 1,
+          "totalPrice": 14545
+        }
+      ],
+      "subtotal": 80909,
+      "tax": 8091,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 89000,
+      "correctTotal": 89000,
+      "assignment": [
+        [
+          "Rakesh",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Priya",
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-039",
+    "file": "holdout/holdout-039.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #335",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Everyone shared the TWIST DONUT, Priya had the CRANBERRY WALNUT (S), Aman had the POTATO SAUSAGE BREAD, Aman had the BLACK CHEESE HOTDOG.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "TWIST DONUT",
+          "quantity": 3,
+          "totalPrice": 27000
+        },
+        {
+          "name": "CRANBERRY WALNUT (S)",
+          "quantity": 2,
+          "totalPrice": 17000
+        },
+        {
+          "name": "POTATO SAUSAGE BREAD",
+          "quantity": 1,
+          "totalPrice": 19000
+        },
+        {
+          "name": "BLACK CHEESE HOTDOG",
+          "quantity": 1,
+          "totalPrice": 20000
+        }
+      ],
+      "subtotal": 83000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 83000,
+      "correctTotal": 83000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-040",
+    "file": "holdout/holdout-040.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #336",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Everyone shared the Mineral Water (S), Aman and Rakesh shared the Lemon Tea (L).",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Mineral Water (S)",
+          "quantity": 1,
+          "totalPrice": 10000
+        },
+        {
+          "name": "Lemon Tea (L)",
+          "quantity": 1,
+          "totalPrice": 25000
+        }
+      ],
+      "subtotal": 35000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 35000,
+      "correctTotal": 35000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-041",
+    "file": "holdout/holdout-041.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #337",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Priya had the Iced Sleepy Coffee, Priya and Rakesh shared the Pisang Goreng.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Iced Sleepy Coffee",
+          "quantity": 1,
+          "totalPrice": 38000
+        },
+        {
+          "name": "Pisang Goreng",
+          "quantity": 1,
+          "totalPrice": 28000
+        }
+      ],
+      "subtotal": 66000,
+      "tax": 6600,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 72600,
+      "correctTotal": 72600,
+      "assignment": [
+        [
+          "Priya"
+        ],
+        [
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-042",
+    "file": "holdout/holdout-042.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #346",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the <AYA BUN, Mahima and Aman shared the CRISPY REAL CHEESE.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "<AYA BUN",
+          "quantity": 3,
+          "totalPrice": 28500
+        },
+        {
+          "name": "CRISPY REAL CHEESE",
+          "quantity": 1,
+          "totalPrice": 16500
+        }
+      ],
+      "subtotal": 45000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 45000,
+      "correctTotal": 45000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Mahima",
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-043",
+    "file": "holdout/holdout-043.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #347",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Everyone shared the Lumpia Klt Tahu (3), Aman had the SM Udang & Aym (4), everyone shared the XLB Kptg&Aym(4), everyone shared the Brokoli Bwg Putih, Aman had the Mie Sup WT (U & A), everyone shared the The Roselle.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Lumpia Klt Tahu (3)",
+          "quantity": 1,
+          "totalPrice": 43000
+        },
+        {
+          "name": "SM Udang & Aym (4)",
+          "quantity": 1,
+          "totalPrice": 50000
+        },
+        {
+          "name": "XLB Kptg&Aym(4)",
+          "quantity": 1,
+          "totalPrice": 56000
+        },
+        {
+          "name": "Brokoli Bwg Putih",
+          "quantity": 1,
+          "totalPrice": 60000
+        },
+        {
+          "name": "Mie Sup WT (U & A)",
+          "quantity": 1,
+          "totalPrice": 53000
+        },
+        {
+          "name": "The Roselle",
+          "quantity": 1,
+          "totalPrice": 32000
+        }
+      ],
+      "subtotal": 294000,
+      "tax": 31605,
+      "serviceCharge": 22050,
+      "tip": null,
+      "discount": null,
+      "total": 347655,
+      "correctTotal": 347655,
+      "assignment": [
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-044",
+    "file": "holdout/holdout-044.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #349",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Everyone shared the GONG GIBAB, everyone shared the BO SSAM, Rakesh had the HAEMUL DENJANG JJIGAE, Priya had the MULNAENGMYO N.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "GONG GIBAB",
+          "quantity": 1,
+          "totalPrice": 20000
+        },
+        {
+          "name": "BO SSAM",
+          "quantity": 1,
+          "totalPrice": 320000
+        },
+        {
+          "name": "HAEMUL DENJANG JJIGAE",
+          "quantity": 1,
+          "totalPrice": 85000
+        },
+        {
+          "name": "MULNAENGMYO N",
+          "quantity": 1,
+          "totalPrice": 85000
+        }
+      ],
+      "subtotal": 510000,
+      "tax": 54255,
+      "serviceCharge": 35700,
+      "tip": null,
+      "discount": 0,
+      "total": 599955,
+      "correctTotal": 599955,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Rakesh"
+        ],
+        [
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-045",
+    "file": "holdout/holdout-045.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #351",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Priya had the Yakiniku Rice Organic, everyone shared the Mocca Float.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Yakiniku Rice Organic",
+          "quantity": 1,
+          "totalPrice": 22727
+        },
+        {
+          "name": "Mocca Float",
+          "quantity": 1,
+          "totalPrice": 8636
+        }
+      ],
+      "subtotal": 31363,
+      "tax": 3137,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 34500,
+      "correctTotal": 34500,
+      "assignment": [
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-046",
+    "file": "holdout/holdout-046.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #352",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the ES ILAT BOYO, everyone shared the NASI PUTIH, everyone shared the SAMBEL TOMAT SEG, everyone shared the SAYAP AYAM, everyone shared the TEA TAWAR.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "ES ILAT BOYO",
+          "quantity": 1,
+          "totalPrice": 15000
+        },
+        {
+          "name": "NASI PUTIH",
+          "quantity": 1,
+          "totalPrice": 7000
+        },
+        {
+          "name": "SAMBEL TOMAT SEG",
+          "quantity": 1,
+          "totalPrice": 5000
+        },
+        {
+          "name": "SAYAP AYAM",
+          "quantity": 1,
+          "totalPrice": 17000
+        },
+        {
+          "name": "TEA TAWAR",
+          "quantity": 1,
+          "totalPrice": 6000
+        }
+      ],
+      "subtotal": 50000,
+      "tax": 5150,
+      "serviceCharge": 1500,
+      "tip": null,
+      "discount": null,
+      "total": 56650,
+      "correctTotal": 56650,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-047",
+    "file": "holdout/holdout-047.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #357",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Aman had the Nats Bitter Choco cake, Aman had the Es Kopi Susu Pandan, Aman had the Extra Whipping Cream, Aman had the Iced Coffee Latte, everyone shared the Iced Sugar Cane, everyone shared the Sparkling Mango Mojito, Aman had the Iced Coffee.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Nats Bitter Choco cake",
+          "quantity": 1,
+          "totalPrice": 40000
+        },
+        {
+          "name": "Es Kopi Susu Pandan",
+          "quantity": 1,
+          "totalPrice": 35000
+        },
+        {
+          "name": "Extra Whipping Cream",
+          "quantity": 1,
+          "totalPrice": 10000
+        },
+        {
+          "name": "Iced Coffee Latte",
+          "quantity": 1,
+          "totalPrice": 40000
+        },
+        {
+          "name": "Iced Sugar Cane",
+          "quantity": 1,
+          "totalPrice": 28000
+        },
+        {
+          "name": "Sparkling Mango Mojito",
+          "quantity": 1,
+          "totalPrice": 65000
+        },
+        {
+          "name": "Iced Coffee",
+          "quantity": 1,
+          "totalPrice": 28000
+        }
+      ],
+      "subtotal": 246000,
+      "tax": 25646,
+      "serviceCharge": 10455,
+      "tip": null,
+      "discount": 36900,
+      "total": 245201,
+      "correctTotal": 245201,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-048",
+    "file": "holdout/holdout-048.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #359",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Priya and Aman shared the YANG YUM GUI, everyone shared the GALBI TANG, everyone shared the NASI(GONGGI BAB).",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "YANG YUM GUI",
+          "quantity": 1,
+          "totalPrice": 97000
+        },
+        {
+          "name": "GALBI TANG",
+          "quantity": 1,
+          "totalPrice": 92000
+        },
+        {
+          "name": "NASI(GONGGI BAB)",
+          "quantity": 1,
+          "totalPrice": 15000
+        }
+      ],
+      "subtotal": 204000,
+      "tax": 20885,
+      "serviceCharge": 14280,
+      "tip": null,
+      "discount": 0,
+      "total": 239165,
+      "correctTotal": 239165,
+      "assignment": [
+        [
+          "Priya",
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-049",
+    "file": "holdout/holdout-049.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #360",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Everyone shared the TWIST ORANGE CHOCO DONUT, everyone shared the CHOCOLATE TWIST, Mahima had the REAL CHOCOLATE ROLL, Mahima had the CHOCOLATE SOBORO.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "TWIST ORANGE CHOCO DONUT",
+          "quantity": 2,
+          "totalPrice": 20000
+        },
+        {
+          "name": "CHOCOLATE TWIST",
+          "quantity": 2,
+          "totalPrice": 32000
+        },
+        {
+          "name": "REAL CHOCOLATE ROLL",
+          "quantity": 1,
+          "totalPrice": 16000
+        },
+        {
+          "name": "CHOCOLATE SOBORO",
+          "quantity": 2,
+          "totalPrice": 28000
+        }
+      ],
+      "subtotal": 96000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 96000,
+      "correctTotal": 96000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Mahima"
+        ],
+        [
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-050",
+    "file": "holdout/holdout-050.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #362",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the GONG GIBAB, everyone shared the BO SSAM, everyone shared the HAEMUL DENJANG JJIGAE, Aman and Rakesh shared the MULNAENGMYON.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "GONG GIBAB",
+          "quantity": 1,
+          "totalPrice": 20000
+        },
+        {
+          "name": "BO SSAM",
+          "quantity": 1,
+          "totalPrice": 320000
+        },
+        {
+          "name": "HAEMUL DENJANG JJIGAE",
+          "quantity": 1,
+          "totalPrice": 85000
+        },
+        {
+          "name": "MULNAENGMYON",
+          "quantity": 1,
+          "totalPrice": 85000
+        }
+      ],
+      "subtotal": 510000,
+      "tax": 54255,
+      "serviceCharge": 35700,
+      "tip": null,
+      "discount": 0,
+      "total": 599955,
+      "correctTotal": 599955,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-051",
+    "file": "holdout/holdout-051.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #365",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Aman had the LM Dmplg Chli Sc, Priya had the LM Poach Marble Beef, Aman had the DIMSUM, everyone shared the XLB Org Pork 6x, everyone shared the Oolong Jasmine Cup, Priya had the Tea.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "LM Dmplg Chli Sc",
+          "quantity": 1,
+          "totalPrice": 68000
+        },
+        {
+          "name": "LM Poach Marble Beef",
+          "quantity": 2,
+          "totalPrice": 176000
+        },
+        {
+          "name": "DIMSUM",
+          "quantity": 2,
+          "totalPrice": 47600
+        },
+        {
+          "name": "XLB Org Pork 6x",
+          "quantity": 1,
+          "totalPrice": 52000
+        },
+        {
+          "name": "Oolong Jasmine Cup",
+          "quantity": 1,
+          "totalPrice": 10000
+        },
+        {
+          "name": "Tea",
+          "quantity": 2,
+          "totalPrice": 20000
+        }
+      ],
+      "subtotal": 373600,
+      "tax": 40162,
+      "serviceCharge": 28020,
+      "tip": null,
+      "discount": null,
+      "total": 441782,
+      "correctTotal": 441782,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-052",
+    "file": "holdout/holdout-052.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #366",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Aman had the CHICKEN KATSU CURRY UDON, everyone shared the KAKIAGE TEMPURA, Rakesh and Aman shared the COLD OCHA.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "CHICKEN KATSU CURRY UDON",
+          "quantity": 1,
+          "totalPrice": 46364
+        },
+        {
+          "name": "KAKIAGE TEMPURA",
+          "quantity": 1,
+          "totalPrice": 10000
+        },
+        {
+          "name": "COLD OCHA",
+          "quantity": 1,
+          "totalPrice": 10909
+        }
+      ],
+      "subtotal": 67273,
+      "tax": 6727,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 74000,
+      "correctTotal": 74000,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Rakesh",
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-053",
+    "file": "holdout/holdout-053.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #367",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Everyone shared the TWIST DONUT, Rakesh had the BROWNIE, everyone shared the REAL GANACHE, Mahima and Priya shared the REAL CHOCOLATE ROLL, everyone shared the REDBEAN BREAD.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "TWIST DONUT",
+          "quantity": 2,
+          "totalPrice": 18000
+        },
+        {
+          "name": "BROWNIE",
+          "quantity": 1,
+          "totalPrice": 21000
+        },
+        {
+          "name": "REAL GANACHE",
+          "quantity": 1,
+          "totalPrice": 16500
+        },
+        {
+          "name": "REAL CHOCOLATE ROLL",
+          "quantity": 1,
+          "totalPrice": 16000
+        },
+        {
+          "name": "REDBEAN BREAD",
+          "quantity": 1,
+          "totalPrice": 9000
+        }
+      ],
+      "subtotal": 80500,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 80500,
+      "correctTotal": 80500,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Mahima",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-054",
+    "file": "holdout/holdout-054.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #370",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the CKM 1 OR, everyone shared the Sundae.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "CKM 1 OR",
+          "quantity": 1,
+          "totalPrice": 29545
+        },
+        {
+          "name": "Sundae",
+          "quantity": 1,
+          "totalPrice": 8182
+        }
+      ],
+      "subtotal": 37727,
+      "tax": 3773,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 41500,
+      "correctTotal": 41500,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-055",
+    "file": "holdout/holdout-055.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #371",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Aman had the S-Ovaltine Macchiat, everyone shared the S-Hazelnut Milk Tea.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "S-Ovaltine Macchiat",
+          "quantity": 1,
+          "totalPrice": 22000
+        },
+        {
+          "name": "S-Hazelnut Milk Tea",
+          "quantity": 1,
+          "totalPrice": 20000
+        }
+      ],
+      "subtotal": 42000,
+      "tax": 0,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 42000,
+      "correctTotal": 42000,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-056",
+    "file": "holdout/holdout-056.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #373",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Everyone shared the Bento Barbeque, everyone shared the Lychee Float, everyone shared the KFC Winger HC.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Bento Barbeque",
+          "quantity": 1,
+          "totalPrice": 13636
+        },
+        {
+          "name": "Lychee Float",
+          "quantity": 1,
+          "totalPrice": 5909
+        },
+        {
+          "name": "KFC Winger HC",
+          "quantity": 1,
+          "totalPrice": 20000
+        }
+      ],
+      "subtotal": 39545,
+      "tax": 3955,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 43500,
+      "correctTotal": 43500,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-057",
+    "file": "holdout/holdout-057.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #375",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Aman and Mahima shared the Grande, Mahima had the Lemon grass tea (Dine in), Aman had the Cheese Tea Hokkaido Melon, Mahima and Priya shared the Air Mineral.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Grande",
+          "quantity": 3,
+          "totalPrice": 180000
+        },
+        {
+          "name": "Lemon grass tea (Dine in)",
+          "quantity": 1,
+          "totalPrice": 25000
+        },
+        {
+          "name": "Cheese Tea Hokkaido Melon",
+          "quantity": 3,
+          "totalPrice": 72000
+        },
+        {
+          "name": "Air Mineral",
+          "quantity": 2,
+          "totalPrice": 10000
+        }
+      ],
+      "subtotal": 287000,
+      "tax": 28700,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 315700,
+      "correctTotal": 315700,
+      "assignment": [
+        [
+          "Aman",
+          "Mahima"
+        ],
+        [
+          "Mahima"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Mahima",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-058",
+    "file": "holdout/holdout-058.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #376",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the SWEEAT ICE TEA, everyone shared the OREO MILK BLEND, Sam and Rakesh shared the FRIED RC SFOOD, Sam and Aman shared the SHISHA, everyone shared the MASHED POTATO.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "SWEEAT ICE TEA",
+          "quantity": 1,
+          "totalPrice": 16800
+        },
+        {
+          "name": "OREO MILK BLEND",
+          "quantity": 1,
+          "totalPrice": 28800
+        },
+        {
+          "name": "FRIED RC SFOOD",
+          "quantity": 1,
+          "totalPrice": 39800
+        },
+        {
+          "name": "SHISHA",
+          "quantity": 1,
+          "totalPrice": 47000
+        },
+        {
+          "name": "MASHED POTATO",
+          "quantity": 1,
+          "totalPrice": 23800
+        }
+      ],
+      "subtotal": 156200,
+      "tax": 16480,
+      "serviceCharge": 8591,
+      "tip": null,
+      "discount": null,
+      "total": 181271,
+      "correctTotal": 181271,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Sam",
+          "Rakesh"
+        ],
+        [
+          "Sam",
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-059",
+    "file": "holdout/holdout-059.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #381",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Aman had the RB. AI-AI CHOCO, everyone shared the RB. COKLAT COFFEE.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "RB. AI-AI CHOCO",
+          "quantity": 1,
+          "totalPrice": 8000
+        },
+        {
+          "name": "RB. COKLAT COFFEE",
+          "quantity": 1,
+          "totalPrice": 8000
+        }
+      ],
+      "subtotal": 16000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 16000,
+      "correctTotal": 16000,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-060",
+    "file": "holdout/holdout-060.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #385",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Everyone shared the CHOCO CHIP, Rakesh had the NOUGAT ICE CREAM, Aman had the AMANDEL BROOD, Aman had the BOKKEPOOTJES, everyone shared the CHOCOLATE ICE CREAM, everyone shared the MOCCA ICE CREAM.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "CHOCO CHIP",
+          "quantity": 1,
+          "totalPrice": 27500
+        },
+        {
+          "name": "NOUGAT ICE CREAM",
+          "quantity": 2,
+          "totalPrice": 48000
+        },
+        {
+          "name": "AMANDEL BROOD",
+          "quantity": 1,
+          "totalPrice": 20000
+        },
+        {
+          "name": "BOKKEPOOTJES",
+          "quantity": 1,
+          "totalPrice": 104000
+        },
+        {
+          "name": "CHOCOLATE ICE CREAM",
+          "quantity": 2,
+          "totalPrice": 30000
+        },
+        {
+          "name": "MOCCA ICE CREAM",
+          "quantity": 1,
+          "totalPrice": 15000
+        }
+      ],
+      "subtotal": 244500,
+      "tax": 24450,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 268950,
+      "correctTotal": 268950,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Rakesh"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-061",
+    "file": "holdout/holdout-061.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #398",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Mahima had the KCS 1, Mahima had the WHOP JR 15K, everyone shared the CHANGE TO CHICKEN BOX.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "KCS 1",
+          "quantity": 1,
+          "totalPrice": 25000
+        },
+        {
+          "name": "WHOP JR 15K",
+          "quantity": 1,
+          "totalPrice": 15000
+        },
+        {
+          "name": "CHANGE TO CHICKEN BOX",
+          "quantity": 1,
+          "totalPrice": 909
+        }
+      ],
+      "subtotal": 40909,
+      "tax": 4091,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 45000,
+      "correctTotal": 45000,
+      "assignment": [
+        [
+          "Mahima"
+        ],
+        [
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-062",
+    "file": "holdout/holdout-062.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #401",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the Bakso Campur, Aman had the Es Teh Manis.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Bakso Campur",
+          "quantity": 1,
+          "totalPrice": 25455
+        },
+        {
+          "name": "Es Teh Manis",
+          "quantity": 1,
+          "totalPrice": 7273
+        }
+      ],
+      "subtotal": 32728,
+      "tax": 3273,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 36001,
+      "correctTotal": 36001,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-063",
+    "file": "holdout/holdout-063.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #408",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Aman had the GoFood Beragam - ICE LAT TE, everyone shared the ES KOPI SUSU.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "GoFood Beragam - ICE LAT TE",
+          "quantity": 1,
+          "totalPrice": 13500
+        },
+        {
+          "name": "ES KOPI SUSU",
+          "quantity": 1,
+          "totalPrice": 18000
+        }
+      ],
+      "subtotal": 31500,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 31500,
+      "correctTotal": 31500,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-064",
+    "file": "holdout/holdout-064.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #413",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Everyone shared the CHIKATSU BEN, everyone shared the BOX T. O, everyone shared the OCHA.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "CHIKATSU BEN",
+          "quantity": 10,
+          "totalPrice": 200000
+        },
+        {
+          "name": "BOX T. O",
+          "quantity": 10,
+          "totalPrice": 10000
+        },
+        {
+          "name": "OCHA",
+          "quantity": 10,
+          "totalPrice": 40000
+        }
+      ],
+      "subtotal": 250000,
+      "tax": 25000,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 275000,
+      "correctTotal": 275000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-065",
+    "file": "holdout/holdout-065.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #416",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Everyone shared the NIKU UDON, everyone shared the ABURA UDON (SPICY), everyone shared the INARI, everyone shared the KAKIAGE TEMPURA, everyone shared the COLD OCHA.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "NIKU UDON",
+          "quantity": 1,
+          "totalPrice": 49091
+        },
+        {
+          "name": "ABURA UDON (SPICY)",
+          "quantity": 1,
+          "totalPrice": 40909
+        },
+        {
+          "name": "INARI",
+          "quantity": 1,
+          "totalPrice": 10000
+        },
+        {
+          "name": "KAKIAGE TEMPURA",
+          "quantity": 1,
+          "totalPrice": 10000
+        },
+        {
+          "name": "COLD OCHA",
+          "quantity": 1,
+          "totalPrice": 10909
+        }
+      ],
+      "subtotal": 120909,
+      "tax": 12091,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 133000,
+      "correctTotal": 133000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-066",
+    "file": "holdout/holdout-066.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #417",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Priya and Rakesh shared the Blend GT (M), Sam had the Es Kopi Susu Pandan.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Blend GT (M)",
+          "quantity": 1,
+          "totalPrice": 60000
+        },
+        {
+          "name": "Es Kopi Susu Pandan",
+          "quantity": 1,
+          "totalPrice": 35000
+        }
+      ],
+      "subtotal": 95000,
+      "tax": 0,
+      "serviceCharge": 0,
+      "tip": null,
+      "discount": null,
+      "total": 95000,
+      "correctTotal": 95000,
+      "assignment": [
+        [
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Sam"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-067",
+    "file": "holdout/holdout-067.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #418",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Everyone shared the SAUSAGE DONUT, everyone shared the TLJ CROQUETTE, everyone shared the CORONET, Priya had the SPOOKY SOBORO, Priya had the SCREAMING RED BEAN, Priya had the PIZZA TOAST.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "SAUSAGE DONUT",
+          "quantity": 1,
+          "totalPrice": 13000
+        },
+        {
+          "name": "TLJ CROQUETTE",
+          "quantity": 1,
+          "totalPrice": 17000
+        },
+        {
+          "name": "CORONET",
+          "quantity": 2,
+          "totalPrice": 27000
+        },
+        {
+          "name": "SPOOKY SOBORO",
+          "quantity": 2,
+          "totalPrice": 24000
+        },
+        {
+          "name": "SCREAMING RED BEAN",
+          "quantity": 1,
+          "totalPrice": 13000
+        },
+        {
+          "name": "PIZZA TOAST",
+          "quantity": 1,
+          "totalPrice": 16000
+        }
+      ],
+      "subtotal": 110000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 110000,
+      "correctTotal": 110000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-068",
+    "file": "holdout/holdout-068.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #419",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Everyone shared the Pork Belly Cheese Fries, Aman and Rakesh shared the Reflection Sparkling, everyone shared the Hot Black Cofee, Priya and Rakesh shared the Nasi Campur ala Bali, everyone shared the Oriental \"Ketjap\" Pork Rice.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Pork Belly Cheese Fries",
+          "quantity": 1,
+          "totalPrice": 65000
+        },
+        {
+          "name": "Reflection Sparkling",
+          "quantity": 1,
+          "totalPrice": 20000
+        },
+        {
+          "name": "Hot Black Cofee",
+          "quantity": 1,
+          "totalPrice": 30000
+        },
+        {
+          "name": "Nasi Campur ala Bali",
+          "quantity": 2,
+          "totalPrice": 150000
+        },
+        {
+          "name": "Oriental \"Ketjap\" Pork Rice",
+          "quantity": 1,
+          "totalPrice": 55000
+        }
+      ],
+      "subtotal": 320000,
+      "tax": 33600,
+      "serviceCharge": 16000,
+      "tip": null,
+      "discount": 0,
+      "total": 369600,
+      "correctTotal": 369600,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-069",
+    "file": "holdout/holdout-069.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #422",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Priya and Mahima shared the Thai Tea - ICE, everyone shared the Green Tea ICE, everyone shared the Thai Coffee ICE.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Thai Tea - ICE",
+          "quantity": 1,
+          "totalPrice": 20000
+        },
+        {
+          "name": "Green Tea ICE",
+          "quantity": 1,
+          "totalPrice": 22000
+        },
+        {
+          "name": "Thai Coffee ICE",
+          "quantity": 1,
+          "totalPrice": 20000
+        }
+      ],
+      "subtotal": 62000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 62000,
+      "correctTotal": 62000,
+      "assignment": [
+        [
+          "Priya",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-070",
+    "file": "holdout/holdout-070.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #423",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Aman had the [MD] SOFT STEAMED CHEESEC, everyone shared the CHOCO CUSTARD PASTRY.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "[MD] SOFT STEAMED CHEESEC",
+          "quantity": 1,
+          "totalPrice": 10000
+        },
+        {
+          "name": "CHOCO CUSTARD PASTRY",
+          "quantity": 1,
+          "totalPrice": 12000
+        }
+      ],
+      "subtotal": 22000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 22000,
+      "correctTotal": 22000,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-071",
+    "file": "holdout/holdout-071.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #426",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Priya had the COLD OCHA, everyone shared the BCA PROMO, Aman had the SKEWERED SHUMAI, Aman had the SKEWERED TOFU ROLL, everyone shared the EBI TEMPURA, Aman had the KITSUNE UDON (KIDS).",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "COLD OCHA",
+          "quantity": 1,
+          "totalPrice": 10909
+        },
+        {
+          "name": "BCA PROMO",
+          "quantity": 1,
+          "totalPrice": 54455
+        },
+        {
+          "name": "SKEWERED SHUMAI",
+          "quantity": 1,
+          "totalPrice": 12727
+        },
+        {
+          "name": "SKEWERED TOFU ROLL",
+          "quantity": 1,
+          "totalPrice": 12727
+        },
+        {
+          "name": "EBI TEMPURA",
+          "quantity": 1,
+          "totalPrice": 13636
+        },
+        {
+          "name": "KITSUNE UDON (KIDS)",
+          "quantity": 1,
+          "totalPrice": 28182
+        }
+      ],
+      "subtotal": 132636,
+      "tax": 13264,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 145900,
+      "correctTotal": 145900,
+      "assignment": [
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-072",
+    "file": "holdout/holdout-072.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #427",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Rakesh had the Pangsit Delima, everyone shared the Lumpia Udg K Th, Priya had the Ha Kaou Udng, everyone shared the Cheong Fen Udg, everyone shared the Hatosi Rambutan, everyone shared the Sio May Kpting, everyone shared the Kwo Tie Jala2, Priya had the Pancake Durian, everyone shared the Mie Gr Udg Gala, Priya had the Lamien Udang T, Priya had the Lamien Aym Ktsu, everyone shared the Ns Pgng Kj Sp, Aman and Priya shared the Kwt Polos Mdn, Rakesh and Aman shared the N Aym Hainam Jl, everyone shared the Chinese Tea, Priya and Aman shared the Ice Lemon Tea, everyone shared the Mineral Water.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Pangsit Delima",
+          "quantity": 1,
+          "totalPrice": 27000
+        },
+        {
+          "name": "Lumpia Udg K Th",
+          "quantity": 1,
+          "totalPrice": 30000
+        },
+        {
+          "name": "Ha Kaou Udng",
+          "quantity": 1,
+          "totalPrice": 28000
+        },
+        {
+          "name": "Cheong Fen Udg",
+          "quantity": 1,
+          "totalPrice": 35000
+        },
+        {
+          "name": "Hatosi Rambutan",
+          "quantity": 2,
+          "totalPrice": 60000
+        },
+        {
+          "name": "Sio May Kpting",
+          "quantity": 1,
+          "totalPrice": 23500
+        },
+        {
+          "name": "Kwo Tie Jala2",
+          "quantity": 1,
+          "totalPrice": 50000
+        },
+        {
+          "name": "Pancake Durian",
+          "quantity": 1,
+          "totalPrice": 32000
+        },
+        {
+          "name": "Mie Gr Udg Gala",
+          "quantity": 1,
+          "totalPrice": 65000
+        },
+        {
+          "name": "Lamien Udang T",
+          "quantity": 1,
+          "totalPrice": 46000
+        },
+        {
+          "name": "Lamien Aym Ktsu",
+          "quantity": 1,
+          "totalPrice": 46000
+        },
+        {
+          "name": "Ns Pgng Kj Sp",
+          "quantity": 1,
+          "totalPrice": 55000
+        },
+        {
+          "name": "Kwt Polos Mdn",
+          "quantity": 1,
+          "totalPrice": 23500
+        },
+        {
+          "name": "N Aym Hainam Jl",
+          "quantity": 1,
+          "totalPrice": 39000
+        },
+        {
+          "name": "Chinese Tea",
+          "quantity": 1,
+          "totalPrice": 35000
+        },
+        {
+          "name": "Ice Lemon Tea",
+          "quantity": 1,
+          "totalPrice": 16000
+        },
+        {
+          "name": "Mineral Water",
+          "quantity": 2,
+          "totalPrice": 18000
+        }
+      ],
+      "subtotal": 629000,
+      "tax": 66045,
+      "serviceCharge": 31450,
+      "tip": null,
+      "discount": null,
+      "total": 726495,
+      "correctTotal": 726495,
+      "assignment": [
+        [
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Rakesh",
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Priya",
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-073",
+    "file": "holdout/holdout-073.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #432",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Mahima had the XXI Java Tea Spc, Aman and Mahima shared the Popcorn Sweet (S).",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "XXI Java Tea Spc",
+          "quantity": 1,
+          "totalPrice": 25000
+        },
+        {
+          "name": "Popcorn Sweet (S)",
+          "quantity": 1,
+          "totalPrice": 30000
+        }
+      ],
+      "subtotal": 55000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 55000,
+      "correctTotal": 55000,
+      "assignment": [
+        [
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-074",
+    "file": "holdout/holdout-074.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #433",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the TORI BAITAN UDON, Sam and Rakesh shared the BEEF CURRY RICE, everyone shared the INARI, Mahima and Aman shared the COLD OCHA.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "TORI BAITAN UDON",
+          "quantity": 1,
+          "totalPrice": 43636
+        },
+        {
+          "name": "BEEF CURRY RICE",
+          "quantity": 1,
+          "totalPrice": 49091
+        },
+        {
+          "name": "INARI",
+          "quantity": 1,
+          "totalPrice": 10000
+        },
+        {
+          "name": "COLD OCHA",
+          "quantity": 1,
+          "totalPrice": 10909
+        }
+      ],
+      "subtotal": 113636,
+      "tax": 11364,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 125000,
+      "correctTotal": 125000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Sam",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Mahima",
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-075",
+    "file": "holdout/holdout-075.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #437",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Aman had the TALKING ACTIVITY BK, everyone shared the KERTAS KADO 1500.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "TALKING ACTIVITY BK",
+          "quantity": 1,
+          "totalPrice": 254500
+        },
+        {
+          "name": "KERTAS KADO 1500",
+          "quantity": 1,
+          "totalPrice": 1500
+        }
+      ],
+      "subtotal": 256000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 256000,
+      "correctTotal": 256000,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-076",
+    "file": "holdout/holdout-076.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #442",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Rakesh had the SHISAMO MENTAIKO, everyone shared the SALMON BACON, Aman and Priya shared the DYNAMITE SCALLOP, Rakesh and Priya shared the TOBIKO TOFU.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "SHISAMO MENTAIKO",
+          "quantity": 1,
+          "totalPrice": 33000
+        },
+        {
+          "name": "SALMON BACON",
+          "quantity": 1,
+          "totalPrice": 49000
+        },
+        {
+          "name": "DYNAMITE SCALLOP",
+          "quantity": 1,
+          "totalPrice": 55000
+        },
+        {
+          "name": "TOBIKO TOFU",
+          "quantity": 1,
+          "totalPrice": 29000
+        }
+      ],
+      "subtotal": 166000,
+      "tax": 17679,
+      "serviceCharge": 10790,
+      "tip": null,
+      "discount": null,
+      "total": 194469,
+      "correctTotal": 194469,
+      "assignment": [
+        [
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Rakesh",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-077",
+    "file": "holdout/holdout-077.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #448",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Everyone shared the Berry Many-Low (P), Aman and Mahima shared the 500 days of summer (P), Aman and Mahima shared the sun kissed (P), Priya and Mahima shared the PLASTIC BAG.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Berry Many-Low (P)",
+          "quantity": 1,
+          "totalPrice": 37500
+        },
+        {
+          "name": "500 days of summer (P)",
+          "quantity": 1,
+          "totalPrice": 37500
+        },
+        {
+          "name": "sun kissed (P)",
+          "quantity": 1,
+          "totalPrice": 37500
+        },
+        {
+          "name": "PLASTIC BAG",
+          "quantity": 1,
+          "totalPrice": 500
+        }
+      ],
+      "subtotal": 113000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": 0,
+      "total": 113000,
+      "correctTotal": 113000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Mahima"
+        ],
+        [
+          "Priya",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-078",
+    "file": "holdout/holdout-078.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #449",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the KING DEAL CHEESE BURGER R, Rakesh had the KINGBBOBPG ML REG, Rakesh and Mahima shared the MED ICED LEMON TEA.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "KING DEAL CHEESE BURGER R",
+          "quantity": 1,
+          "totalPrice": 25000
+        },
+        {
+          "name": "KINGBBOBPG ML REG",
+          "quantity": 1,
+          "totalPrice": 25000
+        },
+        {
+          "name": "MED ICED LEMON TEA",
+          "quantity": 1,
+          "totalPrice": 10000
+        }
+      ],
+      "subtotal": 60000,
+      "tax": 6000,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 66000,
+      "correctTotal": 66000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Rakesh"
+        ],
+        [
+          "Rakesh",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-079",
+    "file": "holdout/holdout-079.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #450",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Aman had the CUSTARD BRIOCHE, Priya had the CUSTARD SOBORO.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "CUSTARD BRIOCHE",
+          "quantity": 1,
+          "totalPrice": 9000
+        },
+        {
+          "name": "CUSTARD SOBORO",
+          "quantity": 1,
+          "totalPrice": 12000
+        }
+      ],
+      "subtotal": 21000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 21000,
+      "correctTotal": 21000,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-080",
+    "file": "holdout/holdout-080.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #454",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Aman had the MILK CREAM BREAD, Aman had the REAL MILK CHOCO BREAD, everyone shared the RED BEAN BRAIDED BREAD.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "MILK CREAM BREAD",
+          "quantity": 1,
+          "totalPrice": 12500
+        },
+        {
+          "name": "REAL MILK CHOCO BREAD",
+          "quantity": 1,
+          "totalPrice": 12500
+        },
+        {
+          "name": "RED BEAN BRAIDED BREAD",
+          "quantity": 1,
+          "totalPrice": 20000
+        }
+      ],
+      "subtotal": 45000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 45000,
+      "correctTotal": 45000,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-081",
+    "file": "holdout/holdout-081.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #455",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Rakesh had the BASO TAHU, Aman had the NASI PUTIH, everyone shared the TAHU SATUAN.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "BASO TAHU",
+          "quantity": 1,
+          "totalPrice": 43636
+        },
+        {
+          "name": "NASI PUTIH",
+          "quantity": 1,
+          "totalPrice": 6000
+        },
+        {
+          "name": "TAHU SATUAN",
+          "quantity": 1,
+          "totalPrice": 14545
+        }
+      ],
+      "subtotal": 64181,
+      "tax": 6418,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 70599,
+      "correctTotal": 70599,
+      "assignment": [
+        [
+          "Rakesh"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-082",
+    "file": "holdout/holdout-082.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #456",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Mahima and Aman shared the mush pasta, everyone shared the chic ques.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "mush pasta",
+          "quantity": 1,
+          "totalPrice": 80000
+        },
+        {
+          "name": "chic ques",
+          "quantity": 1,
+          "totalPrice": 55000
+        }
+      ],
+      "subtotal": 135000,
+      "tax": 14513,
+      "serviceCharge": 10125,
+      "tip": null,
+      "discount": null,
+      "total": 159638,
+      "correctTotal": 159638,
+      "assignment": [
+        [
+          "Mahima",
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-083",
+    "file": "holdout/holdout-083.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #459",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Everyone shared the ZUPPA SOUP, everyone shared the CHILLY N'CHEESE, Priya had the BEEF CHEDDAR PO, everyone shared the MINERAL WATER.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "ZUPPA SOUP",
+          "quantity": 1,
+          "totalPrice": 28600
+        },
+        {
+          "name": "CHILLY N'CHEESE",
+          "quantity": 1,
+          "totalPrice": 33000
+        },
+        {
+          "name": "BEEF CHEDDAR PO",
+          "quantity": 1,
+          "totalPrice": 36300
+        },
+        {
+          "name": "MINERAL WATER",
+          "quantity": 1,
+          "totalPrice": 6600
+        }
+      ],
+      "subtotal": 104500,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 104500,
+      "correctTotal": 104500,
+      "assignment": [
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-084",
+    "file": "holdout/holdout-084.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #461",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Priya had the KFC Winger HC, everyone shared the Soaghetti Deluxe.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "KFC Winger HC",
+          "quantity": 2,
+          "totalPrice": 40000
+        },
+        {
+          "name": "Soaghetti Deluxe",
+          "quantity": 1,
+          "totalPrice": 8182
+        }
+      ],
+      "subtotal": 48182,
+      "tax": 4818,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 53000,
+      "correctTotal": 53000,
+      "assignment": [
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-085",
+    "file": "holdout/holdout-085.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #465",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Everyone shared the NASI RAMES, Mahima had the AYAM PANGGANG, everyone shared the ES TEH/TAWAR.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "NASI RAMES",
+          "quantity": 1,
+          "totalPrice": 15000
+        },
+        {
+          "name": "AYAM PANGGANG",
+          "quantity": 1,
+          "totalPrice": 22000
+        },
+        {
+          "name": "ES TEH/TAWAR",
+          "quantity": 1,
+          "totalPrice": 11000
+        }
+      ],
+      "subtotal": 48000,
+      "tax": 5160,
+      "serviceCharge": 3600,
+      "tip": null,
+      "discount": null,
+      "total": 56760,
+      "correctTotal": 56760,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-086",
+    "file": "holdout/holdout-086.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #466",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the NEW BEEF SPAGHETTI, everyone shared the P/P AMERICAN FAV, Mahima had the PAKET HAPPY HOUR.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "NEW BEEF SPAGHETTI",
+          "quantity": 1,
+          "totalPrice": 38182
+        },
+        {
+          "name": "P/P AMERICAN FAV",
+          "quantity": 1,
+          "totalPrice": 29091
+        },
+        {
+          "name": "PAKET HAPPY HOUR",
+          "quantity": 1,
+          "totalPrice": 27273
+        }
+      ],
+      "subtotal": 94546,
+      "tax": 9454,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 104000,
+      "correctTotal": 104000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-087",
+    "file": "holdout/holdout-087.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #476",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Aman had the PLASTIC BAG, everyone shared the Pink Panther (P), everyone shared the Red dragon (P).",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "PLASTIC BAG",
+          "quantity": 1,
+          "totalPrice": 500
+        },
+        {
+          "name": "Pink Panther (P)",
+          "quantity": 1,
+          "totalPrice": 37500
+        },
+        {
+          "name": "Red dragon (P)",
+          "quantity": 1,
+          "totalPrice": 37500
+        }
+      ],
+      "subtotal": 75500,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": 0,
+      "total": 75500,
+      "correctTotal": 75500,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-088",
+    "file": "holdout/holdout-088.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #477",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Everyone shared the CAPPUCCINO, Rakesh had the ORANGE JUICE.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "CAPPUCCINO",
+          "quantity": 1,
+          "totalPrice": 28000
+        },
+        {
+          "name": "ORANGE JUICE",
+          "quantity": 2,
+          "totalPrice": 48000
+        }
+      ],
+      "subtotal": 76000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 76000,
+      "correctTotal": 76000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-089",
+    "file": "holdout/holdout-089.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #478",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Priya and Rakesh shared the Pecel Pincuk, everyone shared the Tahu Bacem, Aman had the Tempe Bacem, everyone shared the Empal, Aman had the Peyek Parcel.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Pecel Pincuk",
+          "quantity": 10,
+          "totalPrice": 127270
+        },
+        {
+          "name": "Tahu Bacem",
+          "quantity": 5,
+          "totalPrice": 15910
+        },
+        {
+          "name": "Tempe Bacem",
+          "quantity": 5,
+          "totalPrice": 15910
+        },
+        {
+          "name": "Empal",
+          "quantity": 2,
+          "totalPrice": 25454
+        },
+        {
+          "name": "Peyek Parcel",
+          "quantity": 1,
+          "totalPrice": 25455
+        }
+      ],
+      "subtotal": 209999,
+      "tax": 21000,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 230999,
+      "correctTotal": 230999,
+      "assignment": [
+        [
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-090",
+    "file": "holdout/holdout-090.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #482",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Everyone shared the THAI ICETEA, Sam and Priya shared the ICE GREENTEA.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "THAI ICETEA",
+          "quantity": 1,
+          "totalPrice": 20000
+        },
+        {
+          "name": "ICE GREENTEA",
+          "quantity": 1,
+          "totalPrice": 22000
+        }
+      ],
+      "subtotal": 42000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 42000,
+      "correctTotal": 42000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ],
+        [
+          "Sam",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-091",
+    "file": "holdout/holdout-091.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #487",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Everyone shared the R.PISANG COKLAT, Priya had the D.RING COKLAT, everyone shared the R.BANA CHIP, everyone shared the R.TAWAR ISI 2, Priya had the NU GREENTEA ORGE, Priya had the YAKULT ISI 5 PCS.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "R.PISANG COKLAT",
+          "quantity": 2,
+          "totalPrice": 22000
+        },
+        {
+          "name": "D.RING COKLAT",
+          "quantity": 2,
+          "totalPrice": 18000
+        },
+        {
+          "name": "R.BANA CHIP",
+          "quantity": 1,
+          "totalPrice": 9000
+        },
+        {
+          "name": "R.TAWAR ISI 2",
+          "quantity": 1,
+          "totalPrice": 4500
+        },
+        {
+          "name": "NU GREENTEA ORGE",
+          "quantity": 1,
+          "totalPrice": 4500
+        },
+        {
+          "name": "YAKULT ISI 5 PCS",
+          "quantity": 2,
+          "totalPrice": 18000
+        }
+      ],
+      "subtotal": 76000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 76000,
+      "correctTotal": 76000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Priya"
+        ],
+        [
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-092",
+    "file": "holdout/holdout-092.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #491",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Everyone shared the TWIST DONUT, Aman and Priya shared the CUSTARD SOB RO.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "TWIST DONUT",
+          "quantity": 1,
+          "totalPrice": 9000
+        },
+        {
+          "name": "CUSTARD SOB RO",
+          "quantity": 1,
+          "totalPrice": 12000
+        }
+      ],
+      "subtotal": 21000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 21000,
+      "correctTotal": 21000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-093",
+    "file": "holdout/holdout-093.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #492",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Mahima had the NASI PUTIH, Mahima and Aman shared the AYAM GR BUMBU, everyone shared the NESTLE 330 ML.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "NASI PUTIH",
+          "quantity": 1,
+          "totalPrice": 13000
+        },
+        {
+          "name": "AYAM GR BUMBU",
+          "quantity": 2,
+          "totalPrice": 44000
+        },
+        {
+          "name": "NESTLE 330 ML",
+          "quantity": 2,
+          "totalPrice": 16000
+        }
+      ],
+      "subtotal": 73000,
+      "tax": 7300,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 80300,
+      "correctTotal": 80300,
+      "assignment": [
+        [
+          "Mahima"
+        ],
+        [
+          "Mahima",
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-094",
+    "file": "holdout/holdout-094.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #496",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Aman had the BBQ Chicken, Aman had the Mineral Water 600 ml, everyone shared the Teh Pucuk 350 ml.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "BBQ Chicken",
+          "quantity": 1,
+          "totalPrice": 41000
+        },
+        {
+          "name": "Mineral Water 600 ml",
+          "quantity": 1,
+          "totalPrice": 8000
+        },
+        {
+          "name": "Teh Pucuk 350 ml",
+          "quantity": 1,
+          "totalPrice": 7000
+        }
+      ],
+      "subtotal": 56000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 56000,
+      "correctTotal": 56000,
+      "assignment": [
+        [
+          "Aman"
+        ],
+        [
+          "Aman"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-095",
+    "file": "holdout/holdout-095.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #498",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Everyone shared the MILK PASTRY ROLL, Priya had the CARAMEL PASTRY.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "MILK PASTRY ROLL",
+          "quantity": 1,
+          "totalPrice": 9000
+        },
+        {
+          "name": "CARAMEL PASTRY",
+          "quantity": 1,
+          "totalPrice": 12000
+        }
+      ],
+      "subtotal": 21000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 21000,
+      "correctTotal": 21000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya"
+        ],
+        [
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-096",
+    "file": "holdout/holdout-096.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #501",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Everyone shared the CHICKEN PICATTA, everyone shared the JAVA TEA.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "CHICKEN PICATTA",
+          "quantity": 1,
+          "totalPrice": 46363
+        },
+        {
+          "name": "JAVA TEA",
+          "quantity": 1,
+          "totalPrice": 11363
+        }
+      ],
+      "subtotal": 57726,
+      "tax": 5772,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 63498,
+      "correctTotal": 63498,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-097",
+    "file": "holdout/holdout-097.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #511",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima"
+    ],
+    "note": "Everyone shared the TWIST STRAWBERRY DONUT, everyone shared the TWIST ORANGE CHOCO DONUT.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "TWIST STRAWBERRY DONUT",
+          "quantity": 2,
+          "totalPrice": 20000
+        },
+        {
+          "name": "TWIST ORANGE CHOCO DONUT",
+          "quantity": 1,
+          "totalPrice": 10000
+        }
+      ],
+      "subtotal": 30000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 30000,
+      "correctTotal": 30000,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-098",
+    "file": "holdout/holdout-098.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #512",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh",
+      "Mahima",
+      "Sam"
+    ],
+    "note": "Rakesh had the Gado Gado, everyone shared the Nasi Putih GG.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "Gado Gado",
+          "quantity": 1,
+          "totalPrice": 36000
+        },
+        {
+          "name": "Nasi Putih GG",
+          "quantity": 1,
+          "totalPrice": 7000
+        }
+      ],
+      "subtotal": 43000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 43000,
+      "correctTotal": 43000,
+      "assignment": [
+        [
+          "Rakesh"
+        ],
+        [
+          "Aman",
+          "Priya",
+          "Rakesh",
+          "Mahima",
+          "Sam"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-099",
+    "file": "holdout/holdout-099.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #514",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya"
+    ],
+    "note": "Priya had the APPLE PIE, Priya had the APPLE CREAMCHEESE PASTRY.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "APPLE PIE",
+          "quantity": 2,
+          "totalPrice": 22000
+        },
+        {
+          "name": "APPLE CREAMCHEESE PASTRY",
+          "quantity": 1,
+          "totalPrice": 13000
+        }
+      ],
+      "subtotal": 35000,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 35000,
+      "correctTotal": 35000,
+      "assignment": [
+        [
+          "Priya"
+        ],
+        [
+          "Priya"
+        ]
+      ],
+      "date": null
+    }
+  },
+  {
+    "id": "holdout-100",
+    "file": "holdout/holdout-100.jpg",
+    "set": "holdout",
+    "source": "CORD v2 · train #515",
+    "category": "food",
+    "layout": "photo",
+    "condition": "real",
+    "currency": "IDR",
+    "people": [
+      "Aman",
+      "Priya",
+      "Rakesh"
+    ],
+    "note": "Everyone shared the ZUPPA SOUP, Rakesh and Aman shared the MINERAL WATER.",
+    "planted": false,
+    "truth": {
+      "merchant": null,
+      "currency": "IDR",
+      "items": [
+        {
+          "name": "ZUPPA SOUP",
+          "quantity": 3,
+          "totalPrice": 85800
+        },
+        {
+          "name": "MINERAL WATER",
+          "quantity": 3,
+          "totalPrice": 19800
+        }
+      ],
+      "subtotal": 105600,
+      "tax": null,
+      "serviceCharge": null,
+      "tip": null,
+      "discount": null,
+      "total": 105600,
+      "correctTotal": 105600,
+      "assignment": [
+        [
+          "Aman",
+          "Priya",
+          "Rakesh"
+        ],
+        [
+          "Rakesh",
+          "Aman"
+        ]
+      ],
+      "date": null
+    }
+  }
+]

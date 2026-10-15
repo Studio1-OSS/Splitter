@@ -22,9 +22,13 @@ import { config, MODES, runAgent, SYSTEM, type AgentRun, type Mode } from "./rec
 import { costOf, fetchModelInfo, wilson, type ModelInfo } from "./stats.mts";
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
-export type Track = "synthetic" | "real";
+export type Track = "synthetic" | "real" | "holdout";
+/** The 300-bill benchmark. "All" combines these two. */
 export const TRACKS: Track[] = ["synthetic", "real"];
-const CASE_FILES: Record<Track, string> = { synthetic: "dataset/cases.json", real: "dataset/real/cases.json" };
+/** Plus 100 held-out real receipts, never looked at while building or tuning anything; reported on their own. */
+export const ALL_TRACKS: Track[] = [...TRACKS, "holdout"];
+const CASE_FILES: Record<Track, string> = { synthetic: "dataset/cases.json", real: "dataset/real/cases.json", holdout: "dataset/holdout/cases.json" };
+const LABEL: Record<Track, string> = { synthetic: "Synthetic", real: "Real", holdout: "Held-out real" };
 /** Reasoning off (what the app uses) is the main result; reasoning on is saved next to it for comparison. */
 export const RESULT_FILES: Record<Mode, string> = { off: "results.json", on: "results-reasoning.json" };
 
@@ -291,14 +295,14 @@ type RunMeta = { date: string; bills: number; concurrency: number; settings: str
 export type Results = Awaited<ReturnType<typeof buildMeta>> & { date: string; settings: string; bills: number; sets: Partial<Record<Track, RunMeta>>; summary: Summary; summaries: Record<"all" | Track, Summary | null>; rows: Row[] };
 
 function comparison(off: Results, on: Results) {
-  const tracks = (["all", ...TRACKS] as const).filter((t) => off.summaries[t] && on.summaries[t]);
-  const head = tracks.map((t) => (t === "all" ? `All ${off.summaries.all!.overall.bills}` : `${t === "real" ? "Real" : "Synthetic"}`));
+  const tracks = (["all", ...ALL_TRACKS] as const).filter((t) => off.summaries[t] && on.summaries[t]);
+  const head = tracks.map((t) => (t === "all" ? `All ${off.summaries.all!.overall.bills}` : LABEL[t]));
   const row = (label: string, f: (s: Summary) => string) => `| ${label} | ${tracks.map((t) => `${f(off.summaries[t]!)} → ${f(on.summaries[t]!)}`).join(" | ")} |`;
   const r = (k: keyof Summary["overall"]) => (s: Summary) => { const x = s.overall[k] as { k: number; n: number }; return x.n ? `${((100 * x.k) / x.n).toFixed(1)}%` : "n/a"; };
   return `
 ## Reasoning off vs on
 
-The same ${on.rows.length} bills, run again with reasoning on, set the way Nebius Token Factory exposes it: \`reasoning_effort: "medium"\` (the endpoint's default level) on both the bill read and the tool loop, with temperature and top_p left at Token Factory's defaults. Each cell is **off → on**. Splitter uses reasoning off.
+The same bills, run again with reasoning on, set the way Nebius Token Factory exposes it: \`reasoning_effort: "medium"\` (the endpoint's default level) on both the bill read and the tool loop, with temperature and top_p left at Token Factory's defaults. Each cell is **off → on**. Splitter uses reasoning off.
 
 | Metric | ${head.join(" | ")} |
 |---|${tracks.map(() => "---").join("|")}|
@@ -318,15 +322,15 @@ Reasoning on runs at Token Factory's default temperature (above 0), so a single 
 }
 
 function markdown(res: Results, on: Results | null = null) {
-  const cols = [["all", `All ${res.rows.length}`], ...TRACKS.filter((t) => res.summaries[t]).map((t) => [t, `${t === "real" ? "Real" : "Synthetic"} ${res.summaries[t]!.overall.bills}`])] as ["all" | Track, string][];
+  const cols = [["all", `All ${res.summaries.all!.overall.bills}`], ...ALL_TRACKS.filter((t) => res.summaries[t]).map((t) => [t, `${LABEL[t]} ${res.summaries[t]!.overall.bills}`])] as ["all" | Track, string][];
   const row = (label: string, f: (s: Summary) => string) => `| ${label} | ${cols.map(([k]) => f(res.summaries[k]!)).join(" | ")} |`;
   const o = (k: keyof Summary["overall"]) => (s: Summary) => short(s.overall[k] as { k: number; n: number });
-  const runs = TRACKS.filter((t) => res.sets[t]).map((t) => `${t}: ${res.sets[t]!.date} · settings \`${res.sets[t]!.settings}\``).join(" · ");
+  const runs = ALL_TRACKS.filter((t) => res.sets[t]).map((t) => `${t}: ${res.sets[t]!.date} · settings \`${res.sets[t]!.settings}\``).join(" · ");
   const same = new Set(TRACKS.filter((t) => res.sets[t]).map((t) => res.sets[t]!.settings)).size <= 1;
   const syn = res.summaries.synthetic;
   return `# Results · ${res.model}
 
-${res.rows.length} bills · endpoint \`${res.baseURL}\` · ${runs}${same ? "" : "\n\n**The tracks were run with different settings, so the combined column mixes two configurations.**"}
+${res.summaries.all!.overall.bills} bills${res.summaries.holdout ? ` + ${res.summaries.holdout.overall.bills} held-out real receipts` : ""} · endpoint \`${res.baseURL}\` · ${runs}${same ? "" : "\n\n**The tracks were run with different settings, so the combined column mixes two configurations.**"}
 Application-level evaluation, not an official benchmark. Real receipts: CORD v2 (CC BY 4.0). Method: [METHODOLOGY.md](METHODOLOGY.md).
 
 | Metric | ${cols.map(([, l]) => l).join(" | ")} |
@@ -388,10 +392,12 @@ export async function loadResults(mode: Mode = "off"): Promise<Results | null> {
 export function withSummaries(res: Omit<Results, "summary" | "summaries">, info: ModelInfo | null): Results {
   const price = info ?? ({ pricePromptPerM: res.price.inPerM, priceCompletionPerM: res.price.outPerM } as ModelInfo);
   const has = (t: Track) => res.rows.some((r) => r.set === t);
-  const all = summarise(res.rows, res.price.inPerM == null ? null : price);
-  const per = Object.fromEntries(TRACKS.map((t) => [t, has(t) ? summarise(res.rows.filter((r) => r.set === t), res.price.inPerM == null ? null : price) : null])) as Record<Track, Summary | null>;
-  const latest = TRACKS.map((t) => res.sets[t]).filter(Boolean).sort((a, b) => b!.date.localeCompare(a!.date))[0]!;
-  return { ...res, date: latest.date, settings: latest.settings, bills: res.rows.length, summary: all, summaries: { all, ...per } } as Results;
+  // "All" is the 300-bill benchmark; held-out receipts are reported on their own.
+  const main = res.rows.filter((r) => TRACKS.includes(r.set));
+  const all = summarise(main, res.price.inPerM == null ? null : price);
+  const per = Object.fromEntries(ALL_TRACKS.map((t) => [t, has(t) ? summarise(res.rows.filter((r) => r.set === t), res.price.inPerM == null ? null : price) : null])) as Record<Track, Summary | null>;
+  const latest = ALL_TRACKS.map((t) => res.sets[t]).filter(Boolean).sort((a, b) => b!.date.localeCompare(a!.date))[0]!;
+  return { ...res, date: latest.date, settings: latest.settings, bills: main.length, summary: all, summaries: { all, ...per } } as Results;
 }
 
 /** Writes the results table into README.md between the results markers, so the README and the dashboard
@@ -432,7 +438,7 @@ if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1] ?? "") && pr
 } else if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1] ?? "")) {
   const mode = reasoningFlag;
   const setFlag = flag("--set") ?? "all";
-  if (setFlag !== "all" && !TRACKS.includes(setFlag as Track)) throw new Error("--set must be synthetic, real or all");
+  if (setFlag !== "all" && !ALL_TRACKS.includes(setFlag as Track)) throw new Error("--set must be synthetic, real, holdout or all");
   const tracks = setFlag === "all" ? TRACKS : [setFlag as Track];
   const all = await loadCases(tracks);
   const category = flag("--category");
@@ -471,7 +477,7 @@ if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1] ?? "") && pr
   const sets = { ...(saved?.sets ?? {}) };
   if (!retryFailed) for (const t of ran) sets[t] = { ...runMeta, bills: rows.filter((r) => r.set === t).length };
   else for (const t of ran) sets[t] = { ...sets[t]!, retriedFailed: { date: runMeta.date, bills: rows.filter((r) => r.set === t).length } } as RunMeta;
-  const merged = [...keep, ...rows].sort((a, b) => TRACKS.indexOf(a.set) - TRACKS.indexOf(b.set) || a.id.localeCompare(b.id));
+  const merged = [...keep, ...rows].sort((a, b) => ALL_TRACKS.indexOf(a.set) - ALL_TRACKS.indexOf(b.set) || a.id.localeCompare(b.id));
   const res = withSummaries({ ...(await buildMeta(info, mode)), sets, rows: merged } as Results, info);
   const md = await save(mode, res);
   console.log(`\n${md ?? ""}\nWrote benchmark/${RESULT_FILES[mode]} and results.md`);

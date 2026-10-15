@@ -7,8 +7,12 @@ usable receipts are kept. A receipt is usable when its labels are unambiguous an
   - lines + tax + service - discount = printed total.
 Who had what is generated (the receipts are real; the note is not), with the same rules as the synthetic set.
 
+--holdout walks the same order, skips the first 150 usable receipts and keeps the next 100 in holdout/: receipts that
+were never looked at while building or tuning anything, for a fair check of the real-track numbers.
+
     pip install pyarrow pillow
     pnpm bench:import-real        # or python3 benchmark/dataset/import_cord.py; downloads ~1.4 GB of Parquet once, cached in ~/.cache
+    python3 benchmark/dataset/import_cord.py --holdout   # the 100 held-out receipts (downloads more train shards)
 """
 
 import io
@@ -21,12 +25,13 @@ from pathlib import Path
 import pyarrow.parquet as pq
 from PIL import Image
 
-OUT = Path(__file__).resolve().parent / "real"
+HOLDOUT = "--holdout" in sys.argv
+NAME, SKIP, WANT = ("holdout", 150, 100) if HOLDOUT else ("real", 0, 150)
+OUT = Path(__file__).resolve().parent / NAME
 CACHE = Path.home() / ".cache" / "splitter-benchmark" / "cord-v2"
-WANT = 150
 BASE = "https://huggingface.co/datasets/naver-clova-ix/cord-v2/resolve/refs%2Fconvert%2Fparquet/default"
 SHARDS = [("test", "test/0000.parquet"), ("validation", "validation/0000.parquet"), ("train", "train/0000.parquet"),
-          ("train", "train/0001.parquet")]
+          ("train", "train/0001.parquet"), ("train", "train/0002.parquet"), ("train", "train/0003.parquet")]
 PEOPLE = ["Aman", "Priya", "Rakesh", "Mahima", "Sam"]
 
 seed = 20261016
@@ -133,7 +138,7 @@ def shard(rel):
     if not path.exists():
         path.parent.mkdir(parents=True, exist_ok=True)
         print(f"Downloading {rel}…", file=sys.stderr)
-        subprocess.run(["curl", "-sfL", "--retry", "3", "-o", str(path.with_suffix(".part")), f"{BASE}/{rel}"], check=True)
+        subprocess.run(["curl", "-sfL", "--retry", "8", "--retry-all-errors", "-C", "-", "-o", str(path.with_suffix(".part")), f"{BASE}/{rel}"], check=True)
         path.with_suffix(".part").rename(path)
     return pq.ParquetFile(path)
 
@@ -143,6 +148,7 @@ for f in OUT.glob("*.jpg"):
     f.unlink()
 
 kept, skipped, seen = [], {}, {}
+usable = 0  # usable receipts seen so far, including the ones skipped by --holdout
 for split, rel in SHARDS:
     if len(kept) >= WANT:
         break
@@ -163,17 +169,22 @@ for split, rel in SHARDS:
                 skipped[reason] = skipped.get(reason, 0) + 1
                 continue
 
-            rid = f"real-{len(kept) + 1:03d}"
+            # Notes are generated in the same order either way, so --holdout never changes the first 150.
+            people = PEOPLE[: 2 + usable % 4]
+            assignment = assign(truth["items"], people)
+            usable += 1
+            if usable <= SKIP:
+                continue
+
+            rid = f"{NAME}-{len(kept) + 1:03d}"
             img = Image.open(io.BytesIO(row["image"]["bytes"])).convert("RGB")
             img.thumbnail((1600, 1600))
             img.save(OUT / f"{rid}.jpg", "JPEG", quality=82, optimize=True)
 
-            people = PEOPLE[: 2 + len(kept) % 4]
-            assignment = assign(truth["items"], people)
             kept.append({
                 "id": rid,
-                "file": f"real/{rid}.jpg",
-                "set": "real",
+                "file": f"{NAME}/{rid}.jpg",
+                "set": NAME,
                 "source": f"CORD v2 · {split} #{idx}",
                 "category": "food",
                 "layout": "photo",
@@ -187,5 +198,5 @@ for split, rel in SHARDS:
 
 (OUT / "cases.json").write_text(json.dumps(kept, indent=2, ensure_ascii=False) + "\n")
 size = sum(f.stat().st_size for f in OUT.glob("*.jpg"))
-print(f"Kept {len(kept)} real receipts ({size / 1e6:.1f} MB of photos, resized to ≤1600 px).")
+print(f"Kept {len(kept)} {NAME} receipts ({size / 1e6:.1f} MB of photos, resized to ≤1600 px).")
 print("Skipped:", " · ".join(f"{k} {v}" for k, v in sorted(skipped.items(), key=lambda kv: -kv[1])))

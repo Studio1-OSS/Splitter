@@ -14,6 +14,7 @@ const BASE = "/benchmark/";
 
 await rm(OUT, { recursive: true, force: true });
 await mkdir(path.join(OUT, "dataset", "real"), { recursive: true });
+await mkdir(path.join(OUT, "dataset", "holdout"), { recursive: true });
 await mkdir(path.join(OUT, "fonts"), { recursive: true });
 
 // The page, pointed at /benchmark/ instead of the local server's root.
@@ -34,6 +35,7 @@ await cp(path.join(DIR, "results-reasoning.json"), path.join(OUT, "results-reaso
 const images = [
   ...(await readdir(path.join(DIR, "dataset"))).filter((f) => f.endsWith(".png")),
   ...(await readdir(path.join(DIR, "dataset/real")).catch(() => [])).filter((f) => f.endsWith(".jpg")).map((f) => `real/${f}`),
+  ...(await readdir(path.join(DIR, "dataset/holdout")).catch(() => [])).filter((f) => f.endsWith(".jpg")).map((f) => `holdout/${f}`),
 ];
 await Promise.all(images.map((f) => cp(path.join(DIR, "dataset", f), path.join(OUT, "dataset", f))));
 

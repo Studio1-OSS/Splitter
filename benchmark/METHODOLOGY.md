@@ -47,6 +47,10 @@ Results are reported per track and combined. Each track records its own run date
 - **No planted errors.** These totals are real, so the track measures reading, reasoning, splits and false alarms.
 - **Photos** are resized to at most 1,600 px and re-encoded as JPEG. Identifying details were already blurred by the dataset authors.
 
+## Held-out receipts
+
+The number-format rule in Splitter's prompt was written after seeing the real track's first run, so the real track can't fairly test it. `import_cord.py --holdout` walks CORD in the same order with the same rules, skips the 150 real-track receipts and keeps the next 100 (train #218–#515). They were imported and scored once, in both reasoning modes, after the prompt was final, and nothing was changed afterwards. They're reported as their own column and are not part of the 300-bill "All" figures.
+
 ## Ground truth
 
 `dataset/cases.json` (synthetic) and `dataset/real/cases.json` (real) hold, for each bill:

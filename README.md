@@ -219,6 +219,7 @@ It runs on 300 bills in two tracks: 150 synthetic bills (30 each of groceries, p
 |---|---|---|---|
 | Splits correct to the cent | 91.0% | 97.3% | 84.7% |
 | …with reasoning on | 98.0% | 98.7% | 97.3% |
+| 100 held-out real receipts (off / on) | | | 79.0% / 93.0% |
 | …when the bill was read correctly | 98.1% | 99.3% | 96.7% |
 | Split computed by the model's own tool call | 300/300 | 150/150 | 150/150 |
 | Planted wrong totals caught | 30/30 | 30/30 | none planted |

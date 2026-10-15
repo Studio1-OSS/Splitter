@@ -18,15 +18,17 @@ type DatasetCase = {
 };
 
 export async function dashboardData() {
-  const [resultsText, reasoningText, syntheticText, realText] = await Promise.all([
+  const [resultsText, reasoningText, syntheticText, realText, holdoutText] = await Promise.all([
     readFile(path.join(DIR, "results.json"), "utf8"),
     readFile(path.join(DIR, "results-reasoning.json"), "utf8").catch(() => null),
     readFile(path.join(DIR, "dataset/cases.json"), "utf8"),
     readFile(path.join(DIR, "dataset/real/cases.json"), "utf8").catch(() => "[]"),
+    readFile(path.join(DIR, "dataset/holdout/cases.json"), "utf8").catch(() => "[]"),
   ]);
   const cases: DatasetCase[] = [
     ...JSON.parse(syntheticText).map((c: DatasetCase) => ({ ...c, set: "synthetic" })),
     ...JSON.parse(realText).map((c: DatasetCase) => ({ ...c, set: "real" })),
+    ...JSON.parse(holdoutText).map((c: DatasetCase) => ({ ...c, set: "holdout" })),
   ];
   return {
     ...JSON.parse(resultsText),
@@ -86,7 +88,7 @@ export function createDashboardServer() {
         res.end(req.method === "HEAD" ? undefined : data); return;
       }
       const asset = (Object.hasOwn(assets, pathname) ? assets[pathname] : undefined) ?? (/^\/dataset\/[a-z]+-\d{2}\.png$/.test(pathname)
-        ? [pathname.slice(1), "image/png"] : /^\/dataset\/real\/real-\d{3}\.jpg$/.test(pathname) ? [pathname.slice(1), "image/jpeg"] : undefined);
+        ? [pathname.slice(1), "image/png"] : /^\/dataset\/(real\/real|holdout\/holdout)-\d{3}\.jpg$/.test(pathname) ? [pathname.slice(1), "image/jpeg"] : undefined);
       if (!asset) { res.writeHead(404, headers).end("Not found"); return; }
       const body = await readFile(path.join(DIR, asset[0]));
       res.writeHead(200, { ...headers, "Content-Type": asset[1] });

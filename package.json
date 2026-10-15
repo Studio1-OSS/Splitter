@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "tsx benchmark/publish.mts && next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -17,7 +17,8 @@
     "bench:dataset": "node benchmark/dataset/generate.mjs",
     "bench:agent": "tsx benchmark/receipt-agent.mts",
     "bench:eval": "tsx benchmark/eval.mts",
-    "bench:dev": "tsx benchmark/server.mts"
+    "bench:dev": "tsx benchmark/server.mts",
+    "bench:publish": "tsx benchmark/publish.mts"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "^1.7.7",

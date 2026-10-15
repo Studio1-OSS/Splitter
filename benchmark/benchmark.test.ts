@@ -74,13 +74,13 @@ describe("dashboard server", () => {
   });
 
   it("serves the dashboard, data and images; nothing else", async () => {
-    for (const p of ["/", "/app.js", "/styles.css", "/icons.svg", "/favicon.svg", "/dataset/food-01.png"]) {
+    for (const p of ["/", "/app.js", "/styles.css", "/icons.svg", "/favicon.svg", "/dataset/food-01.png", "/fonts/Geist-Variable.ttf", "/fonts/FragmentMono-Regular.ttf"]) {
       const r = await fetch(base + p);
       expect(r.status, p).toBe(200);
       expect(r.headers.get("x-content-type-options")).toBe("nosniff");
       await r.arrayBuffer();
     }
-    for (const p of ["/.env", "/%2eenv", "/.git/config", "/server.mts", "/dataset/generate.mjs", "/dataset/../.env", "/constructor"]) {
+    for (const p of ["/.env", "/%2eenv", "/.git/config", "/server.mts", "/dataset/generate.mjs", "/dataset/../.env", "/constructor", "/fonts/../../.env", "/fonts/Geist-OFL.txt", "/src/fonts/Geist-Variable.ttf"]) {
       const r = await fetch(base + p);
       expect(r.status, p).toBe(404);
       await r.text();

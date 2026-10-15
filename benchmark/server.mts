@@ -50,6 +50,9 @@ const assets: Record<string, [string, string]> = {
   "/results.md": ["results.md", "text/plain; charset=utf-8"],
   "/README.md": ["README.md", "text/plain; charset=utf-8"],
   "/favicon.svg": ["web/favicon.svg", "image/svg+xml"],
+  // The app's self-hosted fonts (SIL OFL), shared with the dashboard.
+  "/fonts/Geist-Variable.ttf": ["../src/fonts/Geist-Variable.ttf", "font/ttf"],
+  "/fonts/FragmentMono-Regular.ttf": ["../src/fonts/FragmentMono-Regular.ttf", "font/ttf"],
 };
 
 export function createDashboardServer() {
@@ -58,7 +61,7 @@ export function createDashboardServer() {
       "X-Content-Type-Options": "nosniff",
       "Referrer-Policy": "no-referrer",
       "Cache-Control": "no-store",
-      "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'",
+      "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'",
     };
     // The server is loopback-only; reject rebinding hosts as well.
     if (!/^(localhost|127\.0\.0\.1)(:\d+)?$/.test(req.headers.host ?? "")) {
@@ -69,7 +72,7 @@ export function createDashboardServer() {
     }
     const pathname = new URL(req.url ?? "/", "http://localhost").pathname;
     try {
-      if (pathname === "/api/data") {
+      if (pathname === "/api/data" || pathname === "/data.json") {
         const data = JSON.stringify(await dashboardData());
         res.writeHead(200, { ...headers, "Content-Type": "application/json; charset=utf-8" });
         res.end(req.method === "HEAD" ? undefined : data); return;

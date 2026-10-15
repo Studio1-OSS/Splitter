@@ -9,6 +9,10 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Receipt Lab (the benchmark dashboard) is published as static files in public/benchmark/ at build time.
+  async rewrites() {
+    return [{ source: "/benchmark", destination: "/benchmark/index.html" }];
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

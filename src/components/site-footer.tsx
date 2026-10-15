@@ -39,6 +39,10 @@ export function SiteFooter() {
           <a href={site.repoUrl} target="_blank" rel="noreferrer" className="text-white/70 hover:text-white">
             GitHub
           </a>
+          {/* A static page (public/benchmark/), so a plain link rather than client-side navigation. */}
+          <a href="/benchmark" className="text-white/70 hover:text-white">
+            Benchmark
+          </a>
           <a href={`${site.repoUrl}#get-started`} target="_blank" rel="noreferrer" className="text-white/70 hover:text-white">
             Self-host it
           </a>

@@ -220,7 +220,9 @@ pnpm bench:eval    # run the benchmark (about $0.50)
 pnpm bench:dev     # open Receipt Lab on http://localhost:3001
 ```
 
-![Receipt Lab benchmark dashboard](benchmark/screenshots/lab-overview.png)
+Every deployment also serves Receipt Lab at `/benchmark`. `pnpm build` publishes the saved results there as static files, so it makes no model calls.
+
+![Receipt Lab: headline results (95.3% of splits correct to the cent, every split computed by the model, 30/30 planted wrong totals caught, $0.0033 per bill) and the model under test](benchmark/screenshots/lab-overview.png)
 
 ## Data and privacy
 

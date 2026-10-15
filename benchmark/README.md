@@ -14,7 +14,7 @@ The app then checks that answer with a validation rule. Every number below comes
 
 The benchmark lives inside [Splitter](https://github.com/Studio1-OSS/Splitter), an open-source app for splitting shared costs. It reuses the app's own model adapter, bill schema and calculator tools rather than copies of them.
 
-![Receipt Lab, the local benchmark dashboard](screenshots/lab-overview.png)
+![Receipt Lab: headline results (95.3% of splits correct to the cent, every split computed by the model, 30/30 planted wrong totals caught, $0.0033 per bill) and the model under test](screenshots/lab-overview.png)
 
 ## Walkthrough
 
@@ -59,7 +59,7 @@ The model's split: { Aman: 10506.66, Priya: 13961.34 }
 
 In Receipt Lab, every bill shows its image, what the model read next to the truth, and each tool call with its arguments and result:
 
-![A bill in Receipt Lab: the model's tool calls in order](screenshots/lab-bill-trace.png)
+![Receipt Lab's bill view: a misread rotated invoice, its image, and the model's tool calls in order with arguments and results](screenshots/lab-bill-trace.png)
 
 ## Setup and code
 
@@ -76,6 +76,7 @@ pnpm bench:eval                   # the 150-bill benchmark (about $0.50, about 3
 pnpm bench:eval --limit 10        # or a quick sample; also --category travel, --concurrency N
 pnpm bench:eval --report          # rebuild results.md and this README's results from results.json
 pnpm bench:dev                    # Receipt Lab on http://localhost:3001 (reads saved results, no model calls)
+pnpm bench:publish                # static copy in public/benchmark/ (also runs in pnpm build → /benchmark)
 pnpm bench:dataset                # regenerate the 150 bills (needs Chrome)
 ```
 

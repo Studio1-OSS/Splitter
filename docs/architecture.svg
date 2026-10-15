@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 560" font-family="Inter, Helvetica, Arial, sans-serif">
+  <rect width="1100" height="560" rx="18" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10z" fill="#17171c"/>
+    </marker>
+  </defs>
+
+  <!-- Browser -->
+  <rect x="30" y="60" width="250" height="300" rx="14" fill="#eeece7"/>
+  <text x="50" y="92" font-size="12" letter-spacing="1.2" fill="#616161">BROWSER</text>
+  <text x="50" y="122" font-size="20" fill="#17171c">Splitter UI</text>
+  <g font-size="14" fill="#212121">
+    <text x="50" y="158">Camera scanner (multi-shot)</text>
+    <text x="50" y="184">PDF → page images (pdf.js)</text>
+    <text x="50" y="210">Resize + compress photos</text>
+    <text x="50" y="236">Exact-duplicate check</text>
+    <text x="50" y="262">Review board &amp; editors</text>
+    <text x="50" y="288">Guest quick split (local)</text>
+  </g>
+
+  <!-- Server -->
+  <rect x="360" y="40" width="360" height="340" rx="14" fill="#17171c"/>
+  <text x="382" y="72" font-size="12" letter-spacing="1.2" fill="#93939f">NEXT.JS 16 SERVER</text>
+  <g font-size="14" fill="#ffffff">
+    <rect x="382" y="90" width="316" height="58" rx="8" fill="#26262c"/>
+    <text x="398" y="114">Server Actions + API routes</text>
+    <text x="398" y="134" fill="#a8a8b3" font-size="12">/api/extract · /api/batch/plan · /api/ask · /api/bills</text>
+    <rect x="382" y="158" width="152" height="70" rx="8" fill="#26262c"/>
+    <text x="398" y="182">Money engine</text>
+    <text x="398" y="202" fill="#a8a8b3" font-size="12">integer minor units</text>
+    <text x="398" y="218" fill="#a8a8b3" font-size="12">exact rounding</text>
+    <rect x="546" y="158" width="152" height="70" rx="8" fill="#26262c"/>
+    <text x="562" y="182">Access checks</text>
+    <text x="562" y="202" fill="#a8a8b3" font-size="12">members only,</text>
+    <text x="562" y="218" fill="#a8a8b3" font-size="12">404 otherwise</text>
+    <rect x="382" y="238" width="152" height="70" rx="8" fill="#26262c"/>
+    <text x="398" y="262">AI credits</text>
+    <text x="398" y="282" fill="#a8a8b3" font-size="12">per account per day</text>
+    <rect x="546" y="238" width="152" height="70" rx="8" fill="#26262c"/>
+    <text x="562" y="262">Better Auth</text>
+    <text x="562" y="282" fill="#a8a8b3" font-size="12">email + password</text>
+    <rect x="382" y="318" width="316" height="44" rx="8" fill="#003c33"/>
+    <text x="398" y="345">app checks the model's tool results; draft until you publish</text>
+  </g>
+
+  <!-- Nebius -->
+  <rect x="800" y="40" width="270" height="250" rx="14" fill="#003c33"/>
+  <text x="822" y="72" font-size="12" letter-spacing="1.2" fill="#9fd9c8">NEBIUS TOKEN FACTORY</text>
+  <text x="822" y="100" font-size="17" fill="#ffffff">Nemotron 3.5 Super VL</text>
+  <g font-size="14" fill="#ffffff">
+    <text x="822" y="140">① Read each bill (vision)</text>
+    <text x="840" y="160" font-size="12" fill="#c9e8df">JSON schema, reasoning off</text>
+    <text x="822" y="192">② Plan the settlement</text>
+    <text x="840" y="212" font-size="12" fill="#c9e8df">reasoning + calculator tool calls</text>
+    <text x="822" y="244">③ Ask Splitter</text>
+    <text x="840" y="264" font-size="12" fill="#c9e8df">answers from one group's ledger</text>
+  </g>
+
+  <!-- Database -->
+  <rect x="360" y="420" width="360" height="110" rx="14" fill="#eeece7"/>
+  <text x="382" y="452" font-size="12" letter-spacing="1.2" fill="#616161">TURSO / SQLITE · DRIZZLE</text>
+  <text x="382" y="482" font-size="14" fill="#212121">groups · members · expenses · shares · settlements</text>
+  <text x="382" y="506" font-size="14" fill="#212121">batches · bill images (members only) · AI usage</text>
+
+  <!-- Novu -->
+  <rect x="800" y="330" width="270" height="110" rx="14" fill="#ffffff" stroke="#d9d9dd"/>
+  <text x="822" y="362" font-size="12" letter-spacing="1.2" fill="#616161">NOVU</text>
+  <text x="822" y="392" font-size="14" fill="#212121">In-app inbox: "your share is ₹955"</text>
+  <text x="822" y="416" font-size="14" fill="#212121">one notification per member</text>
+
+  <!-- Arrows -->
+  <g stroke="#17171c" stroke-width="2" fill="none">
+    <path d="M280 210H352" marker-end="url(#a)"/>
+    <path d="M720 140H792" marker-end="url(#a)"/>
+    <path d="M540 380V412" marker-end="url(#a)"/>
+    <path d="M720 330 Q760 360 792 380" marker-end="url(#a)"/>
+  </g>
+  <g font-size="12" fill="#616161">
+    <text x="292" y="200">images, JSON</text>
+    <text x="726" y="130">OpenAI API</text>
+  </g>
+</svg>

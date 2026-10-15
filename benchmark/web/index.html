@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <meta name="description" content="A benchmark of Nemotron 3.5 Super VL on 150 synthetic bills: vision, reasoning and calculator tool calls, with every run open for inspection.">
+    <title>Receipt Lab</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <aside class="sidebar" aria-label="Benchmark navigation">
+      <a href="#overview" class="brand"><span class="brand-mark"><svg aria-hidden="true"><use href="/icons.svg#receipt"/></svg></span><span>receipt<span class="brand-light">lab</span><small>A SPLITTER BENCHMARK</small></span></a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav id="navigation">
+        <a href="#overview" data-view="overview"><svg aria-hidden="true"><use href="/icons.svg#overview"/></svg>Benchmark</a>
+        <a href="#bills" data-view="bills" aria-label="Bills"><svg aria-hidden="true"><use href="/icons.svg#receipt"/></svg><span class="nav-title">Bills</span><span class="nav-compact">Bills</span><span class="nav-count" id="nav-count">—</span></a>
+        <a href="#method" data-view="method" aria-label="Method"><svg aria-hidden="true"><use href="/icons.svg#workflow"/></svg><span class="nav-title">Method</span><span class="nav-compact">Method</span></a>
+        <a href="#guide" data-view="guide" aria-label="Run it"><svg aria-hidden="true"><use href="/icons.svg#terminal"/></svg><span class="nav-title">Run it</span><span class="nav-compact">Run it</span></a>
+      </nav>
+      <div class="sidebar-bottom"><div class="independent"><span class="status-dot"></span>Real model runs<p>Vision reads. The model reasons<br>and calls the calculator.</p></div><a class="source-link" href="https://github.com/Studio1-OSS/Splitter" target="_blank" rel="noreferrer">Explore Splitter<svg aria-hidden="true"><use href="/icons.svg#external"/></svg></a><button id="theme-toggle" class="theme-toggle"><svg aria-hidden="true"><use href="/icons.svg#sun"/></svg><span>Switch to dark theme</span></button></div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar"><div><span class="breadcrumb">Splitter benchmark</span><span class="slash">/</span><span id="page-name">Overview</span></div><div class="topbar-right"><span class="local-badge"><span class="status-dot"></span>LOCAL WORKSPACE</span><a href="/results.json" download class="icon-button" aria-label="Download benchmark results"><svg aria-hidden="true"><use href="/icons.svg#download"/></svg></a></div></header>
+      <main id="main" tabindex="-1"><div class="loading-state" role="status">Loading the benchmark…</div></main>
+      <footer><span>Built from Splitter. Made to be reproducible.</span><span>The model calls the tools. The app checks the answer.</span></footer>
+    </div>
+    <dialog id="image-dialog" aria-label="Bill image"><button class="dialog-close icon-button" aria-label="Close bill image"><svg aria-hidden="true"><use href="/icons.svg#close"/></svg></button><img alt="Selected synthetic bill at full size"></dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

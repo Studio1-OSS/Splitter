@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, asc, eq, sql } from "drizzle-orm";
 import type { DB } from "../db";
 import * as schema from "../db/schema";
 import { AppError } from "./errors";
@@ -22,6 +22,9 @@ export async function groupMemberIds(db: DB, groupId: string): Promise<Set<strin
   const rows = await db
     .select({ id: schema.members.id })
     .from(schema.members)
-    .where(eq(schema.members.groupId, groupId));
+    .where(eq(schema.members.groupId, groupId))
+    // The same order the group page shows (and the client previews with): spare cents go to the first member,
+    // so the saved split matches the preview to the cent.
+    .orderBy(asc(schema.members.createdAt), sql`rowid`);
   return new Set(rows.map((r) => r.id));
 }

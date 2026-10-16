@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { computeSplit } from "@/lib/money";
-import { amountProblem, emptyDraft, expenseLines, toSplitInput, type Draft } from "./draft";
+import { amountProblem, applyReceipt, billGroups, computeDraftSplit, emptyDraft, expenseLines, splitByBill, toSplitInput, withBills, type Draft } from "./draft";
+import { mergeReceipts } from "./merge-receipts";
 
 const people = [
   { id: "a", name: "Ana" },
@@ -44,5 +45,61 @@ describe("single-amount drafts", () => {
   it("ignores tax/tip fields for single amounts", () => {
     const d = base({ splitMode: "equal", shares: { a: 1, b: 1, c: 1 }, tax: 999, tip: 999 });
     expect(computeSplit(toSplitInput(d)).total).toBe(60000);
+  });
+});
+
+describe("combined bills", () => {
+  const receipt = (merchant: string, items: [string, number][], charges: { tax?: number; tip?: number; serviceCharge?: number }) => ({
+    kind: "receipt" as const,
+    merchant,
+    category: null,
+    date: null,
+    currency: "USD",
+    items: items.map(([name, totalPrice]) => ({ name, quantity: 1, totalPrice })),
+    subtotal: null,
+    tax: charges.tax ?? null,
+    tip: charges.tip ?? null,
+    suggestedTips: [],
+    serviceCharge: charges.serviceCharge ?? null,
+    discount: null,
+    total: null,
+    paidByHint: null,
+  });
+  const dinner = receipt("Dinner", [["Pizza", 30]], { tip: 6 });
+  const taxi = receipt("Taxi", [["Fare", 20]], { tax: 2 });
+  const combined = () => {
+    const merged = mergeReceipts([{ receipt: dinner, issues: [] }, { receipt: taxi, issues: [] }]);
+    if ("error" in merged) throw new Error(merged.error);
+    let d = withBills(applyReceipt(emptyDraft("USD"), merged.receipt, [], { lockCurrency: false }), [dinner, taxi], [["img-dinner"], ["img-taxi"]]);
+    d = { ...d, people: [{ id: "a", name: "A" }, { id: "r", name: "R" }], paidBy: "a" };
+    const [pizza, fare] = d.items;
+    return { ...d, assignments: { [pizza.id]: ["a", "r"], [fare.id]: ["a"] } };
+  };
+
+  it("spreads each bill's charges over its own lines only", () => {
+    const d = combined();
+    expect(billGroups(d).map((b) => b.label)).toEqual(["Dinner", "Taxi"]);
+    const shares = Object.fromEntries(computeDraftSplit(d).shares.map((s) => [s.memberId, s.total]));
+    // R had half the pizza: half of 30 + half the dinner tip (3), and none of the taxi or its tax.
+    expect(shares).toEqual({ a: 1500 + 300 + 2000 + 200, r: 1500 + 300 });
+    // Pooling the charges (the old behaviour) would have charged R part of the taxi's tax.
+    const pooled = Object.fromEntries(computeSplit(toSplitInput(d)).shares.map((s) => [s.memberId, s.total]));
+    expect(pooled.r).not.toBe(shares.r);
+  });
+
+  it("saves one expense per bill, each with its own charges and photos", () => {
+    const parts = splitByBill(combined());
+    expect(parts.map((p) => [p.merchant, p.items.length, p.tax, p.tip, p.imageIds])).toEqual([
+      ["Dinner", 1, 0, 600, ["img-dinner"]],
+      ["Taxi", 1, 200, 0, ["img-taxi"]],
+    ]);
+    const totals = parts.map((p) => Object.fromEntries(computeSplit(toSplitInput(p)).shares.map((s) => [s.memberId, s.total])));
+    expect(totals).toEqual([{ a: 1800, r: 1800 }, { a: 2200, r: 0 }]);
+  });
+
+  it("falls back to one pooled bill when the charges were edited by hand", () => {
+    const d = combined();
+    expect(billGroups({ ...d, tip: d.tip + 100 })).toHaveLength(1);
+    expect(splitByBill({ ...d, tip: d.tip + 100 })).toHaveLength(1);
   });
 });

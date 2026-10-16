@@ -10,12 +10,12 @@ import { Button } from "@/components/ui/button";
 import { Avatar, Eyebrow } from "@/components/ui/primitives";
 import { categoryOf } from "@/config/categories";
 import { site } from "@/config/site";
-import { allocate, computeSplit, formatMoney, fromMinor, SplitError, type MemberShare } from "@/lib/money";
+import { allocate, formatMoney, fromMinor, SplitError, toMinor, type MemberShare } from "@/lib/money";
 import { CheckTrace } from "@/components/batch/check-trace";
 import { createTools, type ToolCall } from "@/server/ai/tools";
 import { formatDate } from "@/lib/utils";
 import { createExpenseAction } from "@/server/actions";
-import { expenseLines, toSplitInput, type Draft } from "./draft";
+import { billGroups, computeDraftSplit, expenseLines, splitByBill, type Draft } from "./draft";
 import { StepBar } from "./people";
 import type { WizardMode } from "./split-wizard";
 
@@ -26,7 +26,7 @@ export function SummaryStep({ draft, mode, onEdit, onReset }: { draft: Draft; mo
 
   const result = React.useMemo(() => {
     try {
-      return { split: computeSplit(toSplitInput(draft)) };
+      return { split: computeDraftSplit(draft) };
     } catch (e) {
       if (e instanceof SplitError) return { error: e.message };
       throw e;
@@ -39,40 +39,43 @@ export function SummaryStep({ draft, mode, onEdit, onReset }: { draft: Draft; mo
     if (draft.kind !== "itemized" || !draft.checks?.length || "error" in result) return [];
     const major = (n: number) => fromMinor(n, draft.currency);
     const name = (id: string) => draft.people.find((p) => p.id === id)?.name ?? id;
+    // Each bill on its own (combined bills keep their own tax and tip), then one check on the combined shares.
+    const groups = billGroups(draft);
     const tools = createTools({
       currency: draft.currency,
       memberRefs: draft.people.map((p) => p.name),
-      bills: [
-        {
-          no: 1,
-          receipt: {
-            kind: "receipt",
-            merchant: draft.merchant,
-            category: null,
-            date: null,
-            currency: draft.currency,
-            items: draft.items.map((i) => ({ name: i.name, quantity: i.quantity, totalPrice: major(i.amount) })),
-            subtotal: null,
-            tax: major(draft.tax),
-            tip: major(draft.tip),
-            suggestedTips: [],
-            serviceCharge: major(draft.serviceCharge),
-            discount: major(draft.discount),
-            total: null,
-            paidByHint: null,
-          },
+      bills: groups.map((b, i) => ({
+        no: i + 1,
+        receipt: {
+          kind: "receipt",
+          merchant: b.label,
+          category: null,
+          date: null,
+          currency: draft.currency,
+          items: b.items.map((it) => ({ name: it.name, quantity: it.quantity, totalPrice: major(it.amount) })),
+          subtotal: null,
+          tax: major(b.tax),
+          tip: major(b.tip),
+          suggestedTips: [],
+          serviceCharge: major(b.serviceCharge),
+          discount: major(b.discount),
+          total: null,
+          paidByHint: null,
         },
-      ],
+      })),
     });
-    const lines = draft.items.map((it, i) => ({ line: i + 1, members: (draft.assignments[it.id] ?? []).map(name) }));
-    const allocation = tools.run("allocate_tax_tip", { bill: 1, lines }, "app");
-    const shares = allocation.ok ? (allocation.result as { shares: Record<string, number> }).shares : {};
+    const allocations = groups.map((b, i) =>
+      tools.run("allocate_tax_tip", { bill: i + 1, lines: b.items.map((it, k) => ({ line: k + 1, members: (draft.assignments[it.id] ?? []).map(name) })) }, "app"),
+    );
+    const combined = new Map<string, number>();
+    for (const a of allocations)
+      if (a.ok) for (const [member, v] of Object.entries((a.result as { shares: Record<string, number> }).shares)) combined.set(member, (combined.get(member) ?? 0) + toMinor(v, draft.currency));
     const validation = tools.run(
       "validate_total",
-      { total: major(result.split.total), shares: Object.entries(shares).map(([member, amount]) => ({ member, amount })) },
+      { total: major(result.split.total), shares: [...combined].map(([member, amount]) => ({ member, amount: major(amount) })) },
       "app",
     );
-    return [...draft.checks, allocation, validation];
+    return [...draft.checks, ...allocations, validation];
   }, [draft, result]);
 
   // Per-person line breakdown, using the same weighted allocation as the totals.
@@ -147,28 +150,40 @@ export function SummaryStep({ draft, mode, onEdit, onReset }: { draft: Draft; mo
     }
   }
 
+  // Combined bills are saved as one expense per bill: an expense has one set of charges, and this keeps each
+  // bill's tax and tip with its own lines.
+  const perBill = splitByBill(draft);
+
   async function publish() {
     if (mode.kind !== "group" || !draft.paidBy) return;
     setSaving(true);
-    const res = await createExpenseAction({
-      groupId: mode.groupId,
-      paidByMemberId: draft.paidBy,
-      merchant: title,
-      category: draft.category,
-      date: draft.date,
-      imageIds: draft.imageIds ?? [],
-      items: expenseLines(draft).map(({ name, quantity, amount, assignees }) => ({ name, quantity, amount, assignees })),
-      ...(draft.kind === "itemized"
-        ? { tax: draft.tax, tip: draft.tip, serviceCharge: draft.serviceCharge, discount: draft.discount }
-        : {}),
-    });
-    if (!res.ok) {
-      setSaving(false);
-      toast.error(res.error);
+    const ids: string[] = [];
+    for (const d of perBill) {
+      const res = await createExpenseAction({
+        groupId: mode.groupId,
+        paidByMemberId: draft.paidBy,
+        merchant: d.merchant.trim() || title,
+        category: d.category,
+        date: d.date,
+        imageIds: d.imageIds ?? [],
+        items: expenseLines(d).map(({ name, quantity, amount, assignees }) => ({ name, quantity, amount, assignees })),
+        ...(d.kind === "itemized" ? { tax: d.tax, tip: d.tip, serviceCharge: d.serviceCharge, discount: d.discount } : {}),
+      });
+      if (!res.ok) {
+        setSaving(false);
+        toast.error(ids.length ? `${res.error} (${ids.length} of ${perBill.length} expenses were saved)` : res.error);
+        if (ids.length) router.push(`/groups/${mode.groupId}`);
+        return;
+      }
+      ids.push(res.data.expenseId);
+    }
+    if (ids.length > 1) {
+      toast.success(`Saved ${ids.length} expenses, one per bill`);
+      router.push(`/groups/${mode.groupId}`);
       return;
     }
     toast.success("Expense saved");
-    router.push(`/expenses/${res.data.expenseId}?created=1`);
+    router.push(`/expenses/${ids[0]}?created=1`);
   }
 
   return (
@@ -214,9 +229,13 @@ export function SummaryStep({ draft, mode, onEdit, onReset }: { draft: Draft; mo
 
       {mode.kind === "group" ? (
         <StepBar>
-          <p className="min-w-0 flex-1 text-sm text-muted-foreground">Adds this to {mode.groupName}&apos;s balances.</p>
+          <p className="min-w-0 flex-1 text-sm text-muted-foreground">
+            {perBill.length > 1
+              ? `Adds ${perBill.length} expenses to ${mode.groupName}'s balances, one per bill, so each bill's tax and tip stay with its own lines.`
+              : `Adds this to ${mode.groupName}'s balances.`}
+          </p>
           <Button size="lg" loading={saving} onClick={publish}>
-            <Check /> Save expense
+            <Check /> {perBill.length > 1 ? `Save ${perBill.length} expenses` : "Save expense"}
           </Button>
         </StepBar>
       ) : (

@@ -14,7 +14,7 @@ import { formatMoney } from "@/lib/money";
 import { cn } from "@/lib/utils";
 import type { ExtractedReceipt, ReceiptIssue } from "@/server/ai/receipt";
 import type { ToolCall } from "@/server/ai/tools";
-import { applyReceipt, draftTotal, usableItems, type Draft } from "./draft";
+import { applyReceipt, draftTotal, usableItems, withBills, type Draft } from "./draft";
 import { mergeReceipts } from "./merge-receipts";
 
 const SCAN_MESSAGES = ["Reading the receipt…", "Finding every line…", "Checking tax and fees…", "Adding it all up…"];
@@ -172,9 +172,21 @@ export function CaptureStep({
       if (failed) throw new Error(failed.error ?? "One of the bills couldn't be read");
       const merged = mergeReceipts(bodies.map((b) => ({ receipt: b.receipt!, issues: b.issues ?? [] })));
       if ("error" in merged) throw new Error(merged.error);
+      // Each bill keeps its own stored photos (pages are stored in bill order, at most 4 in all).
+      let at = 0;
+      const billImageIds = prepared.map((p) => {
+        const ids = imageIds.slice(at, at + p.pages.length);
+        at += p.pages.length;
+        return ids;
+      });
       update((d) => ({
-        ...applyReceipt(d, merged.receipt, merged.issues, { lockCurrency }),
-        checks: bodies.flatMap((b) => b.checks ?? []),
+        ...withBills(
+          applyReceipt(d, merged.receipt, merged.issues, { lockCurrency }),
+          bodies.map((b) => b.receipt!),
+          billImageIds,
+        ),
+        // Number each bill's arithmetic check by its place in the combined expense.
+        checks: bodies.flatMap((b, i) => (b.checks ?? []).map((c) => ({ ...c, args: { bill: i + 1 }, result: { ...(c.result as object), bill: i + 1 } }))),
         imageIds,
       }));
       toast.success(`Combined ${files.length} bills · ${merged.receipt.items.length} lines`, { description: "Each line is labelled with its bill." });

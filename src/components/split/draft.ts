@@ -1,11 +1,25 @@
 import { nanoid } from "nanoid";
 import { isCategory, type CategoryKey } from "@/config/categories";
-import { currencyExponent, isValidCurrency, toMinor, type Minor, type SplitInput } from "@/lib/money";
+import { computeSplit, currencyExponent, isValidCurrency, toMinor, type Minor, type SplitInput, type SplitResult } from "@/lib/money";
 import { isRealDate, todayISO } from "@/lib/utils";
 import type { ExtractedReceipt, ReceiptIssue } from "@/server/ai/receipt";
 import type { ToolCall } from "@/server/ai/tools";
 
 export type DraftItem = { id: string; name: string; quantity: number; amount: Minor };
+/**
+ * One of several bills combined into this expense: its lines, its own charges and its stored photos, so each
+ * bill's tax, tip and fees are spread over that bill's lines only (the taxi isn't charged part of the dinner tip).
+ */
+export type DraftBill = {
+  label: string;
+  itemIds: string[];
+  tax: Minor;
+  tip: Minor;
+  serviceCharge: Minor;
+  discount: Minor;
+  printedTotal: Minor | null;
+  imageIds?: string[];
+};
 export type Person = { id: string; name: string };
 export type SplitMode = "equal" | "shares" | "exact";
 
@@ -30,6 +44,8 @@ export type Draft = {
   checks?: ToolCall[];
   /** Group expenses: stored copies of the scanned bill, attached when the expense is saved. */
   imageIds?: string[];
+  /** Combined bills: which lines and charges belong to which bill. Absent for a single bill. */
+  bills?: DraftBill[];
   /** itemId -> personIds sharing it equally */
   assignments: Record<string, string[]>;
   // amount
@@ -117,7 +133,112 @@ export function applyReceipt(
     printedTotal: receipt.total == null ? null : m(receipt.total),
     issues: [...issues.filter((i) => !(lockCurrency && i.field === "currency")), ...extraIssues],
     assignments: {},
+    bills: undefined,
   };
+}
+
+const keptItems = (r: ExtractedReceipt) => r.items.filter((i) => i.name.trim() || i.totalPrice);
+
+/**
+ * After applying a merged receipt (see merge-receipts.ts), records which of the draft's lines and charges came
+ * from which original bill. `receipts` are the bills in the order they were merged; `imageIds` are each bill's
+ * stored photos, in the same order.
+ */
+export function withBills(d: Draft, receipts: ExtractedReceipt[], imageIds: string[][] = []): Draft {
+  if (receipts.length < 2) return { ...d, bills: undefined };
+  const m = (n: number | null | undefined) => (n == null ? 0 : Math.max(0, toMinor(n, d.currency)));
+  let at = 0;
+  const bills = receipts.map((r, i) => {
+    const count = keptItems(r).length;
+    const itemIds = d.items.slice(at, at + count).map((it) => it.id);
+    at += count;
+    return {
+      label: r.merchant?.trim() || `Bill ${i + 1}`,
+      itemIds,
+      tax: m(r.tax),
+      tip: m(r.tip),
+      serviceCharge: m(r.serviceCharge),
+      discount: m(r.discount),
+      printedTotal: r.total == null ? null : m(r.total),
+      imageIds: imageIds[i] ?? [],
+    };
+  });
+  return { ...d, bills };
+}
+
+export type BillGroup = Omit<DraftBill, "itemIds"> & { items: DraftItem[] };
+
+/**
+ * The bills to split, each with its own lines and charges. Falls back to one bill holding everything when the
+ * draft has a single bill, or when edits no longer line up with the original bills (a line added by hand, or
+ * charges changed on the review step).
+ */
+export function billGroups(d: Draft): BillGroup[] {
+  const items = usableItems(d);
+  const single: BillGroup[] = [
+    {
+      label: d.merchant.trim() || "Bill",
+      items,
+      tax: d.tax,
+      tip: d.tip,
+      serviceCharge: d.serviceCharge,
+      discount: d.discount,
+      printedTotal: d.printedTotal,
+      imageIds: d.imageIds ?? [],
+    },
+  ];
+  if (d.kind !== "itemized" || !d.bills?.length) return single;
+  const sum = (k: "tax" | "tip" | "serviceCharge" | "discount") => d.bills!.reduce((a, b) => a + b[k], 0);
+  const known = new Set(d.bills.flatMap((b) => b.itemIds));
+  const consistent =
+    sum("tax") === d.tax && sum("tip") === d.tip && sum("serviceCharge") === d.serviceCharge && sum("discount") === d.discount && items.every((i) => known.has(i.id));
+  if (!consistent) return single;
+  return d.bills
+    .map(({ itemIds, ...b }) => ({ ...b, items: items.filter((i) => itemIds.includes(i.id)) }))
+    .filter((b) => b.items.length > 0 || b.tax + b.tip + b.serviceCharge - b.discount !== 0);
+}
+
+/**
+ * The split of the whole draft: each bill on its own (its tax, tip and fees spread over its lines), then added up
+ * per person. `assignedOnly` leaves unassigned lines out (live totals while tapping).
+ */
+export function computeDraftSplit(d: Draft, { assignedOnly = false } = {}): SplitResult {
+  if (d.kind !== "itemized") return computeSplit(toSplitInput(d));
+  const memberIds = d.people.map((p) => p.id);
+  const results = billGroups(d).map((b) => {
+    const lines = b.items
+      .map((i) => ({ id: i.id, name: i.name, quantity: i.quantity, amount: i.amount, assignees: (d.assignments[i.id] ?? []).map((memberId) => ({ memberId, weight: 1 })) }))
+      .filter((l) => !assignedOnly || l.assignees.length > 0);
+    return computeSplit({ memberIds, items: lines, tax: b.tax, tip: b.tip, serviceCharge: b.serviceCharge, discount: b.discount });
+  });
+  const shares = memberIds.map((memberId) => {
+    const parts = results.map((r) => r.shares.find((s) => s.memberId === memberId)).filter((s) => s !== undefined);
+    const add = (k: "items" | "tax" | "tip" | "serviceCharge" | "discount" | "total") => parts.reduce((a, s) => a + s[k], 0);
+    return { memberId, items: add("items"), tax: add("tax"), tip: add("tip"), serviceCharge: add("serviceCharge"), discount: add("discount"), total: add("total") };
+  });
+  return { subtotal: results.reduce((a, r) => a + r.subtotal, 0), total: results.reduce((a, r) => a + r.total, 0), shares };
+}
+
+/**
+ * Combined bills as separate drafts, one per bill, for saving to a group: an expense has a single set of
+ * charges, so each bill becomes its own expense with its own tax, tip and photos. A single bill returns [d].
+ */
+export function splitByBill(d: Draft): Draft[] {
+  const groups = billGroups(d);
+  if (groups.length < 2) return [d];
+  return groups.map((b) => ({
+    ...d,
+    merchant: b.label,
+    items: b.items,
+    tax: b.tax,
+    tip: b.tip,
+    serviceCharge: b.serviceCharge,
+    discount: b.discount,
+    printedTotal: b.printedTotal,
+    imageIds: b.imageIds ?? [],
+    assignments: Object.fromEntries(b.items.map((i) => [i.id, d.assignments[i.id] ?? []])),
+    bills: undefined,
+  }));
 }
 
 /** Items the user actually filled in. */

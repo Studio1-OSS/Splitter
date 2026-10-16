@@ -4,9 +4,9 @@ import { Check, Users } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/primitives";
-import { computeSplit, formatMoney, SplitError } from "@/lib/money";
+import { formatMoney, SplitError } from "@/lib/money";
 import { cn } from "@/lib/utils";
-import { toSplitInput, usableItems, type Draft } from "./draft";
+import { computeDraftSplit, usableItems, type Draft } from "./draft";
 import { PayerPicker, PeopleEditor, StepBar } from "./people";
 
 export function AssignStep({
@@ -32,8 +32,7 @@ export function AssignStep({
   const totals = React.useMemo(() => {
     if (people.length === 0) return undefined;
     try {
-      const input = toSplitInput(draft);
-      const split = computeSplit({ ...input, items: input.items.filter((i) => i.assignees.length > 0) });
+      const split = computeDraftSplit(draft, { assignedOnly: true });
       return new Map(split.shares.map((s) => [s.memberId, s.total]));
     } catch (e) {
       if (e instanceof SplitError) return undefined;

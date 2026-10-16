@@ -10,7 +10,7 @@ export const site = {
   nebiusUrl: "https://dub.sh/aistudio",
   defaultCurrency: "USD",
   /** Display name of the AI model (the model id itself is NEBIUS_MODEL on the server). */
-  model: process.env.NEXT_PUBLIC_AI_MODEL_LABEL || "Nemotron 3.5 Super VL",
+  model: "Nemotron 3.5 Super VL",
   /** The model's page on Token Factory. */
   modelUrl: "https://tokenfactory.nebius.com/?modals=endpoint-details&model-id=nvidia/Nemotron-3.5-Super-VL",
 } as const;

@@ -110,7 +110,7 @@ _Built for phones: bottom tab bar, bottom sheets, a camera scanner and safe-area
 
 The model does the maths, with tools: every share comes from a calculator tool the model calls, and the app checks the result. It re-runs any receipt check the model skipped and flags any split the model didn't calculate with a tool. `normalizePlan()` then checks every member, amount and exact split. On save, the server stores the shares in integer minor units with largest-remainder rounding, so balances always add up to the cent. Every group read and write goes through a membership check.
 
-All provider-specific code lives in [`src/server/ai/nebius.ts`](src/server/ai/nebius.ts), behind an OpenAI-compatible client. To try another model, set `NEBIUS_MODEL` (and `NEXT_PUBLIC_AI_MODEL_LABEL` for the name shown in the UI), then run `pnpm smoke:nebius` to see whether it supports image input, strict JSON, tool calls and the reasoning switch. Set `AI_REASONING_PARAM=none` if it rejects `chat_template_kwargs.enable_thinking`.
+All provider-specific code lives in [`src/server/ai/nebius.ts`](src/server/ai/nebius.ts), behind an OpenAI-compatible client. To try another model, set `NEBIUS_MODEL`, then run `pnpm smoke:nebius` to see whether it supports image input, strict JSON, tool calls and the reasoning switch. Set `AI_REASONING_PARAM=none` if it rejects `chat_template_kwargs.enable_thinking`.
 
 ```
 src/
@@ -144,7 +144,6 @@ Open **http://localhost:3000**. Generate the auth secret with `openssl rand -bas
 | --- | --- |
 | `NEBIUS_API_KEY` | **Required.** Bill reading, Settle with AI and Ask Splitter, via [Nebius Token Factory](https://tokenfactory.nebius.com). |
 | `NEBIUS_MODEL` | Default [`nvidia/Nemotron-3.5-Super-VL`](https://tokenfactory.nebius.com/?modals=endpoint-details&model-id=nvidia/Nemotron-3.5-Super-VL). Check another model with `pnpm smoke:nebius --model <id>`. |
-| `NEXT_PUBLIC_AI_MODEL_LABEL` | Model name shown in the UI (default `Nemotron 3.5 Super VL`). |
 | `AI_REASONING_PARAM` | `chat_template_kwargs` (default: `enable_thinking` on/off) or `none`. |
 | `NEBIUS_BASE_URL` | Default `https://api.tokenfactory.us-north1.nebius.com/v1/`. |
 | `DATABASE_URL` | `file:local.db` locally, or `libsql://…` on [Turso](https://turso.tech). |
